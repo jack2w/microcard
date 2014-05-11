@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.microcard.log.Logger;
 import com.microcard.msg.Msg;
-import com.microcard.msg.processor.AbstractMsgProcessFactory;
+import com.microcard.msg.MsgFactory;
 import com.microcard.util.Utils;
 
 /**
@@ -104,14 +104,20 @@ public class WeixinDev extends HttpServlet {
 		String content = new String(buffer,encoding);
 		log.debug("recevied msg: " + content);
 		
-		Msg msg = Msg.xmlToMsg(content);
+		Msg msg = null;
+		try {
+			msg = MsgFactory.createMsg(content);
+			String responseMsg = msg.getMsgProcessor().proccess(msg);
+			
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			out.print(responseMsg);	
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 		
-		String responseMsg = AbstractMsgProcessFactory.getProcessorFactory(msg).getMsgProcessor().proccess(msg);
-		
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter out = response.getWriter();
-		
-		out.print(responseMsg);	
+
 	}
 	
 	private String buildSignature(String timestamp,String nonce) {

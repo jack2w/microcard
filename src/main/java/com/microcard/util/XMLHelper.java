@@ -24,7 +24,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.microcard.msg.Msg;
-import com.microcard.msg.processor.AbstractMsgProcessFactory;
+import com.microcard.msg.MsgFactory;
 
 /**
  * @author jack
@@ -81,11 +81,17 @@ public class XMLHelper {
 		str.append("<FromUserName><![CDATA[oOrfwjk7S2-meQ6I51v92upnCGYM]]></FromUserName>").append('\n');
 		str.append("<CreateTime>1395157159</CreateTime>").append('\n');
 		str.append("<MsgType><![CDATA[text]]></MsgType>").append('\n');
-		str.append("<Content><![CDATA[??????]]></Content>").append('\n');
+		str.append("<Content><![CDATA[测试]]></Content>").append('\n');
 		str.append("<MsgId>5992154370885374638</MsgId>").append('\n');
 		str.append("</xml>");
-		Msg msg = Msg.xmlToMsg("<xml><ToUserName>oOrfwjk7S2-meQ6I51v92upnCGYM</ToUserName><FromUserName>MobileLife</FromUserName><CreateTime>1395158233</CreateTime><MsgType>text</MsgType><Content>Weclome to Mobile Life. (message sent from wechatdm.cloudapp.net) --??????</Content><MsgId>5992159808313971406</MsgId></xml>");
-		String responseMsg = AbstractMsgProcessFactory.getProcessorFactory(msg).getMsgProcessor().proccess(msg);
-		System.out.println(responseMsg);
+		Msg msg;
+		try {
+			msg = MsgFactory.createMsg(str.toString());
+			String responseMsg = msg.getMsgProcessor().proccess(msg);
+			System.out.println(responseMsg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }
