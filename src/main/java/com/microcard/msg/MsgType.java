@@ -9,7 +9,7 @@ package com.microcard.msg;
  */
 public enum MsgType {
 
-	text,
+    text,
 	image,
 	video,
 	voice,

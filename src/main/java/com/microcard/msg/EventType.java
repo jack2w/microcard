@@ -34,4 +34,5 @@ public enum EventType {
 	 */
 	VIEW,
 	
+	NULL,
 }
