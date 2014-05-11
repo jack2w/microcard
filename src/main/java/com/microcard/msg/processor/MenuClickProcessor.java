@@ -53,22 +53,22 @@ public class MenuClickProcessor implements IMsgProcessor {
 	}
 	
 	private String processMember(ResponseTxtMsg msg) throws Exception {
-		msg.setContent("会员管理<br><a href=\"http://wechatdm.cloudapp.net/microcard/member/member.html\">点击进入会员管理</a> ");
+		msg.setContent("会员管理\n<a href=\"http://wechatdm.cloudapp.net/microcard/member/member.html\">点击进入会员管理</a> ");
 		return MsgFactory.msgToXml(msg);
 	}
 
 	private String processRecord(ResponseTxtMsg msg) throws Exception {
-		msg.setContent("记一笔<br><a href=\"http://wechatdm.cloudapp.net/microcard/record/record.html\">点击进入记一笔</a> ");
+		msg.setContent("记一笔\n<a href=\"http://wechatdm.cloudapp.net/microcard/record/record.html\">点击进入记一笔</a> ");
 		return MsgFactory.msgToXml(msg);
 	}
 	
 	private String processShop(ResponseTxtMsg msg) throws Exception {
-		msg.setContent("店铺管理<br><a href=\"http://wechatdm.cloudapp.net/microcard/shop/shop.html\">点击进入店铺管理</a> ");
+		msg.setContent("店铺管理\n<a href=\"http://wechatdm.cloudapp.net/microcard/shop/shop.html\">点击进入店铺管理</a> ");
 		return MsgFactory.msgToXml(msg);
 	}
 	
 	private String processCommodity(ResponseTxtMsg msg) throws Exception {
-		msg.setContent("商品管理<br><a href=\"http://wechatdm.cloudapp.net/microcard/commodity/commodity.html\">点击进入商品管理</a> ");
+		msg.setContent("商品管理\n<a href=\"http://wechatdm.cloudapp.net/microcard/commodity/commodity.html\">点击进入商品管理</a> ");
 		return MsgFactory.msgToXml(msg);
 	}
 	
