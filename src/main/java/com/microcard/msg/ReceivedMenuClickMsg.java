@@ -12,7 +12,7 @@ import com.microcard.msg.processor.MsgProcessorAnnotation;
  */
 @MsgProcessorAnnotation(MsgClass=MenuClickProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.CLICK)
-public class MenuClickMsg extends EventMsg {
+public class ReceivedMenuClickMsg extends ReceivedEventMsg {
 	
 	@MsgFieldAnnotation("EventKey")
 	private String eventKey;

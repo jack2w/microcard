@@ -8,7 +8,7 @@ package com.microcard.msg;
  *
  */
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.VIEW)
-public class MenuViewMsg extends EventMsg {
+public class ReceivedMenuViewMsg extends ReceivedEventMsg {
 	
 	
 	@MsgFieldAnnotation("EventKey")

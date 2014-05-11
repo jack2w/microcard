@@ -11,5 +11,5 @@ import com.microcard.msg.Msg;
  */
 public interface IMsgProcessor {
 
-	public String proccess(Msg msg);
+	public String proccess(Msg msg) throws Exception;
 }

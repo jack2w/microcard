@@ -8,7 +8,7 @@ package com.microcard.msg;
  *
  */
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.subscribe)
-public class SubscribeEventMsg extends EventMsg {
+public class ReceivedSubscribeMsg extends ReceivedEventMsg {
 
 	//EventKey 事件KEY值，qrscene_为前缀，后面为二维码的参数值
 	@MsgFieldAnnotation("EventKey")

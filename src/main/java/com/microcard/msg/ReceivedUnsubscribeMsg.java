@@ -8,7 +8,7 @@ package com.microcard.msg;
  *
  */
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.unsubscribe)
-public class UnsubscribeEventMsg extends EventMsg {
+public class ReceivedUnsubscribeMsg extends ReceivedEventMsg {
 	
 
 	

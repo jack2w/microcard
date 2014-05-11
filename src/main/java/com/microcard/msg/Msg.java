@@ -28,8 +28,8 @@ public class Msg {
 	@MsgFieldAnnotation("CreateTime")
 	private String createTime;
 	
-	@MsgFieldAnnotation("MsgId")
-	private String msgId;
+	@MsgFieldAnnotation("MsgType")
+	private String msgType;
 	
 	//private MsgType msgType;
 
@@ -65,14 +65,6 @@ public class Msg {
 
 	}
 
-	public String getMsgId() {
-		return msgId;
-	}
-
-	public void setMsgId(String msgId) {
-		this.msgId = msgId;
-	}
-
 	/**
 	 * @return the msgType
 	 */
@@ -80,6 +72,11 @@ public class Msg {
 		MsgTypeAnnotation msgType = this.getClass().getAnnotation(MsgTypeAnnotation.class);
 		return msgType.msg();
 	}	
+	
+	public void setMsgType(String msgType) {
+		
+		this.msgType = msgType;
+	}
 	
 	/**
 	 * 

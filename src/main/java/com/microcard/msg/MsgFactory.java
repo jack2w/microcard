@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.DOMException;
@@ -30,8 +29,8 @@ import com.microcard.util.XMLHelper;
  * @author jack
  *
  */
-@MsgClassAnnotation(className={TxtMsg.class,ScanEventMsg.class,SubscribeEventMsg.class,UnsubscribeEventMsg.class,MenuClickMsg.class,
-		                       MenuViewMsg.class,TxtMsg.class,LocationEventMsg.class})
+@MsgClassAnnotation(className={ReceivedTxtMsg.class,ReceivedScanMsg.class,ReceivedSubscribeMsg.class,ReceivedUnsubscribeMsg.class,ReceivedMenuClickMsg.class,
+		                       ReceivedMenuViewMsg.class,ReceivedTxtMsg.class,ReceivedLocationMsg.class})
 public class MsgFactory {
 	
 	private static Logger log = Logger.getOperLogger();
@@ -219,47 +218,42 @@ public class MsgFactory {
 	}
 	
 	
-	public static String msgToXml(Msg msg) {
+	public static String msgToXml(ResponseMsg msg) throws Exception{
 		
 		try {
 			Document doc = XMLHelper.getDocumentBuilder().newDocument();
 			Element root = doc.createElement("xml");
 			doc.appendChild(root);
 			
-			Element toUser = doc.createElement("ToUserName");
-			toUser.appendChild(doc.createTextNode(msg.getFromUserName()));
-			root.appendChild(toUser);
+			List<Field> fields = getClassField(msg.getClass());
 			
-			Element fromUser = doc.createElement("FromUserName");
-			fromUser.appendChild(doc.createTextNode(msg.getToUserName()));
-			root.appendChild(fromUser);
-			
-			Element time = doc.createElement("CreateTime");
-			time.appendChild(doc.createTextNode(String.valueOf(System.currentTimeMillis() / 1000)));
-			root.appendChild(time);
-			
-			Element type = doc.createElement("MsgType");
-			type.appendChild(doc.createTextNode(msg.getMsgType().toString()));
-			root.appendChild(type);
-			
-			if(msg instanceof TxtMsg){
-				Element content = doc.createElement("Content");
-				content.appendChild(doc.createTextNode(((TxtMsg)msg).getContent()));
-				root.appendChild(content);	
+			for(Field field : fields) {
+				
+				if(field.isAnnotationPresent(MsgFieldAnnotation.class)) {
+					MsgFieldAnnotation annotation = field.getAnnotation(MsgFieldAnnotation.class);
+					String nodename = annotation.value();		
+					
+					Element element = doc.createElement(nodename);
+					
+					try {
+						Method method = msg.getClass().getMethod(toMethodName("get",field.getName()));
+						String value =  method.invoke(msg).toString();
+						element.appendChild(doc.createTextNode(value));
+						root.appendChild(element);
+					} catch (IllegalArgumentException
+							| IllegalAccessException | DOMException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+						throw new Exception("can't get " + msg.getClass().getName() + "'s field [" + field.getName() +"]'s value ",e);
+					}					
+				}
 			}
-
 
 			String xml = XMLHelper.xmlToString(doc);
 			return xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>", "");
 			
-		} catch (ParserConfigurationException e) {
+		} catch (ParserConfigurationException | TransformerException e) {
 			log.error(e, "gen xml error!");
-		} catch (TransformerConfigurationException e) {
-			log.error(e, "gen xml error!");
-		} catch (TransformerException e) {
-			log.error(e, "gen xml error!");
-		}
-		return null;
+			throw new Exception("gen xml error!",e);
+		} 
 	}
 	
 	private static class Entry {

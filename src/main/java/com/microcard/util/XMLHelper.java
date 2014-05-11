@@ -23,9 +23,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.microcard.msg.Msg;
-import com.microcard.msg.MsgFactory;
-
 /**
  * @author jack
  *
@@ -73,25 +70,5 @@ public class XMLHelper {
 
 	public static Document parse(String text) throws SAXException, IOException,ParserConfigurationException {
 		return getDocumentBuilder().parse(new InputSource(new StringReader(text)));
-	}
-
-	public static void main(String arg[]) {
-		StringBuffer str = new StringBuffer();
-		str.append("<xml><ToUserName><![CDATA[gh_1c25e0b75543]]></ToUserName>").append('\n');
-		str.append("<FromUserName><![CDATA[oOrfwjk7S2-meQ6I51v92upnCGYM]]></FromUserName>").append('\n');
-		str.append("<CreateTime>1395157159</CreateTime>").append('\n');
-		str.append("<MsgType><![CDATA[text]]></MsgType>").append('\n');
-		str.append("<Content><![CDATA[测试]]></Content>").append('\n');
-		str.append("<MsgId>5992154370885374638</MsgId>").append('\n');
-		str.append("</xml>");
-		Msg msg;
-		try {
-			msg = MsgFactory.createMsg(str.toString());
-			String responseMsg = msg.getMsgProcessor().proccess(msg);
-			System.out.println(responseMsg);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 }

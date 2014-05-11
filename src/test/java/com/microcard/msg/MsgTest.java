@@ -17,7 +17,7 @@ public class MsgTest extends TestCase {
 	}
 
 	public void testGetMsgType() {
-		Msg msg = new SubscribeEventMsg();
+		Msg msg = new ReceivedSubscribeMsg();
 		super.assertEquals(msg.getMsgType(), MsgType.event);
 		
 		

@@ -13,7 +13,7 @@ import com.microcard.msg.processor.TextMsgProcessor;
  */
 @MsgProcessorAnnotation(MsgClass=TextMsgProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.text)
-public class TxtMsg extends Msg {
+public class ReceivedTxtMsg extends ReceivedMsg {
 
 	@MsgFieldAnnotation("Content")
 	private String content;

@@ -8,7 +8,7 @@ package com.microcard.msg;
  *
  */
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.LOCATION)
-public class LocationEventMsg extends EventMsg {
+public class ReceivedLocationMsg extends ReceivedEventMsg {
 
 	//Latitude 地理位置纬度
 	@MsgFieldAnnotation("Latitude")
