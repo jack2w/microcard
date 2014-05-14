@@ -3,7 +3,10 @@
  */
 package com.microcard.log;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +24,18 @@ public class Logger {
 		
 		this.log = log;
 		
+	}
+	
+	static {
+		
+		try {
+			InputStream in = Logger.class.getClassLoader().getResourceAsStream("log4j.properties");
+			Properties p = new Properties();
+			p.load(in);
+			PropertyConfigurator.configure(p);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static HashMap<String,Logger> logMap = new HashMap<String,Logger>();

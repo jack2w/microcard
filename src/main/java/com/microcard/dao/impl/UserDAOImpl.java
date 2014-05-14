@@ -12,7 +12,9 @@ public class UserDAOImpl extends HibernateSupport implements UserDAO{
 
 	@Override
 	public List getUsers() throws HibernateException {
+		
 		return super.queryUsers(User.class);
+		
 	}
 
 	@Override
