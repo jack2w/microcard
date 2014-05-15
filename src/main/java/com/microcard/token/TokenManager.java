@@ -16,6 +16,7 @@ import com.microcard.client.HttpClientHandler;
 import com.microcard.client.HttpDefaultClient;
 import com.microcard.client.HttpNettyClient;
 import com.microcard.exception.WeixinException;
+import com.microcard.log.Logger;
 
 /**
  * @author jack
@@ -23,9 +24,9 @@ import com.microcard.exception.WeixinException;
  */
 public class TokenManager {
 
-	private static final String AppId = "wxe6297940decb5dee";
+	public static final String AppId = "wxe6297940decb5dee";
 	
-	private static final String AppSecret = "85beed8c47ee619028b34303045f3e42";
+	public static final String AppSecret = "85beed8c47ee619028b34303045f3e42";
 	
 	private static String token = null;
 	
@@ -58,7 +59,7 @@ public class TokenManager {
 	}
 	
 	private static String getTokenFromWeixin() throws URISyntaxException, InterruptedException {
-		
+		Logger.getOperLogger().debug("begin take token from weixin");
         URI uri = new URI("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+AppId+"&secret="+AppSecret);
         new HttpNettyClient(uri).doGet(new HttpClientHandler(){
 
@@ -84,17 +85,19 @@ public class TokenManager {
 				}
 				
 			}});
-        
+        Logger.getOperLogger().debug("end take token from weixin successfully");
         return token;
 	}
 	
 	public static void main(String[] arg) {
 		
 		try {
-			URI uri = new URI("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+AppId+"&secret="+AppSecret);
-			HttpDefaultClient client = new HttpDefaultClient(uri);
-			String result = client.doGet();
-			System.out.println(result);
+			String token = TokenManager.getToken();
+			String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
+			HttpDefaultClient client = new HttpDefaultClient(url);
+			
+			String result = client.doPost("{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 123}}}");
+			System.out.println(result);//gQFT8DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL2NFUEZVZFBsNXhxZXBnQTE1MjhlAAIEXpNzUwMEAAAAAA==
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,6 +108,12 @@ public class TokenManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WeixinException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
