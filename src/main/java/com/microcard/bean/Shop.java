@@ -19,6 +19,11 @@ public class Shop {
 	private String openId;
 	
 	/**
+	 * 自动增长型，从1开始
+	 */
+	private long id;
+	
+	/**
 	 * 商铺的二维码信息
 	 */
 	private String String;
@@ -257,6 +262,14 @@ public class Shop {
 
 	public void setCommodities(Set<Commodity> commodities) {
 		this.commodities = commodities;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	
