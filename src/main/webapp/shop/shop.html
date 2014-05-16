@@ -87,28 +87,48 @@ img {
 	display: none;
 }
 
-.shopInfo {
-	margin-top: 5%;
-}
-
-.shopInfo label,.shopInfo input {
-	display: inline;
-}
-
 .content {
 	position: relative;
 	width: 100%;
-	margin: 10% 0 2% 0;
-	text-align: center;
+	margin: 2% 0 -4% 0;
 }
 
-#shopMemo {
-	height: 90px;
+.shopInfo {
+	list-style: none;
+	display: inline;
+}
+
+.shopInfo li {
+	height: 60px;
+	font-size: 1.2em;
+	margin: 1% 0 0 0;
+	line-height: 60px;
+	border-bottom: 3px;
+	border-right-style: solid;
+	border-color: #D5D5D5;
+	margin-left: -8%;
+	background: #F7F7F7;
+	padding-left: 1%;
+}
+
+.shopInfo span {
+	margin-left: 1%;
+	font-size: 1.5em;
+	height: 60px;
+}
+
+.shopInfo input,.shopInfo textarea {
+	display: none;
+	margin-top: 1%;
+}
+
+.shopInfo textarea {
+	height: 100px;
 }
 
 .footer {
 	background: #6ac134;
-	height:35px;
+	height: 35px;
 	position: relative;
 	width: 100%;
 	text-align: center;
@@ -116,54 +136,72 @@ img {
 }
 </style>
 <script type="text/javascript">
-	function modifyClick() {
-		$(".header-modify").hide();
-		$(".header-submit").show();
-		$(".shopInfo input,.shopInfo textarea").attr("disabled",false);
-	}
+	function changeClick() {
+		var data = new Array();
+		if ($(".header-modify").is(":visible")) {
 
-	function submitClick() {
-		$(".header-submit").hide();
-		$(".header-modify").show();
-		$(".shopInfo input,.shopInfo textarea").attr("disabled",true);
+			$(".header-modify").hide();
+			$(".header-submit").show();
+			$(".shopInfo span").hide();
+			$(".shopInfo input,.shopInfo textarea").show();
+
+			$(".shopInfo span").each(function(i) {
+				data[i] = $(this).html();
+			});
+
+			$("#shopName").val(data[0]);
+			$("#shopTel").val(data[1]);
+			$("#shopAddress").val(data[2]);
+			$("#shopMemo").val(data[3]);
+
+		} else {
+			$(".header-submit").hide();
+			$(".header-modify").show();
+			$(".shopInfo input,.shopInfo textarea").hide();
+			$(".shopInfo span").show();
+
+			data[0] = $("#shopName").val();
+			data[1] = $("#shopTel").val();
+			data[2] = $("#shopAddress").val();
+			data[3] = $("#shopMemo").val();
+			$(".shopInfo span").each(function(i) {
+				$(this).html(data[i]);
+			});
+
+		}
 	}
 </script>
 </head>
 <body>
 	<!-- this is header -->
 	<div class="header">
-		<!--  <a href="#" class="home"> <span
-			class="header-icon header-icon-home"></span> <span
-			class="header-name">主页</span>
-		</a> -->
 		<div class="title" id="titleString">我的商铺</div>
-		<a href="#" class="change"> <span
+		<a onclick="changeClick()" class="change"> <span
 			class="header-icon header-icon-change"></span> <span
-			class="header-modify" onclick="modifyClick()">修改</span> <span
-			class="header-submit" onclick="submitClick()">完成</span>
+			class="header-modify">修改</span> <span class="header-submit">完成</span>
 		</a>
 	</div>
 	<!-- this is content -->
 	<div class="content">
 		<form name="shopForm" method="post" action="">
 			<div class="shopInfo">
-				<label>商铺名称：</label><input type="text" name="shopName" id="shopName"
-					disabled="disabled">
-			</div>
-			<div class="shopInfo">
-				<label>商铺电话：</label><input type="tel" name="shopTel" id="shopTel"
-					disabled="disabled">
-			</div>
-			<div class="shopInfo">
-				<label>商铺地址：</label><input type="text" name="shopAddress"
-					disabled="disabled" id="shopAddress">
-			</div>
-			<div class="shopInfo">
-				<label>商铺简介：</label>
-				<textarea rows="" cols="" name="shopMemo" id="shopMemo"
-					disabled="disabled"></textarea>
-			</div>
+				<ul style="list-style: none;">
+					<li>商铺名称: <span>疯狂烤鸡翅</span> <input type="text"
+						name="shopName" id="shopName">
+					</li>
+					<li>商铺电话: <span>021-2937584</span> <input type="tel"
+						name="shopTel" id="shopTel">
+					</li>
+					<li>商铺地址: <span style="font-size: 0.8em;">上海市宝山区上大路668号602室</span>
+						<input type="text" name="shopAddress" id="shopAddress">
+					</li>
+					<li style="height: 120px; line-height: 15px; padding-top: 2%">商铺简介:
+						<span style="font-size: 0.8em; float: left; padding-top: 4%">需要在文字超过设定高度的时候才会出现滚动条，如果字数没有超过设定高度则不显示滚动条，代码是什么样的？</span>
+					<textarea name="shopMemo" id="shopMemo"></textarea>
+					</li>
 
+				</ul>
+			</div>
 		</form>
 	</div>
 	<!-- this is footer -->
