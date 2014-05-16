@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-5-15 20:31:50 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.microcard.bean.User" table="tbl_user">
+        <id name="openId" type="java.lang.String">
+            <column name="OPENID" />
+            <generator class="assigned" />
+        </id>
+        <property name="nickName" type="java.lang.String">
+            <column name="NICKNAME" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS" />
+        </property>
+        <property name="phone1" type="java.lang.String">
+            <column name="PHONE1" />
+        </property>
+        <property name="phone2" type="java.lang.String">
+            <column name="PHONE2" />
+        </property>
+        <property name="phone3" type="java.lang.String">
+            <column name="PHONE3" />
+        </property>
+        <property name="sex">
+            <column name="SEX" />
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.microcard.bean.Sex</param>
+            </type>
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="province" type="java.lang.String">
+            <column name="PROVINCE" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="headImgUrl" type="java.lang.String">
+            <column name="HEADIMGURL" />
+        </property>
+        <property name="subscribeTime" type="java.sql.Timestamp">
+            <column name="SUBSCRIBETIME" />
+        </property>
+ 		 <set name="shops" inverse="true" cascade="save-update" table="tbl_user_shop" lazy = "true">
+            <key column="USER_ID"></key>
+            <many-to-many class="com.microcard.bean.Shop"
+                column="SHOP_ID"></many-to-many>
+        </set>
+        <set name="records" table="RECORD" inverse="true" cascade="delete" lazy="true">
+            <key>
+                <column name="USER_ID" />
+            </key>
+            <one-to-many class="com.microcard.bean.Record" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-5-15 20:31:50 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.microcard.bean.Shop" table="tbl_shop">
+        <id name="id" type="long">
+         <column name="ID" />
+        <generator class="native" />
+        </id>
+        <property name="openId" type="java.lang.String" not-null = "true">
+            <column name="OPENID" />
+        </property>
+        <property name="String" type="java.lang.String">
+            <column name="STRING" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="PHONE" />
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS" />
+        </property>
+        <property name="memo" type="java.lang.String">
+            <column name="MEMO" />
+        </property>
+        <property name="imgUrl" type="java.lang.String">
+            <column name="IMGURL" />
+        </property>
+        <property name="nickName" type="java.lang.String">
+            <column name="NICKNAME" />
+        </property>
+        <property name="sex">
+            <column name="SEX" />
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.microcard.bean.Sex</param>
+            </type>
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="province" type="java.lang.String">
+            <column name="PROVINCE" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="headImgUrl" type="java.lang.String">
+            <column name="HEADIMGURL" />
+        </property>
+        <property name="subscribeTime" type="java.sql.Timestamp">
+            <column name="SUBSCRIBETIME" />
+        </property>
+      	<set name="users" inverse="false" cascade="save-update" table="tbl_user_shop" lazy = "true">
+            <key column="SHOP_ID"></key>
+            <many-to-many class="com.microcard.bean.User"
+                column="USER_ID"></many-to-many>
+        </set>
+        <set name="commodities" table="COMMODITY" inverse="true" lazy="true" cascade="delete">
+            <key>
+                <column name="SHOP_ID" />
+            </key>
+            <one-to-many class="com.microcard.bean.Commodity" />
+        </set>
+        <set name="sales" table="SALES" inverse="true" lazy="true" cascade="delete">
+            <key>
+                <column name="SHOP_ID" />
+            </key>
+            <one-to-many class="com.microcard.bean.Sales" />
+        </set>
+    </class>
+</hibernate-mapping>

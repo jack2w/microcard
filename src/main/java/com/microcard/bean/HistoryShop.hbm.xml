@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-5-15 20:31:50 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.microcard.bean.HistoryShop" table="tbl_historyshop">
+        <id name="openId" type="java.lang.String">
+            <column name="OPENID" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="PHONE" />
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS" />
+        </property>
+        <property name="memo" type="java.lang.String">
+            <column name="MEMO" />
+        </property>
+        <property name="imgUrl" type="java.lang.String">
+            <column name="IMGURL" />
+        </property>
+        <property name="nickName" type="java.lang.String">
+            <column name="NICKNAME" />
+        </property>
+        <property name="sex">
+            <column name="SEX" />
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.microcard.bean.Sex</param>
+            </type>
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="province" type="java.lang.String">
+            <column name="PROVINCE" />
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="headImgUrl" type="java.lang.String">
+            <column name="HEADIMGURL" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2014-5-15 20:31:50 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.microcard.bean.Sales" table="tbl_sales">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="shop" class="com.microcard.bean.Shop" >
+            <column name="SHOP_ID" />
+        </many-to-one>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="memo" type="java.lang.String">
+            <column name="MEMO" />
+        </property>
+        <set name="commodities" table="COMMODITY" inverse="false" lazy="true" cascade="delete">
+            <key>
+                <column name="SALES_ID" />
+            </key>
+            <one-to-many class="com.microcard.bean.Commodity" />
+        </set>
+    </class>
+</hibernate-mapping>

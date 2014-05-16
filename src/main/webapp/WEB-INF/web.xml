@@ -13,18 +13,20 @@
     <servlet-name>WeixinDev</servlet-name>
     <servlet-class>com.microcard.servlet.WeixinDev</servlet-class>
   </servlet>
+
   <servlet>
-  	<servlet-name>TestDataSource</servlet-name>
-  	<display-name>TestDataSource</display-name>
+  	<servlet-name>TestDAO</servlet-name>
+  	<display-name>TestDAO</display-name>
   	<description></description>
-  	<servlet-class>com.microcard.servlet.TestDataSource</servlet-class>
+  	<servlet-class>com.microcard.dao.TestDAO</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WeixinDev</servlet-name>
     <url-pattern>/WeixinDev</url-pattern>
   </servlet-mapping>
+ 
   <servlet-mapping>
-  	<servlet-name>TestDataSource</servlet-name>
+  	<servlet-name>TestDAO</servlet-name>
   	<url-pattern>/test</url-pattern>
   </servlet-mapping>  
   
