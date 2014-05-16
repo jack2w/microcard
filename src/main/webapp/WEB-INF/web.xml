@@ -20,6 +20,12 @@
   	<description></description>
   	<servlet-class>com.microcard.dao.TestDAO</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>PageForward</servlet-name>
+  	<display-name>PageForward</display-name>
+  	<description></description>
+  	<servlet-class>com.microcard.servlet.PageForward</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>WeixinDev</servlet-name>
     <url-pattern>/WeixinDev</url-pattern>
@@ -28,6 +34,10 @@
   <servlet-mapping>
   	<servlet-name>TestDAO</servlet-name>
   	<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>PageForward</servlet-name>
+  	<url-pattern>/pageforward</url-pattern>
   </servlet-mapping>  
   
    <resource-ref>

@@ -36,7 +36,6 @@ public class WeixinDev extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		log.debug("doGet");
 		String echostr = request.getParameter("echostr") == null ? "" : request.getParameter("echostr") ;
 		if(echostr.length() > 0) {
 			String signature = request.getParameter("signature") == null ? "" : request.getParameter("signature") ;

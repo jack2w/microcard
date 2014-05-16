@@ -1,190 +1,212 @@
 <!DOCTYPE html>
 <html>
+<head>
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
 <meta name="apple-touch-fullscreen" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../styles/bootstrap.min.css" rel="stylesheet" />
 <script type="text/javascript" src="../js/jquery.js" /></script>
-<script type="text/javascript">
-	$(function() {
-		var bn_id = 0;
-		var bn_id2 = 1;
-		var speed33 = 5000;
-		var qhjg = 1;
-		var MyMar33;
-		$("#banner .d1").hide();
-		$("#banner .d1").eq(0).fadeIn("slow");
-		if ($("#banner .d1").length > 1) {
-			$("#banner_id li").eq(0).addClass("nuw");
-			function Marquee33() {
-				bn_id2 = bn_id + 1;
-				if (bn_id2 > $("#banner .d1").length - 1) {
-					bn_id2 = 0;
-				}
-				$("#banner .d1").eq(bn_id).css("z-index", "2");
-				$("#banner .d1").eq(bn_id2).css("z-index", "1");
-				$("#banner .d1").eq(bn_id2).show();
-				$("#banner .d1").eq(bn_id).fadeOut("slow");
-				$("#banner_id li").removeClass("nuw");
-				$("#banner_id li").eq(bn_id2).addClass("nuw");
-				bn_id = bn_id2;
-			}
-			;
-
-			MyMar33 = setInterval(Marquee33, speed33);
-
-			$("#banner_id li").click(function() {
-				var bn_id3 = $("#banner_id li").index(this);
-				if (bn_id3 != bn_id && qhjg == 1) {
-					qhjg = 0;
-					$("#banner .d1").eq(bn_id).css("z-index", "2");
-					$("#banner .d1").eq(bn_id3).css("z-index", "1");
-					$("#banner .d1").eq(bn_id3).show();
-					$("#banner .d1").eq(bn_id).fadeOut("slow", function() {
-						qhjg = 1;
-					});
-					$("#banner_id li").removeClass("nuw");
-					$("#banner_id li").eq(bn_id3).addClass("nuw");
-					bn_id = bn_id3;
-				}
-			})
-			$("#banner_id").hover(function() {
-				clearInterval(MyMar33);
-			}, function() {
-				MyMar33 = setInterval(Marquee33, speed33);
-			})
-		} else {
-			$("#banner_id").hide();
-		}
-	});
-</script>
-
 <style type="text/css">
-* {
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
+body {
+	margin: 0 auto;
+	min-width: 320px;
+	max-width: 100%;
 }
 
-a,img {
-	border: 0;
+a:link,a:visited {
+	font-style: normal;
 }
 
 img {
-	-ms-interpolation-mode: bicubic;
-}
-
-/* banner */
-.banner {
-	width: 100%;
-	height: 50%;
-	overflow: hidden;
-}
-
-.banner .d1 {
-	width: 100%;
-	height: 49%;
-	display: block;
-	position: absolute;
-}
-
-.banner .d2 {
-	width: 100%;
+	border: 0 none;
 	height: auto;
-	position: absolute;
-	z-index: 100;
-	top: 44%;
+	max-width: 100%;
+	vertical-align: middle;
 }
 
-.banner .d2 ul {
-	float: left;
-	position: absolute;
-	display: inline;
-	left: 35%;
-}
-
-.banner .d2 li {
-	width: 17px;
-	height: 15px;
-	overflow: hidden;
-	cursor: pointer;
-	background: url(../images/img1.png) no-repeat center;
-	float: left;
-	margin: 0 3px;
-	display: inline;
-}
-
-.banner .d2 li.nuw {
-	background: url(../images/img1_1.png) no-repeat center;
-}
-
-/*shopInfo*/
-.shopInfo {
-	position: absolute;
-	overflow: hidden;
+.header {
+	background: #6ac134;
+	height: 60px;
+	position: relative;
 	width: 100%;
-	background: url(../images/shopInfoBg.jpg) center no-repeat;
+	box-shadow: #666 0 0 10px;
+}
+
+.header .title {
+	line-height: 1.5em;
 	text-align: center;
-	top: 49%;
+	font-size: 1.5em;
+	color: #fff;
+	vertical-align: middle;
+	padding: 0.7em 0px;
+	font-family: "微软雅黑";
+	margin: 0px auto;
+	overflow: hidden;
+	height: 22px;
 }
 
-.shopName,.shopAddress,.shopTelephone {
-	margin-top: 10%;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 11%;
-	font-size: 100%;
+.header .home {
+	color: #FFFFFF;
+	display: block;
+	left: 0;
+	padding: 13px 20px;
+	position: absolute;
 }
 
-.shopName input,.shopAddress input,.shopTelephone input {
-	font-size: 100%;
-	padding: 2% 0 2% 2%;
+.header .change {
+	color: #FFFFFF;
+	display: block;
+	right: 0px;
+	top: 0px;
+	padding: 13px 20px;
+	position: absolute;
 }
 
-.press {
-	color: #fafafa;
-	letter-spacing: 0;
-	text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px
-		4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333,
-		0px 8px 7px #001135
+.header .header-icon {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	display: block;
+	height: 22px;
+	margin: 0 auto;
+	width: 22px;
+}
+
+.header .header-icon-home {
+	background-image: url("../images/icon_home.png");
+}
+
+.header .header-icon-change {
+	background-image: url("../images/shop_modify.png");
+}
+
+.header-submit {
+	display: none;
+}
+
+.content {
+	position: relative;
+	width: 100%;
+	margin: 2% 0 -4% 0;
+}
+
+.shopInfo {
+	list-style: none;
+	display: inline;
+}
+
+.shopInfo li {
+	height: 60px;
+	font-size: 1.2em;
+	margin: 1% 0 0 0;
+	line-height: 60px;
+	border-bottom: 3px;
+	border-right-style: solid;
+	border-color: #D5D5D5;
+	margin-left: -8%;
+	background: #F7F7F7;
+	padding-left: 1%;
+}
+
+.shopInfo span {
+	margin-left: 1%;
+	font-size: 1.5em;
+	height: 60px;
+}
+
+.shopInfo input,.shopInfo textarea {
+	display: none;
+	margin-top: 1%;
+}
+
+.shopInfo textarea {
+	height: 100px;
+}
+
+.footer {
+	background: #6ac134;
+	height: 35px;
+	position: relative;
+	width: 100%;
+	text-align: center;
+	line-height: 35px;
 }
 </style>
+<script type="text/javascript">
+	function changeClick() {
+		var data = new Array();
+		if ($(".header-modify").is(":visible")) {
+
+			$(".header-modify").hide();
+			$(".header-submit").show();
+			$(".shopInfo span").hide();
+			$(".shopInfo input,.shopInfo textarea").show();
+
+			$(".shopInfo span").each(function(i) {
+				data[i] = $(this).html();
+			});
+
+			$("#shopName").val(data[0]);
+			$("#shopTel").val(data[1]);
+			$("#shopAddress").val(data[2]);
+			$("#shopMemo").val(data[3]);
+
+		} else {
+			$(".header-submit").hide();
+			$(".header-modify").show();
+			$(".shopInfo input,.shopInfo textarea").hide();
+			$(".shopInfo span").show();
+
+			data[0] = $("#shopName").val();
+			data[1] = $("#shopTel").val();
+			data[2] = $("#shopAddress").val();
+			data[3] = $("#shopMemo").val();
+			$(".shopInfo span").each(function(i) {
+				$(this).html(data[i]);
+			});
+
+		}
+	}
+</script>
 </head>
-<body style="overflow: hidden">
-	<div style="width: 100%; height: 100%">
-		<div class="banner" id="banner">
-			<a href=""><img class="d1" src="../images/1.jpg"></a> <a
-				href=""><img class="d1" src="../images/2.jpg"></a> <a href=""><img
-				class="d1" src="../images/3.jpg"></a> <a href=""><img
-				class="d1" src="../images/4.jpg"></a> <a href=""><img
-				class="d1" src="../images/5.jpg"></a>
-			<div class="d2" id="banner_id">
-				<ul>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
+<body>
+	<!-- this is header -->
+	<div class="header">
+		<div class="title" id="titleString">我的商铺</div>
+		<a onclick="changeClick()" class="change"> <span
+			class="header-icon header-icon-change"></span> <span
+			class="header-modify">修改</span> <span class="header-submit">完成</span>
+		</a>
+	</div>
+	<!-- this is content -->
+	<div class="content">
+		<form name="shopForm" method="post" action="">
+			<div class="shopInfo">
+				<ul style="list-style: none;">
+					<li>商铺名称: <span>疯狂烤鸡翅</span> <input type="text"
+						name="shopName" id="shopName">
+					</li>
+					<li>商铺电话: <span>021-2937584</span> <input type="tel"
+						name="shopTel" id="shopTel">
+					</li>
+					<li>商铺地址: <span style="font-size: 0.8em;">上海市宝山区上大路668号602室</span>
+						<input type="text" name="shopAddress" id="shopAddress">
+					</li>
+					<li style="height: 120px; line-height: 15px; padding-top: 2%">商铺简介:
+						<span style="font-size: 0.8em; float: left; padding-top: 4%">需要在文字超过设定高度的时候才会出现滚动条，如果字数没有超过设定高度则不显示滚动条，代码是什么样的？</span>
+					<textarea name="shopMemo" id="shopMemo"></textarea>
+					</li>
+
 				</ul>
 			</div>
-		</div>
-		<div class="shopInfo" id="shopInfo">
-			<div class="shopName">
-				<font class="press">商铺名称：</font><input type="text" name="shopName"
-					id="shopName">
-			</div>
-			<div class="shopAddress">
-				<font class="press">商铺地址：</font><input type="text"
-					name="shopAddress" id="shopAddress">
-			</div>
-			<div class="shopTelephone">
-				<font class="press">联系方式：</font><input type="text"
-					name="shopTelephone" id="shopTelephone">
-			</div>
-		</div>
+		</form>
+	</div>
+	<!-- this is footer -->
+	<div class="footer">
+		<p style="color: #bbb;">***商铺 &copy; 版权所有 2014-2016</p>
 	</div>
 </body>
 </html>
