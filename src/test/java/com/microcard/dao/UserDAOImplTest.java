@@ -50,11 +50,25 @@ public class UserDAOImplTest {
 
 	}
 
-	
+
 	public void testSaveUser() {
-		User u = new User();
-		u.setOpenId("100001");
-		DAOFactory.createUserDAO().saveUser(u);
+		User u1 = new User();
+		u1.setOpenId("100008");
+		User u2 = new User();
+		u2.setOpenId("100002");
+		User u3 = new User();
+		u3.setOpenId("100003");
+		User u4 = new User();
+		u4.setOpenId("100004");
+		User u5 = new User();
+		u5.setOpenId("100005");
+		User u6 = new User();
+		u6.setOpenId("100006");
+		User u7 = new User();
+		u7.setOpenId("100007");
+		
+		
+		DAOFactory.createUserDAO().saveUser(u1, u2, u3, u4, u5, u6, u7);
 	}
 
 	@Test
@@ -73,17 +87,30 @@ public class UserDAOImplTest {
 		DAOFactory.createUserDAO().addRecords(u, new Record());
 	}
 
-	@Test
+	
 	public void testDeleteRecords() {
 		User u = DAOFactory.createUserDAO().getUserByID("100001");
 		DAOFactory.createUserDAO().deleteRecords(u, null);
 	}
 
-	
+	@Test
 	public void testAddShops() {
-		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		User u1 = DAOFactory.createUserDAO().getUserByID("100001");
+		User u2 = DAOFactory.createUserDAO().getUserByID("100002");
+		User u3 = DAOFactory.createUserDAO().getUserByID("100003");
+		User u4 = DAOFactory.createUserDAO().getUserByID("100004");
+		User u5 = DAOFactory.createUserDAO().getUserByID("100005");
+		User u6 = DAOFactory.createUserDAO().getUserByID("100006");
+		User u7 = DAOFactory.createUserDAO().getUserByID("100007");
 		Shop s = DAOFactory.createShopDAO().getShopByID(2);
-		DAOFactory.createUserDAO().addShops(u, s);
+
+		DAOFactory.createUserDAO().addShops(u1, s);
+		DAOFactory.createUserDAO().addShops(u2, s);
+		DAOFactory.createUserDAO().addShops(u3, s);
+		DAOFactory.createUserDAO().addShops(u4, s);
+		DAOFactory.createUserDAO().addShops(u5, s);
+		DAOFactory.createUserDAO().addShops(u6, s);
+		DAOFactory.createUserDAO().addShops(u7, s);
 	}
 
 	

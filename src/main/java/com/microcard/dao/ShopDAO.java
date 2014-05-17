@@ -25,7 +25,7 @@ public interface ShopDAO {
 	 * @param id
 	 * @throws HibernateException
 	 */
-	public void deleteShop(Shop shops) throws HibernateException;
+	public void deleteShop(Shop... shops) throws HibernateException;
 	
 	/**
 	 * 获得指定id的商铺
@@ -41,7 +41,7 @@ public interface ShopDAO {
 	 * @param shop
 	 * @throws HibernateException
 	 */
-	public void updateShop(Shop shop) throws HibernateException;
+	public void updateShop(Shop... shop) throws HibernateException;
 	
 	
 	/**
@@ -49,7 +49,7 @@ public interface ShopDAO {
 	 * @param shop 可以为一个单一的Shop对象，不包含其他关联对象
 	 * @throws HibernateException
 	 */
-	public void addShop(Shop shop)throws HibernateException;
+	public void addShop(Shop... shop)throws HibernateException;
 	
 /**
  * 获得商铺的指定长度和起始位的用户信息
@@ -100,6 +100,6 @@ public interface ShopDAO {
 	 * @param s
 	 * @throws HibernateException
 	 */
-	public void saveOrUpdate(Shop s) throws HibernateException;
+	public void saveOrUpdate(Shop... shops) throws HibernateException;
 	
 }

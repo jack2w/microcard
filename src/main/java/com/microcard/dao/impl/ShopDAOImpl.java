@@ -37,10 +37,12 @@ public class ShopDAOImpl  implements ShopDAO{
 	 * @param id
 	 * @throws HibernateException
 	 */
-	public void deleteShop(Shop shop) throws HibernateException {
+	public void deleteShop(Shop... shops) throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			session.delete(shop);
+			for(Shop s : shops){
+				session.delete(s);
+			}
 		} catch(HibernateException ex){
 			log.error(ex, "fail delete  shope.");
 			throw ex;
@@ -66,40 +68,43 @@ public class ShopDAOImpl  implements ShopDAO{
 	public User[] getUsersByShop(Shop shop, int start, int length) throws HibernateException{
 
 		Session session = HibernateUtil.instance().currentSession();
+		User[] users = null;
 		try{
 			Query query = session.createQuery("from Shop s where s.openId =:openid ");
 			query.setParameter("openid", shop.getOpenId());
-			shop.setUsers((Set)query.list());
+			List result = query.list();
+			users =( User[] )result.toArray(new User[result.size()]);
 			
+	        if(users.length < start){
+	        	return null;
+	        }
+	        else if(users.length > (start + length)){
+	        	return Arrays.copyOfRange(users, start,  start + length);
+	        } else{
+	        	return Arrays.copyOfRange(users, start,  users.length);
+	        }
+		
 		} catch(HibernateException e){
 			log.error(e, "fail get uses by shopid.");
 			throw e;
 		} 
-		
-		User[] users =( User[] )shop.getUsers().toArray();
-        if(users.length < start){
-        	return null;
-        }
-        else if(users.length > (start + length)){
-        	return Arrays.copyOfRange(users, start,  start + length);
-        } else{
-        	return Arrays.copyOfRange(users, start,  users.length);
-        }
        
 	}
 	
 	@Override
-	public void updateShop(Shop shop) throws HibernateException {
+	public void updateShop(Shop... shops) throws HibernateException {
 
-		this.saveOrUpdate(shop);
+		this.saveOrUpdate(shops);
 		
 	}
 
 	@Override
-	public void addShop(Shop shop) throws HibernateException {
+	public void addShop(Shop... shopes) throws HibernateException {
 		Session session = HibernateUtil.instance().currentSession();
 		try{
-				session.save(shop);
+			for (Shop s : shopes){
+				session.save(s);
+			}
 		}catch(HibernateException e){
 			log.error(e, "fail add  commodities.");
 			throw e;
@@ -138,10 +143,12 @@ public class ShopDAOImpl  implements ShopDAO{
 		
 	}
 	
-	public void saveOrUpdate(Shop s) throws HibernateException{
+	public void saveOrUpdate(Shop... shops) throws HibernateException{
 		Session session = HibernateUtil.instance().currentSession();
 		try{
+			for(Shop s : shops){
 				session.saveOrUpdate(s);
+			}
 		}catch(HibernateException e){
 			log.error(e, "fail save or update a shop.");
 			throw e;

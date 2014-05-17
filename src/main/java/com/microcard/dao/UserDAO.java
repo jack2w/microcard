@@ -17,7 +17,7 @@ public interface UserDAO {
 	 * @param u
 	 * @throws HibernateException
 	 */
-	public void deleteUser(User u) throws HibernateException;
+	public void deleteUser(User... user) throws HibernateException;
 	
 	public User getUserByID(String id) throws HibernateException;
 	
@@ -26,21 +26,21 @@ public interface UserDAO {
 	 * @param user
 	 * @throws HibernateException
 	 */
-	public void updateUser(User user) throws HibernateException;
+	public void updateUser(User... users) throws HibernateException;
 	
 	/**
 	 * 该方法保存的只有不涉及集合属性的用户信息，涉及到集合属性的信息需要调用相关方法
 	 * @param user
 	 * @throws HibernateException
 	 */
-	public void saveUser(User user) throws HibernateException;
+	public void saveUser(User... users) throws HibernateException;
 	
 	/**
 	 * 该方法更新的仅是用户信息，涉及到集合的属性比如购买记录和商铺信息需要调用相关方法
 	 * @param user
 	 * @throws HibernateException
 	 */
-	public void saveOrUpdate(User u ) throws HibernateException;
+	public void saveOrUpdate(User... users ) throws HibernateException;
 	
 	/**
 	 * 增加购买记录

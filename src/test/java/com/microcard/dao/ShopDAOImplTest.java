@@ -1,19 +1,25 @@
 package com.microcard.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microcard.bean.Shop;
+import com.microcard.bean.User;
+import com.microcard.dao.hibernate.HibernateUtil;
+
 public class ShopDAOImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		HibernateUtil.instance().beginTransaction();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		HibernateUtil.instance().commitTransactionAndColoseSession();
 	}
 
 	@Test
@@ -33,7 +39,11 @@ public class ShopDAOImplTest {
 
 	@Test
 	public void testGetUsersByShop() {
-		fail("Not yet implemented");
+		Shop s = DAOFactory.createShopDAO().getShopByID(2);
+		User[] us = DAOFactory.createShopDAO().getUsersByShop(s, 0, 5);
+		for(User  u : us){
+			System.out.println(u.getOpenId());
+		}
 	}
 
 	@Test
@@ -41,9 +51,9 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	
 	public void testAddShop() {
-		fail("Not yet implemented");
+	DAOFactory.createShopDAO().addShop(new Shop());
 	}
 
 	@Test

@@ -34,17 +34,19 @@ public class UserDAOImpl implements UserDAO{
 	 * 删除用户，并删除和商铺之间的关系
 	 */
 	@Override
-	public void deleteUser(User u) throws HibernateException {
+	public void deleteUser(User... users) throws HibernateException {
 		
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			if(u.getShops() != null){
-				for ( Shop s : u.getShops()){
-					s.getUsers().remove(u);
-					session.update(s);
+			for(User u : users){
+				if(u.getShops() != null){
+					for ( Shop s : u.getShops()){
+						s.getUsers().remove(u);
+						session.update(s);
+					}
 				}
-			}
-			session.delete(u);
+				session.delete(u);
+			}			
 		} catch(HibernateException ex){
 			log.error(ex, "fail delete user.");
 			throw ex;
@@ -65,16 +67,17 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void updateUser(User user) throws HibernateException {
-		this.saveOrUpdate(user);
-		
+	public void updateUser(User... users) throws HibernateException {
+			this.saveOrUpdate(users);		
 	}
 
 	@Override
-	public void saveUser(User user) throws HibernateException {
+	public void saveUser(User... users) throws HibernateException {
 		Session session = HibernateUtil.instance().currentSession();
 		try{
-				session.save(user);
+				for(User u : users){
+					session.save(u);
+				}
 		}catch(HibernateException e){
 			log.error(e, "fail save or update a user.");
 			throw e;
@@ -82,10 +85,12 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void saveOrUpdate(User u) throws HibernateException {
+	public void saveOrUpdate(User... users) throws HibernateException {
 		Session session = HibernateUtil.instance().currentSession();
 		try{
+			for(User u : users){
 				session.saveOrUpdate(u);
+			}
 		}catch(HibernateException e){
 			log.error(e, "fail save or update a user.");
 			throw e;
