@@ -1,8 +1,10 @@
 package com.microcard.client;
 
+import static io.netty.buffer.Unpooled.copiedBuffer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -26,8 +28,6 @@ import java.util.Map;
 
 import com.microcard.log.Logger;
 import com.microcard.msg.handler.DefaultHttpHandler;
-
-import static io.netty.buffer.Unpooled.*;
 /**
  * @author jack
  *
@@ -74,7 +74,7 @@ public class HttpNettyClient {
     	this(new URI(uri));
     }
 
-    public void doGet(HttpClientHandler handler) throws InterruptedException {
+    public void doGet(ChannelHandler handler) throws InterruptedException {
         // Configure the client.
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -111,7 +111,7 @@ public class HttpNettyClient {
         }
     }
     
-    public void doPost(HttpClientHandler handler,Map<String,String> params) throws InterruptedException, ErrorDataEncoderException {
+    public void doPost(HttpClientTxtHandler handler,Map<String,String> params) throws InterruptedException, ErrorDataEncoderException {
         // Configure the client.
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -165,7 +165,7 @@ public class HttpNettyClient {
         }
     }
 
-    public void doPost(HttpClientHandler handler,String content) throws InterruptedException, ErrorDataEncoderException {
+    public void doPost(HttpClientTxtHandler handler,String content) throws InterruptedException, ErrorDataEncoderException {
         // Configure the client.
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -200,8 +200,16 @@ public class HttpNettyClient {
     }
     
     
-    public static void main(String[] args) throws Exception {
-        URI uri = new URI("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxe6297940decb5dee&secret=85beed8c47ee619028b34303045f3e42");
-        new HttpNettyClient(uri).doGet(new DefaultHttpHandler());
+    public static void main(String[] args) {
+
+            URI uri;
+			try {
+				uri = new URI("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxe6297940decb5dee&secret=85beed8c47ee619028b34303045f3e42");
+				 new HttpNettyClient(uri).doGet(new DefaultHttpHandler());    		
+
+			} catch (URISyntaxException | InterruptedException e) {
+				e.printStackTrace();
+			}
+           
     }
 }

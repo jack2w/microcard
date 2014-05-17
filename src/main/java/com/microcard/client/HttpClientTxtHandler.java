@@ -18,8 +18,9 @@ import io.netty.util.CharsetUtil;
  * @author jack
  *
  */
-public abstract class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
+public abstract class HttpClientTxtHandler extends SimpleChannelInboundHandler<HttpObject> {
 	private Logger log = Logger.getMsgLogger();
+	private StringBuffer buffer = new StringBuffer();
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg)
@@ -48,9 +49,10 @@ public abstract class HttpClientHandler extends SimpleChannelInboundHandler<Http
 	        if (msg instanceof HttpContent) {
 	            HttpContent content = (HttpContent) msg;
 	            String txt = content.content().toString(CharsetUtil.UTF_8);
-	            process(txt);
+	            buffer.append(txt);
 	            log.info(txt);
 	            if (content instanceof LastHttpContent) {
+	            	process(buffer.toString());
 	            	log.info("} END OF CONTENT");
 	            }
 	        }

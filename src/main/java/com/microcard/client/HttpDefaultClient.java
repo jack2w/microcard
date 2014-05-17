@@ -27,18 +27,18 @@ import com.microcard.log.Logger;
  */
 public class HttpDefaultClient {
 
-	private static Logger msgLog = Logger.getMsgLogger();
+	protected static Logger msgLog = Logger.getMsgLogger();
 	//private static Logger operLog = Logger.getOperLogger();
 
-    private final URL url;
+    protected final URL url;
     
-    private String scheme;
+    protected String scheme;
     
 /*    private String host;
     
     private int port;*/
     
-    private boolean ssl;
+    protected boolean ssl;
     
 
     public HttpDefaultClient(URI uri) throws MalformedURLException, NoSuchAlgorithmException, KeyManagementException {
@@ -90,6 +90,7 @@ public class HttpDefaultClient {
         urlCon.setDoInput(true);
         urlCon.connect();      
         msgLog.info("doGet() " + url.toString());
+        
         BufferedReader reader = new BufferedReader(new InputStreamReader(
         		urlCon.getInputStream()));
         StringBuffer result = new StringBuffer();
@@ -109,8 +110,8 @@ public class HttpDefaultClient {
         }catch(Exception e) {
         	//do nothing
         }
-        
-        return result.toString();  
+        return "";
+        //return result.toString();  
     	
     }
 	

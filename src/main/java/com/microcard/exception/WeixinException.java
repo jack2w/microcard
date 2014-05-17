@@ -3,6 +3,9 @@
  */
 package com.microcard.exception;
 
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+
 /**
  * @author jack
  *
@@ -33,5 +36,15 @@ public class WeixinException extends Exception {
     public String getMessage() {
     	
     	return super.getMessage();
+    }
+    
+    public static WeixinException paserException(String msg) {
+    	JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( msg );
+    	if(jsonObject.has("errcode")) {
+    		int errorCode = jsonObject.getInt("errcode");
+    		String errorMsg = jsonObject.getString("errmsg");
+    		return new WeixinException(errorCode,errorMsg);
+    	}
+    	return null;
     }
 }

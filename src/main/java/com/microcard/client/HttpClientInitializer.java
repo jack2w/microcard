@@ -3,6 +3,7 @@
  */
 package com.microcard.client;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -22,9 +23,9 @@ public class HttpClientInitializer extends ChannelInitializer<SocketChannel> {
 
     private final boolean ssl;
     
-    private final HttpClientHandler handler;
+    private final ChannelHandler handler;
 
-    public HttpClientInitializer(boolean ssl,HttpClientHandler handler) {
+    public HttpClientInitializer(boolean ssl,ChannelHandler handler) {
         this.ssl = ssl;
         this.handler = handler;
     }

@@ -1,10 +1,13 @@
 package com.microcard.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +17,12 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 import com.microcard.client.HttpDefaultClient;
+import com.microcard.client.HttpDownloadClient;
+import com.microcard.exception.WeixinException;
 import com.microcard.log.Logger;
 import com.microcard.menu.Menu;
 import com.microcard.token.TokenManager;
+import com.microcard.util.ErrorPage;
 
 /**
  * Servlet implementation class PageForward
@@ -28,13 +34,30 @@ public class PageForward extends HttpServlet {
 	public static final String STATE = "microcard";
 	
 	private static Logger log = Logger.getOperLogger();
-    /**
+ 
+	private static String WEBPATH = null;
+	
+	private static final String CODEPATH = "resources/code";
+	
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public PageForward() { 
         super();
     }
 
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		if(WEBPATH == null) {
+			
+			WEBPATH = config.getServletContext().getRealPath("/");
+		}
+		File tmpCodePath = new File(WEBPATH + CODEPATH);
+		log.debug("CodePath: " + tmpCodePath);
+		if(!tmpCodePath.exists()) tmpCodePath.mkdir();	
+	}
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -52,7 +75,8 @@ public class PageForward extends HttpServlet {
 		log.debug("Servlet PageForward received parameter page: " + page) ;
 		
 		if(!STATE.equals(state)) {
-			response.getWriter().print("错误的连接！");
+			
+			response.getWriter().print(ErrorPage.createPage("错误的连接！"));
 			log.error("received state is " + state + " ,not match required STATE " + STATE);
 			return;
 		}else {
@@ -87,17 +111,17 @@ public class PageForward extends HttpServlet {
 					log.debug("scope:" + scope);
 					
 					request.setAttribute("OPENID", openid);
-					forward(page, request, response);
+					forward(page,openid, request, response);
 					
 				}else if(jsonObject.has("errcode")) {
 					
 					log.error("received error msg " + jsonObject.getInt("errcode") + " ," + jsonObject.getString("errmsg"));
-					response.getWriter().println("received error msg " + jsonObject.getInt("errcode") + " ,"
-					                                    + jsonObject.getString("errmsg") + " from url " + url);
+					response.getWriter().println(ErrorPage.createPage("received error msg " + jsonObject.getInt("errcode") + " ,"
+					                                    + jsonObject.getString("errmsg") + " from url " + url));
 					return;
 				}else {
 					
-					response.getWriter().println("received error msg from url " + url);
+					response.getWriter().println(ErrorPage.createPage("received error msg from url " + url));
 					return;
 				}
 				
@@ -108,7 +132,7 @@ public class PageForward extends HttpServlet {
 		}
 	}
 	 
-	private void forward(String page , HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void forward(String page ,String openId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = request.getContextPath();
 		switch(page){
 		  
@@ -122,12 +146,102 @@ public class PageForward extends HttpServlet {
 			response.sendRedirect(path+"/record/record.html");
 			break;
 		case Menu.MENU_Key_SHOP:
-			response.sendRedirect(path+"/shop/shop.html");
+			request.getRequestDispatcher("shop/shop.html").forward(request, response);
 			break;
 		case Menu.Menu_Key_Code:
-			response.sendRedirect(path+"/commodity/commodity.html");
+			processCode(openId,request,response);
 			break;
+		}
 	}
+	
+	private void processCode(String openId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		String token = null;
+		
+		try {
+			//获取账号得二维码
+			token = TokenManager.getToken();
+			
+		} catch (URISyntaxException | InterruptedException | WeixinException e) {
+
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println(ErrorPage.createPage("向微信获取Token发生异常: " + e.getMessage()));
+			return;
+		}
+		
+		//TODO 暂用临时二维码进行测试
+		//获取二维码的ticket
+		String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
+		String ticket = null;
+		try {
+			
+			HttpDefaultClient client = new HttpDefaultClient(url);
+			String result = client.doPost("{\"expire_seconds\": 1800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 123}}}");
+			
+			WeixinException exception = WeixinException.paserException(result);
+			if(exception != null) {
+				
+				response.setCharacterEncoding("UTF-8");
+				PrintWriter writer = response.getWriter();
+				writer.println(ErrorPage.createPage("向微信获取Ticket发生异常: " + exception.getMessage()));	
+			}
+			
+			JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( result );
+		     ticket = jsonObject.getString("ticket");
+			jsonObject.getInt("expire_seconds");
+			
+		} catch (KeyManagementException | NoSuchAlgorithmException
+				| URISyntaxException e) {
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println(ErrorPage.createPage("向微信获取Ticken发生异常: " + e.getMessage()));
+			return;
+		}
+		
+		
+		
+		try {
+			//获取二维码的图片
+			String filename = WEBPATH + CODEPATH + File.separator + openId + ".jpg";
+			File codeFile = new File(filename);
+			if(!codeFile.exists()) {
+				url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + ticket;
+				HttpDownloadClient client = new HttpDownloadClient(url,filename);
+				client.doGet();			
+			}
+			response.setContentType("text/html");
+			response.getWriter().println(getCodePage(CODEPATH + "/" + openId + ".jpg"));
+			
+			
+		} catch (URISyntaxException | KeyManagementException | NoSuchAlgorithmException e) {
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println(ErrorPage.createPage("向微信获取二维码图片异常: " + e.getMessage()));
+		}
+		
+	}
+	
+	private String getCodePage(String imgSrc) {
+		
+		StringBuffer out = new StringBuffer();
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no\" />");
+		out.append("<meta name=\"apple-touch-fullscreen\" content=\"yes\" />");
+		out.append("<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />");
+		out.append("<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" />");
+		out.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+		out.append("<link href=\"styles/code.css\" rel=\"stylesheet\" />");
+		out.append("<title>二维码信息</title>");
+		out.append("</head>");
+		out.append("<body>");
+		out.append("<div class=\"contentDiv\"><p class=\"content\">您商铺的二维码</p></div>");
+		out.append("<div class=\"code\"><img class=\"img\" src=\"images/openid.jpg\"></img></div>");
+		out.append("</body>");
+		out.append("</html>");
+		return out.toString();
 	}
 
 	/**

@@ -1,0 +1,42 @@
+body {
+	margin: 0 auto;
+	min-width: 320px;
+	max-width: 100%;
+}
+.contentDiv {
+  margin: 2% 0 0 0;
+  width:100%
+   
+}
+.contentDiv .content {
+  	line-height: 1.5em;
+	text-align: center;
+	font-size: 2em;
+	color: red;
+	vertical-align: middle;
+	padding: 0.7em 0px;
+	font-family: "微软雅黑";
+	margin: 0px auto;
+	overflow: hidden;
+	height: 22px;
+	width:100%
+}
+.msgDiv {
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
+    hight:100%;
+    overflow:scroll
+}
+.msgDiv .msg{
+	border-top:1px solid black;
+	margin-top:3%;
+  	line-height: 1.5em;
+	text-align: left;
+	font-size: 1em;
+	color: black;
+	vertical-align: middle;
+	padding: 0.7em 0px;
+	font-family: "仿宋";
+	width:100%
+}

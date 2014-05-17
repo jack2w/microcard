@@ -1,0 +1,33 @@
+body {
+	margin: 0 auto;
+	min-width: 320px;
+	max-width: 100%;
+}
+.contentDiv {
+  margin: 2% 0 0 0;
+  width:100%
+   
+}
+.contentDiv .content {
+  	line-height: 1.5em;
+	text-align: center;
+	font-size: 2em;
+	color: black;
+	vertical-align: middle;
+	padding: 0.7em 0px;
+	font-family: "微软雅黑";
+	margin: 0px auto;
+	overflow: hidden;
+	height: 22px;
+	width:100%
+}
+.code {
+    margin: 3% 0 0 0;
+    width:100%;
+    hight:100%;
+}
+.code .img{
+	clear: both; 
+	display: block; 
+	margin:auto; 
+}
