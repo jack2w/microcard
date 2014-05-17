@@ -22,7 +22,7 @@ public class ErrorPage {
 		page.append("<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />");
 		page.append("<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" />");
 		page.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-		page.append("<link href=\"styles/error.css\" rel=\"stylesheet\" />");
+		page.append("<link href=\"resources/styles/error.css\" rel=\"stylesheet\" />");
 		page.append("<title>二维码信息</title>");
 		page.append("</head>");
 		page.append("<body>");
