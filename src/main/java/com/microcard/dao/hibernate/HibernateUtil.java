@@ -18,8 +18,10 @@ public class HibernateUtil {
 	
 	private static volatile SessionFactory sessionFactory;
 	
+	@SuppressWarnings("rawtypes")
 	private static final ThreadLocal tLocalsess = new ThreadLocal();
 	
+	@SuppressWarnings("rawtypes")
 	private static final ThreadLocal tLocaltx = new ThreadLocal();
 	
 	private static final Logger log = Logger.getMsgLogger();
@@ -34,6 +36,7 @@ public class HibernateUtil {
 		try{
 			Configuration config = new Configuration().configure(CONFIG_FILE_LOCATION);
 			
+			@SuppressWarnings("deprecation")
 			final ServiceRegistry serviceRegistry =  new ServiceRegistryBuilder().applySettings(config.getProperties()).build();
 			
 			config.setSessionFactoryObserver(new SessionFactoryObserver(){

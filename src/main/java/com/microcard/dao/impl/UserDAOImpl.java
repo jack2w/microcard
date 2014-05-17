@@ -1,17 +1,17 @@
 package com.microcard.dao.impl;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.microcard.bean.Record;
+import com.microcard.bean.Shop;
+import com.microcard.bean.User;
 import com.microcard.dao.UserDAO;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
-import com.microcard.bean.Record;
-import com.microcard.bean.Sales;
-import com.microcard.bean.Shop;
-import com.microcard.bean.User;
 
 public class UserDAOImpl implements UserDAO{
 
@@ -30,11 +30,20 @@ public class UserDAOImpl implements UserDAO{
 		
 	}
 
+	/**
+	 * 删除用户，并删除和商铺之间的关系
+	 */
 	@Override
 	public void deleteUser(User u) throws HibernateException {
 		
 		try{
 			Session session = HibernateUtil.instance().currentSession();
+			if(u.getShops() != null){
+				for ( Shop s : u.getShops()){
+					s.getUsers().remove(u);
+					session.update(s);
+				}
+			}
 			session.delete(u);
 		} catch(HibernateException ex){
 			log.error(ex, "fail delete user.");
@@ -85,7 +94,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void addRecords(User u, Record... records) {
+	public void addRecords(User u, Record... records) throws HibernateException{
 		Session session = HibernateUtil.instance().currentSession();
 		try{
 			for(Record r : records){
@@ -101,7 +110,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void updateRecords(User u, Record... records) {
+	public void updateRecords(User u, Record... records) throws HibernateException{
 		Session session = HibernateUtil.instance().currentSession();
 		try{
 			for(Record r : records){
@@ -117,9 +126,12 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void deleteRecords(User u, Record... records) {
+	public void deleteRecords(User u, Record... records) throws HibernateException {
 		Session session = HibernateUtil.instance().currentSession();
 		try{
+			if(records == null){
+				records = u.getRecords().toArray(new Record[u.getRecords().size()]) ;
+			}
 			for(Record r : records){
 				session.delete(r);
 			}
@@ -130,5 +142,43 @@ public class UserDAOImpl implements UserDAO{
 		
 	}
 
+	@Override
+	public void addShops(User u, Shop... shops) throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			for(Shop s : shops){
+				if(s.getUsers() == null){
+					s.setUsers(new HashSet<User>());
+				}
+				s.getUsers().add(u);
+				session.saveOrUpdate(s);
+			}
+		}catch(HibernateException e){
+			log.error(e, "fail add  shops.");
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void deleteShop(User u, Shop... shops) throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			if(shops == null){
+				shops = u.getShops().toArray(new Shop[u.getShops().size()]) ;
+			}
+			for(Shop s : shops){
+				if(s.getUsers() == null){
+					return;
+				}
+				s.getUsers().remove(u);
+				session.saveOrUpdate(s);
+			}
+		}catch(HibernateException e){
+			log.error(e, "fail delete  shops.");
+			throw e;
+		}
+		
+	}
 
 }

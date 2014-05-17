@@ -1,14 +1,11 @@
 package com.microcard.dao.impl;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import com.microcard.bean.Commodity;
 import com.microcard.bean.Sales;
 import com.microcard.bean.Shop;
@@ -110,7 +107,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	}
 
 	@Override
-	public void addCommodity(Shop shop, Commodity... commodities) {
+	public void addCommodity(Shop shop, Commodity... commodities)  throws HibernateException{
 		Session session = HibernateUtil.instance().currentSession();
 		try{
 			for(Commodity c : commodities){
@@ -125,7 +122,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	}
 
 	@Override
-	public void addSales(Shop shop, Sales... saleses) {
+	public void addSales(Shop shop, Sales... saleses)  throws HibernateException {
 		
 		Session session = HibernateUtil.instance().currentSession();
 		try{
@@ -141,7 +138,7 @@ public class ShopDAOImpl  implements ShopDAO{
 		
 	}
 	
-	public void saveOrUpdate(Shop s){
+	public void saveOrUpdate(Shop s) throws HibernateException{
 		Session session = HibernateUtil.instance().currentSession();
 		try{
 				session.saveOrUpdate(s);
@@ -149,6 +146,76 @@ public class ShopDAOImpl  implements ShopDAO{
 			log.error(e, "fail save or update a shop.");
 			throw e;
 		}
+	}
+
+	@Override
+	public void updateCommodity(Shop shop, Commodity... commodities)  throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			for(Commodity c : commodities){
+				c.setShop(shop);
+				session.update(c);
+			}
+			this.saveOrUpdate(shop);
+		}catch(HibernateException e){
+			log.error(e, "fail update  commodities.");
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void delteCommoditity(Shop shop, Commodity... commodities)
+			throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			if(commodities == null){
+				commodities = shop.getCommodities().toArray(new Commodity[shop.getCommodities().size()]) ;
+			}
+			for(Commodity c : commodities){
+				session.delete(c);
+			}
+			this.saveOrUpdate(shop);
+		}catch(HibernateException e){
+			log.error(e, "fail delete  commodities.");
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void deleteSales(Shop shop, Sales... saleses)
+			throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			if(saleses == null){
+				saleses = shop.getSales().toArray(new Sales[shop.getSales().size()]) ;
+			}
+			for(Sales c : saleses){
+				session.delete(c);
+			}
+			this.saveOrUpdate(shop);
+		}catch(HibernateException e){
+			log.error(e, "fail delete  sales.");
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void updateSales(Shop shop, Sales... saleses)
+			throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			for(Sales c : saleses){
+				session.update(c);
+			}
+			this.saveOrUpdate(shop);
+		}catch(HibernateException e){
+			log.error(e, "fail update sales.");
+			throw e;
+		}
+		
 	}
 
 }

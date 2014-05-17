@@ -15,13 +15,46 @@ import com.microcard.bean.Commodity;
  */
 public interface CommodityDAO {
 
-	public List getCommodity() throws HibernateException;
+	/**
+	 * 获得所有商品信息
+	 * @return
+	 * @throws HibernateException
+	 */
+	public List<Commodity> getAllCommodity() throws HibernateException;
 	
+	/**
+	 * 删除商品信息
+	 * @param commoditys
+	 * @throws HibernateException
+	 */
 	public void deleteCommodity(Commodity... commoditys) throws HibernateException;
 	
+	/**
+	 * 通过id获得商品信息
+	 * @param id
+	 * @return
+	 * @throws HibernateException
+	 */
 	public Commodity getCommodityByID(String id) throws HibernateException;
 	
-	public void updateCommodityUser(Commodity... commoditys) throws HibernateException;
+	/**
+	 * 更新
+	 * @param commoditys
+	 * @throws HibernateException
+	 */
+	public void updateCommodity(Commodity... commoditys) throws HibernateException;
 	
+	/**
+	 * 添加一条商品记录
+	 * @param commoditys
+	 * @throws HibernateException
+	 */
 	public void saveCommodity(Commodity...  commoditys) throws HibernateException;
+	
+	/**
+	 * 该方法更新的仅是非集合属性信息，涉及到集合的属性需要调用相关方法
+	 * @param commodity
+	 * @throws HibernateException
+	 */
+	public void saveOrUpdate(Commodity commodity ) throws HibernateException;
 }

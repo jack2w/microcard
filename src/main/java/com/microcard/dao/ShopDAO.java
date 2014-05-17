@@ -16,7 +16,7 @@ public interface ShopDAO {
 	 * @return
 	 * @throws HibernateException
 	 */
-	public List getShops() throws HibernateException;
+	public List<Shop> getShops() throws HibernateException;
 	
 	/**
 	 * 删除商铺
@@ -37,9 +37,7 @@ public interface ShopDAO {
 		
 	/**
 	 * 更新商铺
-	 * 1.更新一个单一的Shop对象
-	 * 2.商铺中包含了用户信息，商铺信息，营销方式等相关信息，可以做相关更新
-	 * 3.商铺中已经包含了用户信息，但要删除某用户与该商铺的关系，此时不删除用户自身信息
+	 * 1.仅更新一个单一的Shop对象，对其他关联信息的更新需要调用相关方法
 	 * @param shop
 	 * @throws HibernateException
 	 */
@@ -47,15 +45,14 @@ public interface ShopDAO {
 	
 	
 	/**
-	 * 添加一条商铺记录，不包含其他关联数据
-	 *添加一条商铺记录，包含用户信息，商铺信息，营销方式等相关信息
-	 * @param shop 可以为一个单一的Shop对象，也可以包含其他关联对象
+	 * 添加一条商铺记录，不包含其他关联数据，其他关联信息的添加需要调用其他相关方法
+	 * @param shop 可以为一个单一的Shop对象，不包含其他关联对象
 	 * @throws HibernateException
 	 */
 	public void addShop(Shop shop)throws HibernateException;
 	
 /**
- * 获得商铺的用户信息
+ * 获得商铺的指定长度和起始位的用户信息
  * @param shop
  * @param start用户起始位置
  * @param length返回长度
@@ -67,13 +64,42 @@ public interface ShopDAO {
 	/**
 	 * 增加商品
 	 */
-	public void addCommodity(Shop shop, Commodity... commodities);
+	public void addCommodity(Shop shop, Commodity... commodities) throws HibernateException;
+	
+	/**
+	 * 修改商品
+	 */
+	public void updateCommodity(Shop shop, Commodity... commodities) throws HibernateException;
+	
+	/**
+	 * 删除商品,如果commodities为null，删除该shop关联的所有Commodity
+	 */
+	public void delteCommoditity(Shop shop, Commodity... commodities) throws HibernateException;
 	
 	/**
 	 * 增加营销
 	 */
-	public void addSales(Shop shop, Sales... saleses);
+	public void addSales(Shop shop, Sales... saleses) throws HibernateException;
 	
-	public void saveOrUpdate(Shop s);
+	/**
+	 * 删除营销，如果sales为null，删除shop关联的所有sales
+	 * @param s
+	 * @throws HibernateException
+	 */
+	public void deleteSales(Shop shop, Sales... saleses) throws HibernateException;
+	
+	/**
+	 * 修改营销
+	 * @param s
+	 * @throws HibernateException
+	 */
+	public void updateSales(Shop shop, Sales... saleses) throws HibernateException;
+	
+	/**
+	 * 该方法更新的仅是促销信息，涉及到集合的属性需要调用相关方法
+	 * @param s
+	 * @throws HibernateException
+	 */
+	public void saveOrUpdate(Shop s) throws HibernateException;
 	
 }

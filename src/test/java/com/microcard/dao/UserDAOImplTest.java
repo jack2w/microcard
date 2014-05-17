@@ -1,92 +1,95 @@
-/**
- * 
- */
 package com.microcard.dao;
 
-import java.util.List;
+import static org.junit.Assert.fail;
 
-import junit.framework.Assert;
-
-import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Record;
-import com.microcard.bean.Sex;
+import com.microcard.bean.Shop;
 import com.microcard.bean.User;
 import com.microcard.dao.hibernate.HibernateUtil;
+import com.microcard.log.Logger;
 
-/**
- * @author jiyaguang
- *
- */
 public class UserDAOImplTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		HibernateUtil.instance().beginTransaction();
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		HibernateUtil.instance().commitTransactionAndColoseSession();
-
 	}
 
 	@Test
-	public void test() {
-		testAddUser();
-//		testgetUsers();
-//		testdeleteUser();
-//		getUserByID("100001");
-//		testaddRecords();
-	}
-	
-	public void testAddUser(){
-	User u1 = new User();
-	u1.setOpenId("100001");
-	u1.setAddress("shanghai");
-	u1.setSex(Sex.male);
-	try{
-		HibernateDAOFactory.createUserDAO().saveUser(u1);
-	} catch(Exception e){
-		e.printStackTrace();
-	}
-	}
-	
-	public void testgetUsers(){
-		List l = HibernateDAOFactory.createUserDAO().getUsers();
-		if(l.size() > 0){
-			Assert.assertTrue(true);
-		}
-	}
-	
-	public void testdeleteUser() {
-		List<User> l = HibernateDAOFactory.createUserDAO().getUsers();
-		for(User  uu : l){
-			HibernateDAOFactory.createUserDAO().deleteUser(uu);
-		}
-		Assert.assertTrue(HibernateDAOFactory.createUserDAO().getUsers().size() == 0);
-	}
-	
-	public User getUserByID(String id) {
-		User u = HibernateDAOFactory.createUserDAO().getUserByID(id);
-		Assert.assertTrue(u!=null);
-		return u;
+	public void testGetUsers() {
+		fail("Not yet implemented");
 	}
 
-	public void testaddRecords(){
-		User u = getUserByID("100001");
+	@Test
+	public void testDeleteUser() {
+		fail("Not yet implemented");
+	}
 
-		 HibernateDAOFactory.createUserDAO().addRecords(u, new Record());
-		Session s = HibernateUtil.instance().currentSession();
+	
+	public void testGetUserByID() {
+		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		for(Record r : u.getRecords()){
+			Logger.getOperLogger().info(String.valueOf(r.getId()));
+		}
+	}
+
+	
+	public void testUpdateUser() {
+		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		u.setCity("shanghai");
+		DAOFactory.createUserDAO().saveUser(u);
+
+	}
+
+	
+	public void testSaveUser() {
+		User u = new User();
+		u.setOpenId("100001");
+		DAOFactory.createUserDAO().saveUser(u);
+	}
+
+	@Test
+	public void testSaveOrUpdate() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testAddRecords() {
+		fail("Not yet implemented");
+	}
+
+	
+	public void testUpdateRecords() {
+		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		DAOFactory.createUserDAO().addRecords(u, new Record());
+	}
+
+	@Test
+	public void testDeleteRecords() {
+		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		DAOFactory.createUserDAO().deleteRecords(u, null);
+	}
+
+	
+	public void testAddShops() {
+		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		Shop s = DAOFactory.createShopDAO().getShopByID(2);
+		DAOFactory.createUserDAO().addShops(u, s);
+	}
+
+	
+	public void testDeleteShop() {
+		User u = DAOFactory.createUserDAO().getUserByID("100001");
+		DAOFactory.createUserDAO().deleteUser(u);
 	}
 
 }
