@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的会员</title>
 <script type="text/javascript" src="../resources/js/jquery.js" /></script>
 <link href="../resources/styles/bootstrap.min.css" rel="stylesheet" />
 <style type="text/css">
@@ -19,37 +20,43 @@
 body {
 	width: auto;
 }
-
-a:link,a:visited {
-	font-style: normal;
-}
-
-.header {
-	background: #6ac134;
-	height: 40px;
-	width: 100%;
-	position: fixed;
-	z-index: 2;
-	box-shadow: #666 0 0 10px;
-}
-
-.header .title {
-	line-height: 40px;
-	text-align: center;
-	font-size: 1.5em;
-	color: #fff;
-	font-family: "微软雅黑";
-	margin: 0px auto;
-	overflow: hidden;
-	height: 40px;
-}
-
 .content {
 	position: absolute;
-	top: 40px;
-	bottom: 35px;
 	height: auto;
 	min-height: 100%;
+}
+
+.search_form {
+	width:100%;
+	height: 40px;
+	margin-top:3%;
+}
+
+.sinput {
+	width: 80%;
+	height: 21px;
+	line-height: 21px;
+	padding: 4px 7px;
+	color: b3b3b3;
+	border: 1px solid #999;
+	border-radius: 2px 0 0 2px;
+	background-color: #fbfbfb;
+}
+
+.sbtn {
+	width: 10%;
+	height: 31px;
+	padding: 0 12px;
+	margin-left: -1px;
+	border-radius: 0 2px 2px 0;
+	border: 1px solid #4d90fe;
+	background-color: #4d90fe;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 12px;
+	vertical-align: middle;
+	color: #f3f7fc;
+	position: absolute;
 }
 
 .memberList {
@@ -96,43 +103,34 @@ a:link,a:visited {
 	background: #F3F3F3;
 	border: solid 1px #EFEFEF;
 	text-align: center;
-	padding-bottom: 35px;
-}
-
-.footer {
-	background: #6ac134;
-	height: 35px;
-	position: fixed;
-	width: 100%;
-	text-align: center;
-	line-height: 35px;
-	z-index: 9999;
-	bottom: 0;
-	clear:both;
 }
 </style>
 <script type="text/javascript">
 	$(function() {
-	 for (var i = 1 ; i <=40 ; i++) {
-	 $(".memberList").append(
-	 "<div class='member'> " +
-	 "<img src='../resources/images/memberFace/" + i + ".jpg'>" +
-	 "<div class='memberAbout'>" +
-	 "<h5 style='font-size: 1.2em' id='memberName'>赵六</h5>" +
-	 "<div><span id='goodsName'>巴贝拉牛排</span>" +
-	 "<span id='buyTime'>2014-2-23 下午</span></div></div></div>")
-	
-	 }
-	 }) 
+		for (var i = 1; i <= 40; i++) {
+			$(".memberList")
+					.append(
+							"<div class='member'> "
+									+ "<img src='../resources/images/memberFace/" + i + ".jpg'>"
+									+ "<div class='memberAbout'>"
+									+ "<h5 style='font-size: 1.2em' id='memberName'>赵六</h5>"
+									+ "<div><span id='goodsName'>巴贝拉牛排</span>"
+									+ "<span id='buyTime'>2014-2-23 下午</span></div></div></div>")
+
+		}
+	})
 </script>
 </head>
 <body>
-	<!-- this is header -->
-	<div class="header">
-		<div class="title" id="titleString">我的会员</div>
-	</div>
 	<!-- this is content -->
 	<div class="content">
+		<div class="search_form">
+			<form action="#" method="get">
+				<input type="text" name="s" class="sinput" placeholder="输入 回车搜索"> 
+				<input type="submit" value="搜索"
+					class="sbtn">
+			</form>
+		</div>
 		<div class="memberList">
 			<div class="member">
 				<img src="../resources/images/memberFace/1.jpg">
@@ -167,9 +165,5 @@ a:link,a:visited {
 		</div>
 		<div class="click_more" style="clear: both;">点击查看更多</div>
 	</div>
-	<!-- this is footer-->
-	<div class="footer">
-		<p style="color: #bbb;">***商铺 &copy; 版权所有 2014-2016</p>
-	</div> 
 </body>
 </html>
