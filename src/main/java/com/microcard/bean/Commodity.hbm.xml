@@ -14,8 +14,13 @@
         <property name="name" type="java.lang.String" length = "10">
             <column name="NAME" />
         </property>
-        <property name="memo" type="java.lang.String">
-            <column name="MEMO" />
+    	<!-- <property column="memotwo" length="4000" name="memo"/> -->
+    	
+    	 <!-- <property name="memo" >
+            <column name = "MEMO2" length="256" not-null="true" unique="true"/>
+        </property> -->
+         <property name="memo" type="java.lang.String">  
+            <column name="MEMO" />  
         </property>
         <property name="imgUrl" type="java.lang.String">
             <column name="IMGURL" />

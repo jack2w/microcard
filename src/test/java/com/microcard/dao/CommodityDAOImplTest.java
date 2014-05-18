@@ -24,7 +24,7 @@ public class CommodityDAOImplTest {
 		HibernateUtil.instance().commitTransactionAndColoseSession();
 	}
 
-	@Test
+	
 	public void testGetAllCommodity() {
 		List<Commodity> l = DAOFactory.createCommodityDAO().getAllCommodity();
 		for(Commodity c : l){
@@ -50,9 +50,9 @@ public class CommodityDAOImplTest {
 
 	@Test
 	public void testSaveCommodity() {
-		Commodity c1 = new Commodity();
-		c1.setName("手机");
-		DAOFactory.createCommodityDAO().saveCommodity(new Commodity());
+//		Commodity c1 = new Commodity();
+//		c1.setName("手机");
+//		DAOFactory.createCommodityDAO().saveCommodity(new Commodity());
 	}
 
 	@Test

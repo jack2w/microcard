@@ -50,7 +50,7 @@ public class UserDAOImplTest {
 
 	}
 
-
+	@Test
 	public void testSaveUser() {
 		User u1 = new User();
 		u1.setOpenId("100008");
@@ -81,7 +81,7 @@ public class UserDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	
 	public void testUpdateRecords() {
 		User u = DAOFactory.createUserDAO().getUserByID("100001");
 		DAOFactory.createUserDAO().addRecords(u, new Record());
@@ -102,8 +102,10 @@ public class UserDAOImplTest {
 		User u5 = DAOFactory.createUserDAO().getUserByID("100005");
 		User u6 = DAOFactory.createUserDAO().getUserByID("100006");
 		User u7 = DAOFactory.createUserDAO().getUserByID("100007");
-		Shop s = DAOFactory.createShopDAO().getShopByID(2);
-
+		
+//		Shop s = new Shop();
+//		s.setOpenId("2000001");
+		Shop s = DAOFactory.createShopDAO().getShopByOpenID("2000001");
 		DAOFactory.createUserDAO().addShops(u1, s);
 		DAOFactory.createUserDAO().addShops(u2, s);
 		DAOFactory.createUserDAO().addShops(u3, s);

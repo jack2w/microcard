@@ -34,6 +34,11 @@ public interface ShopDAO {
 	 * @throws HibernateException
 	 */
 	public Shop getShopByID(long id) throws HibernateException;
+	
+	/**
+	 * 获得指定openid的商铺
+	 */
+	public Shop getShopByOpenID(String opendid) throws HibernateException;
 		
 	/**
 	 * 更新商铺
@@ -96,7 +101,7 @@ public interface ShopDAO {
 	public void updateSales(Shop shop, Sales... saleses) throws HibernateException;
 	
 	/**
-	 * 该方法更新的仅是促销信息，涉及到集合的属性需要调用相关方法
+	 * 该方法更新的仅是商铺信息，涉及到集合的属性需要调用相关方法
 	 * @param s
 	 * @throws HibernateException
 	 */

@@ -37,7 +37,7 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	
 	public void testGetUsersByShop() {
 		Shop s = DAOFactory.createShopDAO().getShopByID(2);
 		User[] us = DAOFactory.createShopDAO().getUsersByShop(s, 5, 10);
@@ -53,7 +53,12 @@ public class ShopDAOImplTest {
 
 	
 	public void testAddShop() {
-	DAOFactory.createShopDAO().addShop(new Shop());
+	Shop s1 = new Shop();
+	s1.setOpenId("100001");
+	Shop s2 = new Shop();
+	s2.setOpenId("100002");
+	DAOFactory.createShopDAO().addShop(s1,s2);
+
 	}
 
 	@Test
@@ -86,6 +91,12 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
+	@Test
+	public void testgetShopByOpenID() {
+	Shop s1 = DAOFactory.createShopDAO().getShopByOpenID("100001");
+	System.out.println(s1.getOpenId());
+	}
+	
 	@Test
 	public void testUpdateSales() {
 		fail("Not yet implemented");

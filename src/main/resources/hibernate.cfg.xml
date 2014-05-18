@@ -7,17 +7,17 @@
 
     <session-factory>
 
-        <!-- <property name="connection.datasource">java:comp/env/jdbc/TAXDB</property> -->
+        <property name="connection.datasource">java:comp/env/jdbc/microcard</property> 
         
-        <property name="connection.url">jdbc:mysql://localhost:3306/TAXDB</property>
+       <!--  <property name="connection.url">jdbc:mysql://localhost:3306/microcard</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="connection.password">root</property> -->
         
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>		
-				<property name="hibernate.current_session_context_class">thread</property>					
-				<property name="show_sql">true</property>
-				<property name="hbm2ddl.auto">update</property>
+		<property name="hibernate.current_session_context_class">thread</property>					
+		<property name="show_sql">true</property>
+		<property name="hbm2ddl.auto">update</property>
         <!-- Mapping files -->
         <mapping resource="com/microcard/bean/User.hbm.xml"/>
         <mapping resource="com/microcard/bean/Commodity.hbm.xml"/>
