@@ -1,19 +1,24 @@
 package com.microcard.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microcard.bean.Record;
+import com.microcard.dao.hibernate.HibernateUtil;
+
 public class RecordDAOImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		HibernateUtil.instance().beginTransaction();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		HibernateUtil.instance().commitTransactionAndColoseSession();
 	}
 
 	@Test
@@ -23,7 +28,8 @@ public class RecordDAOImplTest {
 
 	@Test
 	public void testDeleteRecord() {
-		fail("Not yet implemented");
+		Record r = DAOFactory.createRecordDAO().getRecordByID(1);
+		 DAOFactory.createRecordDAO().deleteRecord(r);
 	}
 
 	@Test
@@ -38,7 +44,7 @@ public class RecordDAOImplTest {
 
 	@Test
 	public void testSaveRecord() {
-		fail("Not yet implemented");
+//	 DAOFactory.createRecordDAO().saveRecord(new Record());
 	}
 
 	@Test

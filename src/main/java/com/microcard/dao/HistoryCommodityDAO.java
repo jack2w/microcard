@@ -35,7 +35,7 @@ public interface HistoryCommodityDAO {
 	 * @return
 	 * @throws HibernateException
 	 */
-	public HistoryCommodity getHistoryCommodityByID(String id) throws HibernateException;
+	public HistoryCommodity getHistoryCommodityByID(long id) throws HibernateException;
 	
 	/**
 	 * 更新

@@ -35,7 +35,7 @@ public interface SalesDAO {
 	 * @return
 	 * @throws HibernateException
 	 */
-	public Sales getSalesByID(String id) throws HibernateException;
+	public Sales getSalesByID(long id) throws HibernateException;
 
 	/**
 	 * 更新sales对象，不包括set属性信息

@@ -41,7 +41,7 @@ public class SalesDAOImpl implements SalesDAO{
 	}
 
 	@Override
-	public Sales getSalesByID(String id) throws HibernateException {
+	public Sales getSalesByID(long id) throws HibernateException {
 		Sales s = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();

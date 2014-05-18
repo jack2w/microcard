@@ -48,7 +48,7 @@ public class CommodityDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	
+	@Test
 	public void testSaveCommodity() {
 		Commodity c1 = new Commodity();
 		c1.setName("手机");
