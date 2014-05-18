@@ -40,7 +40,7 @@ public class ShopDAOImplTest {
 	@Test
 	public void testGetUsersByShop() {
 		Shop s = DAOFactory.createShopDAO().getShopByID(2);
-		User[] us = DAOFactory.createShopDAO().getUsersByShop(s, 0, 5);
+		User[] us = DAOFactory.createShopDAO().getUsersByShop(s, 5, 10);
 		for(User  u : us){
 			System.out.println(u.getOpenId());
 		}

@@ -29,7 +29,7 @@ public interface HistorySalesDAO {
 	 * @return
 	 * @throws HibernateException
 	 */
-	public HistorySales getHistorySalesByID(String id) throws HibernateException;
+	public HistorySales getHistorySalesByID(long id) throws HibernateException;
 	
 	/**
 	 * 更新记录

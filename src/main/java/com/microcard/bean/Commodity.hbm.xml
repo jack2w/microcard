@@ -11,7 +11,7 @@
         <many-to-one name="shop" class="com.microcard.bean.Shop">
             <column name="SHOP_ID" />
         </many-to-one>
-        <property name="name" type="java.lang.String">
+        <property name="name" type="java.lang.String" length = "10">
             <column name="NAME" />
         </property>
         <property name="memo" type="java.lang.String">

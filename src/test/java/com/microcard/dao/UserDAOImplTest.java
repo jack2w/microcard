@@ -81,13 +81,13 @@ public class UserDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	
+	@Test
 	public void testUpdateRecords() {
 		User u = DAOFactory.createUserDAO().getUserByID("100001");
 		DAOFactory.createUserDAO().addRecords(u, new Record());
 	}
 
-	
+
 	public void testDeleteRecords() {
 		User u = DAOFactory.createUserDAO().getUserByID("100001");
 		DAOFactory.createUserDAO().deleteRecords(u, null);

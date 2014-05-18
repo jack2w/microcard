@@ -54,7 +54,7 @@ public class HistoryCommodityDAOImpl implements HistoryCommodityDAO {
 	 * @see com.microcard.dao.HistoryCommodityDAO#getHistoryCommodityByID(java.lang.String)
 	 */
 	@Override
-	public HistoryCommodity getHistoryCommodityByID(String id)
+	public HistoryCommodity getHistoryCommodityByID(long id)
 			throws HibernateException {
 		HistoryCommodity s = null;
 		try{

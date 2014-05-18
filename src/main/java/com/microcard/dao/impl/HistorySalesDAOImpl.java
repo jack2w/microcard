@@ -39,7 +39,7 @@ public class HistorySalesDAOImpl implements HistorySalesDAO {
 	}
 
 	@Override
-	public HistorySales getHistorySalesByID(String id)
+	public HistorySales getHistorySalesByID(long id)
 			throws HibernateException {
 		HistorySales s = null;
 		try{

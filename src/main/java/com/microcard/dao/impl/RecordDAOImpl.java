@@ -40,7 +40,7 @@ public class RecordDAOImpl implements RecordDAO {
 	}
 
 	@Override
-	public Record getRecordByID(String id) throws HibernateException {
+	public Record getRecordByID(long id) throws HibernateException {
 		Record s = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();

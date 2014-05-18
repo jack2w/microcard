@@ -54,7 +54,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 	 * @see com.microcard.dao.CommodityDAO#getCommodityByID(java.lang.String)
 	 */
 	@Override
-	public Commodity getCommodityByID(String id) throws HibernateException {
+	public Commodity getCommodityByID(long id) throws HibernateException {
 		Commodity s = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();

@@ -27,7 +27,7 @@ public interface RecordDAO {
 	 * @return
 	 * @throws HibernateException
 	 */
-	public Record getRecordByID(String id) throws HibernateException;
+	public Record getRecordByID(long id) throws HibernateException;
 
 	/**
 	 * 更新

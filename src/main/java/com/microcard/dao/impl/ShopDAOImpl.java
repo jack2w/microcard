@@ -67,14 +67,13 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public User[] getUsersByShop(Shop shop, int start, int length) throws HibernateException{
 
+		if(shop.getUsers() == null || shop.getUsers().size() == 0){
+			return null;
+		}
 		Session session = HibernateUtil.instance().currentSession();
 		User[] users = null;
 		try{
-			Query query = session.createQuery("from Shop s where s.openId =:openid ");
-			query.setParameter("openid", shop.getOpenId());
-			List result = query.list();
-			users =( User[] )result.toArray(new User[result.size()]);
-			
+			users = shop.getUsers().toArray(new User[shop.getUsers().size()]);
 	        if(users.length < start){
 	        	return null;
 	        }
