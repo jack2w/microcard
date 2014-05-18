@@ -8,8 +8,8 @@
          <column name="ID" />
         <generator class="native" />
         </id>
-        <property name="openId" type="java.lang.String" not-null = "true">
-            <column name="OPENID" />
+        <property name="openId" type="java.lang.String"  >
+            <column name="OPENID" not-null="true"/>
         </property>
         <property name="String" type="java.lang.String">
             <column name="STRING" />
@@ -64,7 +64,7 @@
             </key>
             <one-to-many class="com.microcard.bean.Commodity" />
         </set>
-        <set name="sales" table="SALES" inverse="true" lazy="true" cascade="delete">
+        <set name="sales" table="SALES" inverse="true" lazy="false" cascade="delete">
             <key>
                 <column name="SHOP_ID" />
             </key>

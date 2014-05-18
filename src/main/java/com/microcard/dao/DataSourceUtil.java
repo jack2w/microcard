@@ -16,7 +16,7 @@ public class DataSourceUtil {
 		if(dataSource == null){
 			Context initContext = new InitialContext();
 			Context envContext = (Context) initContext.lookup("java:/comp/env");
-			dataSource = (DataSource) envContext.lookup("jdbc/TAXDB");
+			dataSource = (DataSource) envContext.lookup("jdbc/microcard");
 		}
 		return dataSource;
 	}

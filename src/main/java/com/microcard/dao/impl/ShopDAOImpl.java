@@ -1,11 +1,14 @@
 package com.microcard.dao.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 import com.microcard.bean.Commodity;
 import com.microcard.bean.Sales;
 import com.microcard.bean.Shop;
@@ -66,27 +69,22 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public User[] getUsersByShop(Shop shop, int start, int length) throws HibernateException{
-
-		if(shop.getUsers() == null || shop.getUsers().size() == 0){
-			return null;
-		}
 		Session session = HibernateUtil.instance().currentSession();
-		User[] users = null;
 		try{
-			users = shop.getUsers().toArray(new User[shop.getUsers().size()]);
-	        if(users.length < start){
-	        	return null;
-	        }
-	        else if(users.length > (start + length)){
-	        	return Arrays.copyOfRange(users, start,  start + length);
-	        } else{
-	        	return Arrays.copyOfRange(users, start,  users.length);
-	        }
-		
-		} catch(HibernateException e){
-			log.error(e, "fail get uses by shopid.");
+//			String hql = "from Shop s left join s.users u where s.openId=:openid";
+			String hql = "from User as u inner join u.shops as s where s.openId=?";
+			List l = session.createQuery(hql).setString(0, shop.getOpenId()).list();
+			List result = new ArrayList();
+			for(int i = 0; i < result.size(); i++){
+				Object[] item = (Object[])result.get(i);
+				result.add(item[0]);
+			}
+			return (User[]) result.toArray(new User[result.size()]);
+			
+		}catch(HibernateException e){
+			log.error(e, "fail add  commodities.");
 			throw e;
-		} 
+		}
        
 	}
 	
@@ -222,6 +220,24 @@ public class ShopDAOImpl  implements ShopDAO{
 			throw e;
 		}
 		
+	}
+
+	@Override
+	public Shop getShopByOpenID(String opendid) throws HibernateException {
+		Session session = HibernateUtil.instance().currentSession();
+		try{
+			Criteria c = session.createCriteria(Shop.class);
+			c.add(Restrictions.eq("openId", opendid));
+			List<Shop> list = c.list();
+			//因为openid已经限定唯一性，查到的结果最多为一条
+			if(list.size() > 0){
+				return list.get(0);
+			}
+			return null;
+		}catch(HibernateException e){
+			log.error(e, "fail get shop by openid.");
+			throw e;
+		}
 	}
 
 }
