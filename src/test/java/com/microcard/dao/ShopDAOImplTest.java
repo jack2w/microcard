@@ -2,6 +2,8 @@ package com.microcard.dao;
 
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +39,10 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	
+	@Test
 	public void testGetUsersByShop() {
-		Shop s = DAOFactory.createShopDAO().getShopByID(2);
-		User[] us = DAOFactory.createShopDAO().getUsersByShop(s, 5, 10);
+		Shop s = DAOFactory.createShopDAO().getShopByOpenID("200001");
+		List<User> us = DAOFactory.createShopDAO().getUsersByShop(s, 5, 10);
 		for(User  u : us){
 			System.out.println(u.getOpenId());
 		}
@@ -54,9 +56,9 @@ public class ShopDAOImplTest {
 	
 	public void testAddShop() {
 	Shop s1 = new Shop();
-	s1.setOpenId("100001");
+	s1.setOpenId("200001");
 	Shop s2 = new Shop();
-	s2.setOpenId("100002");
+	s2.setOpenId("200002");
 	DAOFactory.createShopDAO().addShop(s1,s2);
 
 	}
@@ -91,7 +93,7 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	
 	public void testgetShopByOpenID() {
 	Shop s1 = DAOFactory.createShopDAO().getShopByOpenID("100001");
 	System.out.println(s1.getOpenId());

@@ -49,14 +49,6 @@ img {
 	height: 22px;
 }
 
-.header .home {
-	color: #FFFFFF;
-	display: block;
-	left: 0;
-	padding: 13px 20px;
-	position: absolute;
-}
-
 .header .change {
 	color: #FFFFFF;
 	display: block;
@@ -76,10 +68,6 @@ img {
 	width: 22px;
 }
 
-.header .header-icon-home {
-	background-image: url("../resources/images/icon_home.png");
-}
-
 .header .header-icon-change {
 	background-image: url("../resources/images/shop_modify.png");
 }
@@ -94,45 +82,30 @@ img {
 	margin: 2% 0 -4% 0;
 }
 
-.shopInfo {
-	list-style: none;
-	display: inline;
-}
-
-.shopInfo li {
-	min-height: 60px;
+table tr {
 	font-size: 1.2em;
-	margin: 1% 0 0 0;
-	line-height: 60px;
-	border-bottom: 3px;
-	border-right-style: solid;
-	border-color: #D5D5D5;
-	margin-left: -8%;
 	background: #F7F7F7;
-	padding-left: 1%;
-}
-
-.shopInfo span {
-	margin-left: 1%;
 	height: 60px;
 }
 
-.shopInfo input,.shopInfo textarea {
-	display: none;
-	margin-top: 1%;
+td input,td textarea { margin-top: 4%}  
+
+table tr td:FIRST-CHILD {
+	width: 25%;
 }
 
-.shopInfo textarea {
-	height: 100px;
+table tr td:LAST-CHILD {
+	padding: 1% 2% 1% 2%;
 }
 
 .footer {
 	background: #6ac134;
 	height: 35px;
-	position: relative;
 	width: 100%;
 	text-align: center;
 	line-height: 35px;
+	bottom: 0px;
+	position: fixed;
 }
 </style>
 <script type="text/javascript">
@@ -142,10 +115,10 @@ img {
 
 			$(".header-modify").hide();
 			$(".header-submit").show();
-			$(".shopInfo span").hide();
-			$(".shopInfo input,.shopInfo textarea").show();
+			$("td span").hide();
+			$("td input,td textarea").show();
 
-			$(".shopInfo span").each(function(i) {
+			$("td span").each(function(i) {
 				data[i] = $(this).html();
 			});
 
@@ -157,14 +130,14 @@ img {
 		} else {
 			$(".header-submit").hide();
 			$(".header-modify").show();
-			$(".shopInfo input,.shopInfo textarea").hide();
-			$(".shopInfo span").show();
+			$("td input,td textarea").hide();
+			$("td span").show();
 
 			data[0] = $("#shopName").val();
 			data[1] = $("#shopTel").val();
 			data[2] = $("#shopAddress").val();
 			data[3] = $("#shopMemo").val();
-			$(".shopInfo span").each(function(i) {
+			$("td span").each(function(i) {
 				$(this).html(data[i]);
 			});
 
@@ -184,24 +157,29 @@ img {
 	<!-- this is content -->
 	<div class="content">
 		<form name="shopForm" method="post" action="">
-			<div class="shopInfo">
-				<ul style="list-style: none;">
-					<li>商铺名称: <span>疯狂烤鸡翅</span> <input type="text"
-						name="shopName" id="shopName">
-					</li>
-					<li>商铺电话: <span>021-2937584</span> <input type="tel"
-						name="shopTel" id="shopTel">
-					</li>
-					<li >商铺地址: <span>上海市宝山区上大路668号602</span>
-						<input type="text" name="shopAddress" id="shopAddress">
-					</li>
-					<li style="height: 120px; padding-top: 2%">商铺简介:
-						<span style="float: left; line-height:150%;padding-top: 1%">需要在文字超过设定高度的时候才会出现滚动条，如果字数没有超过设定高度则不显示滚动条，代码是什么样的？</span>
-					<textarea name="shopMemo" id="shopMemo"></textarea>
-					</li>
-
-				</ul>
-			</div>
+			<table rules="rows" frame="hsides">
+				<tr>
+					<td>商铺名称:</td>
+					<td><span>疯狂烤鸡翅</span><input style="display: none;"
+						type="text" name="shopName" id="shopName"></td>
+				</tr>
+				<tr>
+					<td>商铺电话:</td>
+					<td><span>021-2937584</span><input style="display: none;"
+						type="tel" name="shopTel" id="shopTel"></td>
+				</tr>
+				<tr>
+					<td>商铺地址:</td>
+					<td><span>需要在文字超过设定高度的时候才会出现滚动条，如果字数没有超过设定高度则不显示滚动条，代码是什么样的？</span><input
+						style="display: none;" type="text" name="shopAddress"
+						id="shopAddress"></td>
+				</tr>
+				<tr>
+					<td>商铺简介:</td>
+					<td><span>需要在文字超过设定高度的时候才会出现滚动条，如果字数没有超过设定高度则不显示滚动条，代码是什么样的？</span>
+						<textarea style="display: none;height: 80px" name="shopMemo" id="shopMemo"></textarea></td>
+				</tr>
+			</table>
 		</form>
 	</div>
 	<!-- this is footer -->
