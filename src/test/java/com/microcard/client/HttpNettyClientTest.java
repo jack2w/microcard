@@ -3,14 +3,8 @@
  */
 package com.microcard.client;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-
 import junit.framework.TestCase;
 
-import com.microcard.exception.WeixinException;
 import com.microcard.token.TokenManager;
 
 /**
@@ -40,15 +34,15 @@ public class HttpNettyClientTest extends TestCase {
 		super.tearDown();
 	}
 
-	protected void testGetToken()  {
+	public void testGetToken()  {
 		try {
-			String token = TokenManager.getToken();
+			String token = TokenManager.getShopToken();
 			String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
 			HttpDefaultClient client = new HttpDefaultClient(url);
 			
 			String result = client.doPost("{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 123}}}");
 			System.out.println(result);//gQFT8DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL2NFUEZVZFBsNXhxZXBnQTE1MjhlAAIEXpNzUwMEAAAAAA==
-		} catch (URISyntaxException | InterruptedException | WeixinException | KeyManagementException | NoSuchAlgorithmException | IOException e) {
+		} catch (Exception e) {
 			super.fail(e.getMessage());
 		}
 	}

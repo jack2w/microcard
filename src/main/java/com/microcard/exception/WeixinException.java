@@ -16,33 +16,33 @@ public class WeixinException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = 6700336661569243965L;
+	
+	private int errorCode;
+	private String errorMsg;
 
 	public WeixinException(int error) {
 		
 	}
 	
 	public WeixinException(int error,String msg) {
-		
+		this.errorCode = error;
+		this.errorMsg = msg;
 	}
-	
-	public WeixinException(String msg) {
-		
+
+	public int getErrorCode() {
+		return this.errorCode;
 	}
-	
-    public WeixinException(Throwable cause) {
-        super(cause);
-    }
     
     public String getMessage() {
     	
-    	return super.getMessage();
+    	return this.errorMsg;
     }
     
-    public static WeixinException paserException(String msg) {
+    public static WeixinException parseException(String msg) {
     	JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( msg );
     	if(jsonObject.has("errcode")) {
-    		int errorCode = jsonObject.getInt("errcode");
-    		String errorMsg = jsonObject.getString("errmsg");
+    		 int errorCode = jsonObject.getInt("errcode");
+    		 String errorMsg = jsonObject.getString("errmsg");
     		return new WeixinException(errorCode,errorMsg);
     	}
     	return null;

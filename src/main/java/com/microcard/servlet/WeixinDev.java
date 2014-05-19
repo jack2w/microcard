@@ -111,9 +111,11 @@ public class WeixinDev extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			PrintWriter out = response.getWriter();
 			
-			out.print(responseMsg);	
+			if(responseMsg != null)
+				out.print(responseMsg);	
 		} catch (Exception e) {
 			log.error(e.getMessage());
+			return;
 		}
 		
 

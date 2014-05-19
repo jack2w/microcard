@@ -110,8 +110,8 @@ public class HttpDefaultClient {
         }catch(Exception e) {
         	//do nothing
         }
-        return "";
-        //return result.toString();  
+        msgLog.info("received msg: "+ result.toString());
+        return result.toString();  
     	
     }
 	
@@ -164,7 +164,7 @@ public class HttpDefaultClient {
         }catch(Exception e) {
         	//do nothing
         }
-        
+        msgLog.info("received msg: "+ result.toString());
         return result.toString();
     }
 }
