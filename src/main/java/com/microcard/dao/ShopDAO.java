@@ -19,13 +19,18 @@ public interface ShopDAO {
 	public List<Shop> getShops() throws HibernateException;
 	
 	/**
-	 * 删除商铺
+	 * 物理删除商铺,该方法将从数据库中删除掉商铺信息
 	 * 如果商铺包含商品，营销方式信息，关联删除
 	 * 如果商铺包含用户信息，不删除用户信息
 	 * @param id
 	 * @throws HibernateException
 	 */
-	public void deleteShop(Shop... shops) throws HibernateException;
+	public void deletePhysicalShop(Shop... shops) throws HibernateException;
+	
+	/**
+	 * 逻辑删除商铺信息，不会从数据库中删除，将已删除字段置为true，供取消订阅事件调用
+	 */
+	public void deleteLogicalShop(Shop... shops) throws HibernateException;
 	
 	/**
 	 * 获得指定id的商铺

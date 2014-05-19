@@ -26,7 +26,10 @@ public class ShopDAOImplTest {
 
 	@Test
 	public void testGetShops() {
-		fail("Not yet implemented");
+		List<Shop> shopes = DAOFactory.createShopDAO().getShops();
+		for(Shop s : shopes){
+			System.out.println(s.getDelete_flag());
+		}
 	}
 
 	@Test
@@ -39,7 +42,7 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	
 	public void testGetUsersByShop() {
 		Shop s = DAOFactory.createShopDAO().getShopByOpenID("200001");
 		List<User> us = DAOFactory.createShopDAO().getUsersByShop(s, 5, 10);
@@ -103,5 +106,14 @@ public class ShopDAOImplTest {
 	public void testUpdateSales() {
 		fail("Not yet implemented");
 	}
+	
+	
+	public void testdeleteLogicalShop() {
+		Shop s1 = DAOFactory.createShopDAO().getShopByOpenID("200001");
+		DAOFactory.createShopDAO().deleteLogicalShop(s1);
+		
+	}
+	
+	
 
 }

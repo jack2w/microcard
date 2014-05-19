@@ -85,7 +85,7 @@ public class HibernateUtil {
 	}
 	
 
-	private void closeSession(){
+	public void closeSession(){
 		Session session = (Session)tLocalsess.get();
 		tLocalsess.set(null);
 		try{

@@ -70,5 +70,11 @@
             </key>
             <one-to-many class="com.microcard.bean.Sales" />
         </set>
+        <property name="code" type="java.lang.String">
+        <column name="CODE"/>
+        </property>
+         <property name="delete_flag" type= "java.lang.Boolean" >
+            <column name="DELETEFLAG" default="false"/>
+        </property>
     </class>
 </hibernate-mapping>

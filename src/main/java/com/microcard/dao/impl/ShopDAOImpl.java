@@ -25,7 +25,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	public List getShops() throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			return session.createQuery("from " + User.class.getName()).list();
+			return session.createQuery("from " + Shop.class.getName()).list();
 		} catch(HibernateException ex){
 			log.error(ex, "fail get  shopes.");
 			throw ex;
@@ -40,7 +40,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	 * @param id
 	 * @throws HibernateException
 	 */
-	public void deleteShop(Shop... shops) throws HibernateException {
+	public void deletePhysicalShop(Shop... shops) throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 			for(Shop s : shops){
@@ -101,7 +101,8 @@ public class ShopDAOImpl  implements ShopDAO{
 		Session session = HibernateUtil.instance().currentSession();
 		try{
 			for (Shop s : shopes){
-				session.save(s);
+				s.setDelete_flag(false);
+				this.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
 			log.error(e, "fail add  commodities.");
@@ -235,6 +236,19 @@ public class ShopDAOImpl  implements ShopDAO{
 				return list.get(0);
 			}
 			return null;
+		}catch(HibernateException e){
+			log.error(e, "fail get shop by openid.");
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteLogicalShop(Shop... shops) throws HibernateException {
+		try{
+			for(Shop s : shops){
+				s.setDelete_flag(true);
+				this.saveOrUpdate(s);
+			}
 		}catch(HibernateException e){
 			log.error(e, "fail get shop by openid.");
 			throw e;
