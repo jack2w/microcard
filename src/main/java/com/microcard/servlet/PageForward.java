@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-
-import com.microcard.client.HttpDefaultClient;
+import com.microcard.client.WeixinClient;
 import com.microcard.exception.WeixinException;
 import com.microcard.log.Logger;
 import com.microcard.menu.Menu;
@@ -75,50 +72,12 @@ public class PageForward extends HttpServlet {
 			log.error("received state is " + state + " ,not match required STATE " + STATE);
 			return;
 		}else {
-			
-			String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" 
-			             + TokenManager.ShopAppId+ "&secret="+TokenManager.ShopAppSecret
-			             +"&code="+code+"&grant_type=authorization_code";
-			log.debug("send to url : " + url);
-			try {
-				HttpDefaultClient client = new HttpDefaultClient(url);
-				String result = client .doGet();
-				log.debug("received result: " + result);
-				String access_token = null;
-				int expires_in;
-				String refresh_token = null;
-				String openid = null;
-				String scope = null;
-				JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( result );
+			try{
 				
-				
-				if(jsonObject.has("access_token")) {
-					
-					access_token = jsonObject.getString("access_token");
-					expires_in = jsonObject.getInt("expires_in");
-					refresh_token = jsonObject.getString("refresh_token");
-					openid = jsonObject.getString("openid");
-					scope = jsonObject.getString("scope");
-					log.debug("access_token:" + access_token);
-					log.debug("expires_in:" + expires_in);
-					log.debug("refresh_token:" + refresh_token);
-					log.debug("openid:" + openid);
-					log.debug("scope:" + scope);
-					
-					request.setAttribute("OPENID", openid);
-					forward(page,openid, request, response);
-					
-				}else if(jsonObject.has("errcode")) {
-					
-					log.error("received error msg " + jsonObject.getInt("errcode") + " ," + jsonObject.getString("errmsg"));
-					response.getWriter().println(ErrorPage.createPage("received error msg " + jsonObject.getInt("errcode") + " ,"
-					                                    + jsonObject.getString("errmsg") + " from url " + url));
-					return;
-				}else {
-					
-					response.getWriter().println(ErrorPage.createPage("received error msg from url " + url));
-					return;
-				}
+				String openid = WeixinClient.getOAuthUser(code);
+				request.setAttribute("OPENID", openid);
+				forward(page,openid, request, response);
+
 				
 			} catch (Exception e) {
 				log.error(e, "forward page error " + e.getMessage());
@@ -128,20 +87,19 @@ public class PageForward extends HttpServlet {
 	}
 	 
 	private void forward(String page ,String openId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String path = request.getContextPath();
 		switch(page){
 		  
 		case Menu.Menu_Key_COMMODITY:
-			response.sendRedirect(path+"/commodity/commodity.html");
+			response.sendRedirect("commodity/commodity.html");
 			break;
 		case Menu.MENU_Key_MEMBER:
-			response.sendRedirect(path+"/member/member.html");
+			response.sendRedirect("member/member.html");
 			break;
 		case Menu.MENU_Key_RECORD:
-			response.sendRedirect(path+"/record/record.html");
+			response.sendRedirect("record/record.html");
 			break;
 		case Menu.MENU_Key_SALES:
-			response.sendRedirect(path+"/sales/sales.html");
+			response.sendRedirect("sales/sales.html");
 			break;
 		case Menu.MENU_Key_SHOP:
 			response.sendRedirect("shop/shop.html");
@@ -172,59 +130,53 @@ public class PageForward extends HttpServlet {
 			return;
 		}
 		
-		//TODO 暂用临时二维码进行测试
+		
 		//获取二维码的ticket
-		String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
 		String ticket = null;
 		try {
-			
-			HttpDefaultClient client = new HttpDefaultClient(url);
-			String result = client.doPost("{\"expire_seconds\": 600, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 123}}}");
-			
-			WeixinException exception = WeixinException.paserException(result);
-			if(exception != null) {
-				
-				response.setCharacterEncoding("UTF-8");
-				PrintWriter writer = response.getWriter();
-				writer.println(ErrorPage.createPage("向微信获取Ticket发生异常: " + exception.getMessage()));
-				return;
-			}
-			
-			JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( result );
-		     ticket = jsonObject.getString("ticket");
-			jsonObject.getInt("expire_seconds");
+			ticket = WeixinClient.getShopTicket(token,123);//TODO 暂用临时二维码进行测试
 			
 		} catch (Exception e) {
-			response.setCharacterEncoding("UTF-8");
-			PrintWriter writer = response.getWriter();
-			writer.println(ErrorPage.createPage("向微信获取Ticken发生异常: " + e.getMessage()));
-			return;
+			
+			if((e instanceof WeixinException) && ((WeixinException)e).getErrorCode()==40001) {
+				//可能是token有问题，重新获取一次token
+				try {
+					token = TokenManager.refreshShopToken();
+				} catch (Exception ex) {
+
+					response.setCharacterEncoding("UTF-8");
+					PrintWriter writer = response.getWriter();
+					writer.println(ErrorPage.createPage("向微信获取Token发生异常: " + ex.getMessage()));
+					return;
+				}
+				//获取新的token后再获取二维码信息
+				try {
+					ticket = WeixinClient.getShopTicket(token,123);//TODO 暂用临时二维码进行测试
+				} catch (Exception e1) {
+					response.setCharacterEncoding("UTF-8");
+					PrintWriter writer = response.getWriter();
+					writer.println(ErrorPage.createPage("向微信获取Ticken发生异常: " + e1.getMessage()));
+					return;	
+				}
+			} else {
+				response.setCharacterEncoding("UTF-8");
+				PrintWriter writer = response.getWriter();
+				writer.println(ErrorPage.createPage("向微信获取Ticken发生异常: " + e.getMessage()));
+				return;				
+			}
 		}
 		
 		try {
-			//获取二维码的图片
-			
-			//两种方式显示二维码图片
-			//1. 通过向微信把图片取到本地
-//			String filename = WEBPATH + CODEPATH + File.separator + openId + ".jpg";
-//			File codeFile = new File(filename);
-//			if(!codeFile.exists()) {
-//				url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + ticket;
-//				HttpDownloadClient client = new HttpDownloadClient(url,filename);
-//				client.doGet();			
-//			}
-//			response.setContentType("text/html");
-//			response.getWriter().println(getCodePage(CODEPATH + "/" + openId + ".jpg"));
-			
-			//2. 直接在html的IMG中显示微信的图片连接
-			url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + ticket;
+			String filename = WEBPATH + CODEPATH + File.separator + openId + ".jpg";
+			String codePicUrl = WeixinClient.downloadCodePic(filename, ticket);
 			response.setContentType("text/html");
-			response.getWriter().println(getCodePage(url));		
+			response.getWriter().println(getCodePage(codePicUrl));		
 			
 		} catch (Exception e) {
 			response.setCharacterEncoding("UTF-8");
 			PrintWriter writer = response.getWriter();
 			writer.println(ErrorPage.createPage("向微信获取二维码图片异常: " + e.getMessage()));
+			return;
 		}
 		
 	}

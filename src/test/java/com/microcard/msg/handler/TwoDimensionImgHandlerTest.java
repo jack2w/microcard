@@ -48,7 +48,7 @@ public class TwoDimensionImgHandlerTest extends TestCase {
 		HttpDefaultClient client = new HttpDefaultClient(url);
 		String result = client.doPost("{\"expire_seconds\": 1800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 123}}}");
 		
-		WeixinException exception = WeixinException.paserException(result);
+		WeixinException exception = WeixinException.parseException(result);
 		if(exception != null) {
 			fail(exception.getMessage());
 			return;

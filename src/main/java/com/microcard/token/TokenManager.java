@@ -54,7 +54,7 @@ public class TokenManager {
         
         String result = client.doGet();
         
-        WeixinException exception = WeixinException.paserException(result);
+        WeixinException exception = WeixinException.parseException(result);
         if(exception != null) throw exception;
         
         JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( result );  				
@@ -64,10 +64,10 @@ public class TokenManager {
         return shopToken;
 	}
 	
-	public static void resetToken() {
+	public static String refreshShopToken() throws Exception{
 		synchronized(shopTokenAvailable) {
-			shopToken = null;
-			shop_expire_time = 7200 *1000;			
+			getShopTokenFromWeixin();
+			return shopToken;
 		}
 	}
 }

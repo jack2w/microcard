@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.microcard.bean.Shop;
 import com.microcard.client.HttpDefaultClient;
+import com.microcard.client.WeixinClient;
 
 /**
  * @author jack
@@ -44,8 +45,7 @@ public class SubscribeProcessorTest  extends TestCase {
 		try {
 			HttpDefaultClient client = new HttpDefaultClient("https://api.weixin.qq.com/cgi-bin/user/info?access_token=PfA3rsPBNSbRCwQ2J8kDBDh-31WOqN-xVI8UKXTzZPNp7yMaLuxN9JQOhFk0-AYH&openid=o2gmduF6NicaYlrYc0OKsbYeYVE4&lang=zh_CN");
 			String result = client.doGet();
-			SubscribeProcessor processor = new SubscribeProcessor();
-			Shop shop = processor.parseShop(result);
+			Shop shop = WeixinClient.parseShop(result);
 			System.out.println(result);
 			System.out.println(shop.getCity());
 			super.assertEquals("阿富汗",shop.getCity());
