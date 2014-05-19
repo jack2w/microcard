@@ -3,10 +3,14 @@
  */
 package com.microcard.msg;
 
+import com.microcard.msg.processor.MsgProcessorAnnotation;
+import com.microcard.msg.processor.SubscribeProcessor;
+
 /**
  * @author jack
  *
  */
+@MsgProcessorAnnotation(MsgClass=SubscribeProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.subscribe)
 public class ReceivedSubscribeMsg extends ReceivedEventMsg {
 

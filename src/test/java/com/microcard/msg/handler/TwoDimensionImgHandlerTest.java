@@ -43,7 +43,7 @@ public class TwoDimensionImgHandlerTest extends TestCase {
 
 	public void testGetCodePic() throws Exception {
 		System.setProperty("jsse.enableSNIExtension", "false");
-		String token = TokenManager.getToken();
+		String token = TokenManager.getShopToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
 		HttpDefaultClient client = new HttpDefaultClient(url);
 		String result = client.doPost("{\"expire_seconds\": 1800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 123}}}");

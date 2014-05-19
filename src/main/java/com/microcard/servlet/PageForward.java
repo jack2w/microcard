@@ -77,7 +77,7 @@ public class PageForward extends HttpServlet {
 		}else {
 			
 			String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" 
-			             + TokenManager.AppId+ "&secret="+TokenManager.AppSecret
+			             + TokenManager.ShopAppId+ "&secret="+TokenManager.ShopAppSecret
 			             +"&code="+code+"&grant_type=authorization_code";
 			log.debug("send to url : " + url);
 			try {
@@ -121,6 +121,7 @@ public class PageForward extends HttpServlet {
 				}
 				
 			} catch (Exception e) {
+				log.error(e, "forward page error " + e.getMessage());
 				response.getOutputStream().println(ErrorPage.createPage("forward page error " + e.getMessage()));
 			}	
 		}
@@ -139,11 +140,18 @@ public class PageForward extends HttpServlet {
 		case Menu.MENU_Key_RECORD:
 			response.sendRedirect(path+"/record/record.html");
 			break;
+		case Menu.MENU_Key_SALES:
+			response.sendRedirect(path+"/sales/sales.html");
+			break;
 		case Menu.MENU_Key_SHOP:
 			response.sendRedirect("shop/shop.html");
 			break;
 		case Menu.Menu_Key_Code:
 			processCode(openId,request,response);
+			break;
+		default:
+			response.setContentType("text/html");
+			response.getOutputStream().println(ErrorPage.createPage("could't find page by " + page ));
 			break;
 		}
 	}
@@ -154,7 +162,7 @@ public class PageForward extends HttpServlet {
 		
 		try {
 			//获取账号得二维码
-			token = TokenManager.getToken();
+			token = TokenManager.getShopToken();
 			
 		} catch (Exception e) {
 

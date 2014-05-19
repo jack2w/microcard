@@ -105,4 +105,14 @@ public class Msg {
 		}
 		return null;
 	}
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("ToUserName:" + this.toUserName);
+		buffer.append("FromUserName:" + this.fromUserName);
+		buffer.append("CreateTime:" + this.createTime);
+		buffer.append("MsgType:" + this.getMsgType());
+		buffer.append("MsgType:" + this.getEventType());
+		return buffer.toString();
+	}
 }

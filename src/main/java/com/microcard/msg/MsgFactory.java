@@ -5,7 +5,6 @@ package com.microcard.msg;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -201,8 +199,7 @@ public class MsgFactory {
 						Method method = msg.getClass().getMethod(toMethodName("set",field.getName()),String.class);
 						method.invoke(msg, node.getTextContent());
 						return;
-					} catch (IllegalArgumentException
-							| IllegalAccessException | DOMException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+					} catch (Exception e) {
 						throw new Exception("can't set " + msg.getClass().getName() + "'s field [" + field.getName() +"]'s value " + node.getTextContent(),e);
 					}
 				}				
@@ -240,8 +237,7 @@ public class MsgFactory {
 						String value =  method.invoke(msg).toString();
 						element.appendChild(doc.createTextNode(value));
 						root.appendChild(element);
-					} catch (IllegalArgumentException
-							| IllegalAccessException | DOMException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+					} catch (Exception e) {
 						throw new Exception("can't get " + msg.getClass().getName() + "'s field [" + field.getName() +"]'s value ",e);
 					}					
 				}

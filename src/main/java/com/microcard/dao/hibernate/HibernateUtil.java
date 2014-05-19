@@ -27,7 +27,7 @@ public class HibernateUtil {
 	private static final Logger log = Logger.getMsgLogger();
 	
 	public static SessionFactory getSessionFactory(){
-		return sessionFactory;
+		return sessionFactory;//ConnectionProvider cp = ((SessionFactoryImplementor)sessionFactory).getConnectionProvider();
 	}
 	
 	private static HibernateUtil instance = new HibernateUtil();

@@ -17,6 +17,8 @@ public class Menu {
 	
 	public static final String MENU_Key_RECORD = "Menu_Key_Record";
 	
+	public static final String MENU_Key_SALES = "Menu_Key_Sales";
+	
 	public static final String MENU_Key_MEMBER = "Menu_Key_Member";
 	
 	public static final String MENU_Key_SHOP = "Menu_Key_Shop";
@@ -141,7 +143,7 @@ public class Menu {
 	
 	public static void main(String[] arg) {
 		
-		Menu menu = MicroCardMenuBuilder.buildMenu();
+		Menu menu = MicroCardMenuBuilder.buildShopMenu();
 		String txt = menu.toJSON();
 		System.out.println(txt);
 		Menu menu2 = Menu.parseJSONToBean(txt);
