@@ -59,12 +59,12 @@ public interface ShopDAO {
 /**
  * 获得商铺的指定长度和起始位的用户信息
  * @param shop
- * @param start用户起始位置
+ * @param start用户起始位置,从0开始
  * @param length返回长度
  * @return
  * @throws HibernateException
  */
-	public User[] getUsersByShop(Shop shop, int start, int length) throws HibernateException;
+	public List<User> getUsersByShop(Shop shop, int start, int length) throws HibernateException;
 	
 	/**
 	 * 增加商品

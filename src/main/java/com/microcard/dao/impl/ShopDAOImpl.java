@@ -68,18 +68,19 @@ public class ShopDAOImpl  implements ShopDAO{
 	
 
 	@Override
-	public User[] getUsersByShop(Shop shop, int start, int length) throws HibernateException{
+	public List<User> getUsersByShop(Shop shop, int start, int length) throws HibernateException{
 		Session session = HibernateUtil.instance().currentSession();
+		List<User> result =  new ArrayList<User>();
 		try{
-//			String hql = "from Shop s left join s.users u where s.openId=:openid";
 			String hql = "from User as u inner join u.shops as s where s.openId=?";
-			List l = session.createQuery(hql).setString(0, shop.getOpenId()).list();
-			List result = new ArrayList();
-			for(int i = 0; i < result.size(); i++){
-				Object[] item = (Object[])result.get(i);
-				result.add(item[0]);
+			Query query = session.createQuery(hql).setString(0, shop.getOpenId());
+			query.setFirstResult(start);
+			query.setMaxResults(length);
+			List<Object> temp = query.list();
+			for(Object obj : temp){
+				result.add((User)((Object[])obj)[0]);
 			}
-			return (User[]) result.toArray(new User[result.size()]);
+			return result;
 			
 		}catch(HibernateException e){
 			log.error(e, "fail add  commodities.");

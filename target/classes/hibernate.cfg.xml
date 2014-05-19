@@ -7,7 +7,7 @@
 
     <session-factory>
 
-        <!-- <property name="connection.datasource">java:comp/env/jdbc/microcard</property> -->
+        <!-- <property name="connection.datasource">java:comp/env/jdbc/microcard</property>  -->
         
         <property name="connection.url">jdbc:mysql://localhost:3306/microcard</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>

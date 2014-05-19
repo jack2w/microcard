@@ -50,10 +50,10 @@ public class UserDAOImplTest {
 
 	}
 
-	@Test
+
 	public void testSaveUser() {
 		User u1 = new User();
-		u1.setOpenId("100008");
+		u1.setOpenId("100001");
 		User u2 = new User();
 		u2.setOpenId("100002");
 		User u3 = new User();
@@ -66,8 +66,7 @@ public class UserDAOImplTest {
 		u6.setOpenId("100006");
 		User u7 = new User();
 		u7.setOpenId("100007");
-		
-		
+
 		DAOFactory.createUserDAO().saveUser(u1, u2, u3, u4, u5, u6, u7);
 	}
 
@@ -89,8 +88,7 @@ public class UserDAOImplTest {
 
 
 	public void testDeleteRecords() {
-		User u = DAOFactory.createUserDAO().getUserByID("100001");
-		DAOFactory.createUserDAO().deleteRecords(u, null);
+	
 	}
 
 	@Test
@@ -105,7 +103,7 @@ public class UserDAOImplTest {
 		
 //		Shop s = new Shop();
 //		s.setOpenId("2000001");
-		Shop s = DAOFactory.createShopDAO().getShopByOpenID("2000001");
+		Shop s = DAOFactory.createShopDAO().getShopByOpenID("200001");
 		DAOFactory.createUserDAO().addShops(u1, s);
 		DAOFactory.createUserDAO().addShops(u2, s);
 		DAOFactory.createUserDAO().addShops(u3, s);
