@@ -11,7 +11,7 @@ import com.microcard.msg.processor.TextMsgProcessor;
  * @author jack
  *
  */
-@MsgProcessorAnnotation(MsgClass=TextMsgProcessor.class)
+@MsgProcessorAnnotation(ShopMsgClass=TextMsgProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.text)
 public class ReceivedTxtMsg extends ReceivedMsg {
 

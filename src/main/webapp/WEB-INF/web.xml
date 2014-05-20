@@ -9,9 +9,9 @@
   </welcome-file-list>
   <servlet>
     <description></description>
-    <display-name>WeixinDev</display-name>
-    <servlet-name>WeixinDev</servlet-name>
-    <servlet-class>com.microcard.servlet.WeixinDev</servlet-class>
+    <display-name>ShopEntryServlet</display-name>
+    <servlet-name>ShopEntryServlet</servlet-name>
+    <servlet-class>com.microcard.servlet.ShopEntryServlet</servlet-class>
   </servlet>
 
   <servlet>
@@ -26,9 +26,15 @@
   	<description></description>
   	<servlet-class>com.microcard.servlet.PageForward</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>UserEntryServlet</servlet-name>
+  	<display-name>UserEntryServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.microcard.servlet.User.UserEntryServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
-    <servlet-name>WeixinDev</servlet-name>
-    <url-pattern>/WeixinDev</url-pattern>
+    <servlet-name>ShopEntryServlet</servlet-name>
+    <url-pattern>/shopentry</url-pattern>
   </servlet-mapping>
  
   <servlet-mapping>
@@ -38,6 +44,10 @@
   <servlet-mapping>
   	<servlet-name>PageForward</servlet-name>
   	<url-pattern>/pageforward</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UserEntryServlet</servlet-name>
+  	<url-pattern>/userentry</url-pattern>
   </servlet-mapping>  
   
    <resource-ref>

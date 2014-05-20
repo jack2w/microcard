@@ -10,7 +10,7 @@ import com.microcard.msg.processor.MsgProcessorAnnotation;
  * @author jack
  *
  */
-@MsgProcessorAnnotation(MsgClass=MenuClickProcessor.class)
+@MsgProcessorAnnotation(ShopMsgClass=MenuClickProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.CLICK)
 public class ReceivedMenuClickMsg extends ReceivedEventMsg {
 	

@@ -21,13 +21,13 @@ import com.microcard.util.Utils;
 /**
  * Servlet implementation class WeixinDev
  */
-public class WeixinDev extends HttpServlet {
+public class ShopEntryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getOperLogger();
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WeixinDev() {
+    public ShopEntryServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -106,7 +106,7 @@ public class WeixinDev extends HttpServlet {
 		Msg msg = null;
 		try {
 			msg = MsgFactory.createMsg(content);
-			String responseMsg = msg.getMsgProcessor().proccess(msg);
+			String responseMsg = msg.getShopMsgProcessor().proccess(msg);
 			
 			response.setCharacterEncoding("UTF-8");
 			PrintWriter out = response.getWriter();

@@ -3,10 +3,15 @@
  */
 package com.microcard.msg;
 
+import com.microcard.msg.processor.MsgProcessorAnnotation;
+import com.microcard.msg.processor.NullMsgProcessor;
+import com.microcard.msg.processor.user.UserSubscribeProcessor;
+
 /**
  * @author jack
  *
  */
+@MsgProcessorAnnotation(ShopMsgClass=NullMsgProcessor.class,UserMsgClass=UserSubscribeProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.SCAN)
 public class ReceivedScanMsg extends ReceivedEventMsg {
 	//事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id

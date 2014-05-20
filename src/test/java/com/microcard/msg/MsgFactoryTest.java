@@ -24,7 +24,7 @@ public class MsgFactoryTest extends TestCase {
 		try {
 			Msg msg = MsgFactory.createMsg("<xml><ToUserName><![CDATA[toUser]]></ToUserName><FromUserName><![CDATA[FromUser]]></FromUserName><CreateTime>123456789</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[CLICK]]></Event><EventKey><![CDATA[EVENTKEY]]></EventKey></xml>");
 			super.assertTrue(msg instanceof ReceivedMenuClickMsg);
-			super.assertTrue(msg.getMsgProcessor() instanceof MenuClickProcessor);
+			super.assertTrue(msg.getShopMsgProcessor() instanceof MenuClickProcessor);
 			super.assertEquals(msg.getToUserName(), "toUser");
 			super.assertEquals(msg.getFromUserName(), "FromUser");
 			super.assertEquals(((ReceivedMenuClickMsg)msg).getEventKey(), "EVENTKEY");
@@ -49,12 +49,12 @@ public class MsgFactoryTest extends TestCase {
 		try {
 			msg = MsgFactory.createMsg(str.toString());
 			super.assertTrue(msg instanceof ReceivedTxtMsg);
-			super.assertTrue(msg.getMsgProcessor() instanceof TextMsgProcessor);
+			super.assertTrue(msg.getShopMsgProcessor() instanceof TextMsgProcessor);
 			super.assertEquals(msg.getToUserName(), "gh_1c25e0b75543");
 			super.assertEquals(msg.getFromUserName(), "oOrfwjk7S2-meQ6I51v92upnCGYM");	
 			super.assertEquals(((ReceivedTxtMsg)msg).getMsgType().toString(), "text");
 			
-			String responseMsg = msg.getMsgProcessor().proccess(msg);
+			String responseMsg = msg.getShopMsgProcessor().proccess(msg);
 			System.out.println(responseMsg);
 		} catch (Exception e) {
 			e.printStackTrace();

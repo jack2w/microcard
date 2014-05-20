@@ -16,5 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MsgProcessorAnnotation {
 
-	Class<? extends IMsgProcessor> MsgClass();
+	Class<? extends IMsgProcessor> ShopMsgClass();
+	
+	Class<? extends IMsgProcessor> UserMsgClass() default NullMsgProcessor.class;
 }

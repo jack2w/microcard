@@ -88,22 +88,37 @@ public class Msg {
 	}
 	
 	/**
-	 * 返回消息处理器
+	 * 返回商铺消息处理器
 	 * @return
 	 */
-	public IMsgProcessor getMsgProcessor() {
+	public IMsgProcessor getShopMsgProcessor() {
 		if(this.getClass().isAnnotationPresent(MsgProcessorAnnotation.class)) {
 			
 			MsgProcessorAnnotation annotation = this.getClass().getAnnotation(MsgProcessorAnnotation.class);
-			Class<? extends IMsgProcessor> processorClass = annotation.MsgClass();
+			Class<? extends IMsgProcessor> processorClass = annotation.ShopMsgClass();
 			
 			try {
 				return processorClass.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (Exception e) {
 				log.error(e, "can't initial a processor class: " + processorClass.getName());
 			}
 		}
 		return null;
+	}
+	
+	public IMsgProcessor getUserMsgProcessor() {
+		if(this.getClass().isAnnotationPresent(MsgProcessorAnnotation.class)) {
+			
+			MsgProcessorAnnotation annotation = this.getClass().getAnnotation(MsgProcessorAnnotation.class);
+			Class<? extends IMsgProcessor> processorClass = annotation.UserMsgClass();
+			
+			try {
+				return processorClass.newInstance();
+			} catch (Exception e) {
+				log.error(e, "can't initial a processor class: " + processorClass.getName());
+			}
+		}
+		return null;	
 	}
 	
 	public String toString() {

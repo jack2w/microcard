@@ -5,12 +5,13 @@ package com.microcard.msg;
 
 import com.microcard.msg.processor.MsgProcessorAnnotation;
 import com.microcard.msg.processor.SubscribeProcessor;
+import com.microcard.msg.processor.user.UserSubscribeProcessor;
 
 /**
  * @author jack
  *
  */
-@MsgProcessorAnnotation(MsgClass=SubscribeProcessor.class)
+@MsgProcessorAnnotation(ShopMsgClass=SubscribeProcessor.class,UserMsgClass=UserSubscribeProcessor.class)
 @MsgTypeAnnotation(msg=MsgType.event,event=EventType.subscribe)
 public class ReceivedSubscribeMsg extends ReceivedEventMsg {
 
