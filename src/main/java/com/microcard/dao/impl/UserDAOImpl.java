@@ -82,7 +82,7 @@ public class UserDAOImpl implements UserDAO{
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 				for(User u : users){
-					u.setDeleteFlag(true);
+					u.setDeleteFlag(false);
 					session.saveOrUpdate(u);
 				}
 		}catch(HibernateException e){
