@@ -43,9 +43,10 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	
 	public void testGetShopByID() {
-		fail("Not yet implemented");
+		Shop s = DAOFactory.createShopDAO().getShopByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
+		System.out.println(s.getOpenId());
 	}
 
 	@Test

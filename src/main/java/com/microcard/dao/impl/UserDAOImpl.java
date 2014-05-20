@@ -27,7 +27,7 @@ public class UserDAOImpl implements UserDAO{
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 			Criteria c = session.createCriteria(User.class);
-			c.add(Restrictions.eq("delete_flag", false));
+			c.add(Restrictions.eq("deleteFlag", false));
 			return c.list();
 		} catch(HibernateException ex){
 			log.error(ex, "fail get users.");
@@ -82,7 +82,7 @@ public class UserDAOImpl implements UserDAO{
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 				for(User u : users){
-					u.setDelete_flag(true);
+					u.setDeleteFlag(true);
 					session.saveOrUpdate(u);
 				}
 		}catch(HibernateException e){
@@ -107,7 +107,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void addRecords(User u, Record... records) throws HibernateException{
-		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot add user's records since the user is deleted.");
 		}	
 		try{
@@ -126,7 +126,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void updateRecords(User u, Record... records) throws HibernateException{
-		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot update user's records since the user is deleted.");
 		}	
 		try{
@@ -145,7 +145,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void deleteRecords(User u, Record... records) throws HibernateException {
-		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot delete user's records since the user is deleted.");
 		}	
 		try{
@@ -165,7 +165,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void addShops(User u, Shop... shops) throws HibernateException {
-		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot add user's shops since the user is deleted.");
 		}	
 		try{
@@ -186,7 +186,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void deleteShop(User u, Shop... shops) throws HibernateException {
-		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot delete user's shops since the user is deleted.");
 		}			
 		try{
@@ -212,7 +212,7 @@ public class UserDAOImpl implements UserDAO{
 	public void deleteLogicalUser(User... users) throws HibernateException {
 		try{
 			for(User u : users){
-				u.setDelete_flag(true);
+				u.setDeleteFlag(true);
 				this.saveOrUpdate(u);
 			}
 		}catch(HibernateException e){
@@ -239,13 +239,13 @@ public class UserDAOImpl implements UserDAO{
 	
 	@Override
 	public List<Shop> getShopsByUser(User u, int start, int length) throws HibernateException{
-		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot get user's shop since the user is deleted.");
 		}
 		List<Shop> result =  new ArrayList<Shop>();		
 		try{	
 			Session session = HibernateUtil.instance().currentSession();	
-			String hql = "from Shop as s inner join s.users as u where u.openId=? and s.delete_flag=false";
+			String hql = "from Shop as s inner join s.users as u where u.openId=? and s.deleteFlag=false";
 			Query query = session.createQuery(hql).setString(0, u.getOpenId());
 			query.setFirstResult(start);
 			query.setMaxResults(length);

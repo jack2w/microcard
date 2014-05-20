@@ -75,7 +75,15 @@ public class User {
 	/**
 	 * 是否已取消订阅
 	 */
-	private boolean delete_flag;
+	private boolean deleteFlag;
+
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
 
 	/**
 	 * 用户订阅时间，从微信中获取
@@ -236,15 +244,6 @@ public class User {
 
 	public void setRecords(Set<Record> records) {
 		this.records = records;
-	}
-	
-	public boolean isDelete_flag() {
-		return delete_flag;
-	}
-
-	public void setDelete_flag(boolean delete_flag) {
-		this.delete_flag = delete_flag;
-	}
-	
+	}	
 	
 }

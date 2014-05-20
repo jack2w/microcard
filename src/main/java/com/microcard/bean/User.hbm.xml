@@ -47,7 +47,7 @@
         <property name="subscribeTime" type="java.sql.Timestamp">
             <column name="SUBSCRIBETIME" />
         </property>
-        <property name="delete_flag" type= "java.lang.Boolean" >
+        <property name="deleteFlag" type= "java.lang.Boolean" >
             <column name="DELETEFLAG" default="false"/>
         </property>
  		 <set name="shops" inverse="true" cascade="save-update" table="tbl_user_shop" lazy = "true">

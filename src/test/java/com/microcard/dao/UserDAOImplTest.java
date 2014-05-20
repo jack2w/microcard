@@ -77,8 +77,6 @@ public class UserDAOImplTest {
 	@Test
 	public void testAddShops() {
 		try {
-			User u = new User();
-//			u.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w6");
 			User u2 = new User();
 			u2.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w5");
 			User u3 = new User();

@@ -56,7 +56,7 @@
          <property name="code" type="java.lang.String">
         <column name="CODE"/>
         </property>        
-         <property name="delete_flag" type= "java.lang.Boolean" >
+         <property name="deleteFlag" type= "java.lang.Boolean" >
             <column name="DELETEFLAG" default="false"/>
         </property>
       	<set name="users" inverse="false" cascade="save-update" table="tbl_user_shop" lazy = "true">

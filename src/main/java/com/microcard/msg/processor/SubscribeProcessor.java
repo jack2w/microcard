@@ -3,8 +3,13 @@
  */
 package com.microcard.msg.processor;
 
+import org.hibernate.HibernateException;
+
 import com.microcard.bean.Shop;
 import com.microcard.client.WeixinClient;
+import com.microcard.dao.DAOFactory;
+import com.microcard.dao.hibernate.HibernateUtil;
+import com.microcard.log.Logger;
 import com.microcard.msg.Msg;
 import com.microcard.msg.ReceivedSubscribeMsg;
 
@@ -29,11 +34,25 @@ public class SubscribeProcessor implements IMsgProcessor {
 		ReceivedSubscribeMsg subscribeMsg = (ReceivedSubscribeMsg)msg;
 		//根据订阅消息获得的openid,向微信获取该用户的信息
 		Shop shop = WeixinClient.getShopInfo(subscribeMsg.getFromUserName());
-		
-		
 		//TODO 1. 如果该Shop在shop表中不存在，增加一条记录
 		//TODO 2. 如果该Shop在shop表中存在，则修改shop信息，并且把delete_flag置否
-		
+		try{
+			HibernateUtil.instance().beginTransaction();
+			Shop s = DAOFactory.createShopDAO().getShopByOpenID(shop.getOpenId());
+			if(s != null){
+				DAOFactory.createShopDAO().addShop(s);
+			} else{
+				DAOFactory.createShopDAO().addShop(shop);
+			}
+			HibernateUtil.instance().commitTransaction();
+		} catch(HibernateException e){
+			Logger.getOperLogger().error(e, "scribe event save to database failed.");
+			HibernateUtil.instance().rollbackTransaction();
+			throw new Exception("scribe event save to database failed");
+		} finally{
+			HibernateUtil.instance().closeSession();
+		}
+
 		return null;
 	}
 

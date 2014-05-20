@@ -26,7 +26,7 @@ public class ShopDAOImpl  implements ShopDAO{
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 			Criteria c = session.createCriteria(Shop.class);
-			c.add(Restrictions.eq("delete_flag", false));
+			c.add(Restrictions.eq("deleteFlag", false));
 			return c.list();
 		} catch(HibernateException ex){
 			log.error(ex, "fail get  shopes.");
@@ -59,7 +59,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	public void deleteLogicalShop(Shop... shops) throws HibernateException {
 		try{
 			for(Shop s : shops){
-				s.setDelete_flag(true);
+				s.setDeleteFlag(true);
 				this.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
@@ -84,13 +84,13 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public List<User> getUsersByShop(Shop shop, int start, int length) throws HibernateException{
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot get shop's users since the shop is deleted.");
 		}
 		List<User> result =  new ArrayList<User>();		
 		try{	
 			Session session = HibernateUtil.instance().currentSession();	
-			String hql = "from User as u inner join u.shops as s where s.openId=? and u.delete_flag=false";
+			String hql = "from User as u inner join u.shops as s where s.openId=? and u.deleteFlag=false";
 			Query query = session.createQuery(hql).setString(0, shop.getOpenId());
 			query.setFirstResult(start);
 			query.setMaxResults(length);
@@ -118,7 +118,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	public void addShop(Shop... shopes) throws HibernateException {
 		try{
 			for (Shop s : shopes){
-				s.setDelete_flag(false);
+				s.setDeleteFlag(false);
 				this.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
@@ -129,7 +129,7 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void addCommodity(Shop shop, Commodity... commodities)  throws HibernateException{
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot add shop's commodity since the shop is deleted.");
 		}
 		Session session = HibernateUtil.instance().currentSession();
@@ -147,7 +147,7 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void addSales(Shop shop, Sales... saleses)  throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot add shop's sales since the shop is deleted.");
 		}
 		try{
@@ -178,7 +178,7 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void updateCommodity(Shop shop, Commodity... commodities)  throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot update shop's commodity since the shop is deleted.");
 		}
 		try{
@@ -198,7 +198,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public void delteCommoditity(Shop shop, Commodity... commodities)
 			throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot delete shop's commodity since the shop is deleted.");
 		}
 		try{
@@ -220,7 +220,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public void deleteSales(Shop shop, Sales... saleses)
 			throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot delete shop's sales since the shop is deleted.");
 		}
 		try{
@@ -242,7 +242,7 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public void updateSales(Shop shop, Sales... saleses)
 			throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot update shop's sales since the shop is deleted.");
 		}	
 		try{
