@@ -2,10 +2,6 @@ package com.microcard.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -47,7 +43,7 @@ public class ShopEntryServlet extends HttpServlet {
 			log.debug("nonce:"+nonce);
 			log.debug("echostr:"+echostr);
 			
-			String mySignature = buildSignature(timestamp,nonce);
+			String mySignature = Utils.buildSignature(timestamp,nonce);
 		    
 		    if(signature.equalsIgnoreCase(mySignature)) {
 				PrintWriter out = response.getWriter();
@@ -80,7 +76,7 @@ public class ShopEntryServlet extends HttpServlet {
 		//auth url is from weixin
 		if(signature.length() > 0 && timestamp.length() > 0 && nonce.length() > 0) {
 			
-			String mySignature = buildSignature(timestamp,nonce);
+			String mySignature = Utils.buildSignature(timestamp,nonce);
 			if(!signature.equalsIgnoreCase(mySignature.toLowerCase())) {
 				
 				log.error("mySignature is " + mySignature + " is not equal to weixin signature:" + signature);
@@ -117,33 +113,5 @@ public class ShopEntryServlet extends HttpServlet {
 			log.error(e.getMessage());
 			return;
 		}
-		
-
-	}
-	
-	private String buildSignature(String timestamp,String nonce) {
-		String token = "503";
-		ArrayList<String> list = new ArrayList<String>();
-		list.add(token);
-		list.add(timestamp);
-		list.add(nonce);
-		Collections.sort(list);
-		
-		StringBuffer strBuf = new StringBuffer();
-		for(String s : list) {
-			strBuf.append(s);
-		}
-	    MessageDigest md = null;
-	    try {
-	        md = MessageDigest.getInstance("SHA-1");
-	    }
-	    catch(NoSuchAlgorithmException e) {
-	        log.error(e, "get SHA-1 error!");
-	    } 		
-	    md.reset();
-	    md.update(strBuf.toString().getBytes());
-	    String mySignature = Utils.convertToHex(md.digest());
-	    
-	    return mySignature;
 	}
 }

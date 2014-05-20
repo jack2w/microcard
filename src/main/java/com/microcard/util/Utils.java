@@ -3,8 +3,14 @@
  */
 package com.microcard.util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.microcard.log.Logger;
 
 /**
  * @author wuwei
@@ -100,5 +106,31 @@ public class Utils {
 		    	hexString.append(String.format("%02X", 0xFF & data[i]));
 		    return hexString.toString();
 		}
-
+	 
+		public static String buildSignature(String timestamp,String nonce) {
+			String token = "503";
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(token);
+			list.add(timestamp);
+			list.add(nonce);
+			Collections.sort(list);
+			
+			StringBuffer strBuf = new StringBuffer();
+			for(String s : list) {
+				strBuf.append(s);
+			}
+		    MessageDigest md = null;
+		    try {
+		        md = MessageDigest.getInstance("SHA-1");
+		    }
+		    catch(NoSuchAlgorithmException e) {
+		        Logger.getOperLogger().error(e, "get SHA-1 error!");
+		        return null;
+		    } 		
+		    md.reset();
+		    md.update(strBuf.toString().getBytes());
+		    String mySignature = Utils.convertToHex(md.digest());
+		    
+		    return mySignature;
+		}
 }
