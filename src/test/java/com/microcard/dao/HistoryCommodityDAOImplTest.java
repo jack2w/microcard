@@ -19,7 +19,7 @@ public class HistoryCommodityDAOImplTest {
 
 	@After
 	public void tearDown() throws Exception {
-		HibernateUtil.instance().commitTransactionAndColoseSession();
+		HibernateUtil.instance().commitTransaction();
 	}
 
 	@Test

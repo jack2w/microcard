@@ -35,7 +35,7 @@ public class UnSubscribeProcessor implements IMsgProcessor {
 				DAOFactory.createShopDAO().deleteLogicalShop(s);
 			}
 			try{
-				HibernateUtil.instance().commitTransactionAndColoseSession();
+				HibernateUtil.instance().commitTransaction();
 			} catch(Exception e){
 				Logger.getOperLogger().error(e, "unscribe event save to database failed.");
 				HibernateUtil.instance().rollbackTransaction();

@@ -2,6 +2,7 @@ package com.microcard.dao;
 
 import static org.junit.Assert.*;
 
+import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,12 @@ public class SalesDAOImplTest {
 
 	@After
 	public void tearDown() throws Exception {
-		HibernateUtil.instance().commitTransactionAndColoseSession();
+		try{
+			HibernateUtil.instance().commitTransaction();
+		}
+		catch(HibernateException e){
+			HibernateUtil.instance().rollbackTransaction();
+		}
 	}
 
 	@Test

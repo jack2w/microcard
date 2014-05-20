@@ -1,10 +1,14 @@
 package com.microcard.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.microcard.bean.Record;
 import com.microcard.bean.Shop;
@@ -22,7 +26,9 @@ public class UserDAOImpl implements UserDAO{
 		
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			return session.createQuery("from " + User.class.getName()).list();
+			Criteria c = session.createCriteria(User.class);
+			c.add(Restrictions.eq("delete_flag", false));
+			return c.list();
 		} catch(HibernateException ex){
 			log.error(ex, "fail get users.");
 			throw ex;
@@ -34,7 +40,7 @@ public class UserDAOImpl implements UserDAO{
 	 * 删除用户，并删除和商铺之间的关系
 	 */
 	@Override
-	public void deleteUser(User... users) throws HibernateException {
+	public void deletePhsycalUser(User... users) throws HibernateException {
 		
 		try{
 			Session session = HibernateUtil.instance().currentSession();
@@ -72,11 +78,12 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void saveUser(User... users) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+	public void saveUser(User... users) throws HibernateException {		
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 				for(User u : users){
-					session.save(u);
+					u.setDelete_flag(true);
+					session.saveOrUpdate(u);
 				}
 		}catch(HibernateException e){
 			log.error(e, "fail save or update a user.");
@@ -86,8 +93,8 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void saveOrUpdate(User... users) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(User u : users){
 				session.saveOrUpdate(u);
 			}
@@ -100,8 +107,11 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void addRecords(User u, Record... records) throws HibernateException{
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot add user's records since the user is deleted.");
+		}	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Record r : records){
 				r.setUser(u);
 				session.save(r);
@@ -116,8 +126,11 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void updateRecords(User u, Record... records) throws HibernateException{
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot update user's records since the user is deleted.");
+		}	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Record r : records){
 				r.setUser(u);
 				session.update(r);				
@@ -132,8 +145,11 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void deleteRecords(User u, Record... records) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot delete user's records since the user is deleted.");
+		}	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			if(records == null){
 				records = u.getRecords().toArray(new Record[u.getRecords().size()]) ;
 			}
@@ -149,8 +165,11 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void addShops(User u, Shop... shops) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot add user's shops since the user is deleted.");
+		}	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Shop s : shops){
 				if(s.getUsers() == null){
 					s.setUsers(new HashSet<User>());
@@ -167,8 +186,11 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void deleteShop(User u, Shop... shops) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot delete user's shops since the user is deleted.");
+		}			
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			if(shops == null){
 				shops = u.getShops().toArray(new Shop[u.getShops().size()]) ;
 			}
@@ -184,6 +206,60 @@ public class UserDAOImpl implements UserDAO{
 			throw e;
 		}
 		
+	}
+
+	@Override
+	public void deleteLogicalUser(User... users) throws HibernateException {
+		try{
+			for(User u : users){
+				u.setDelete_flag(true);
+				this.saveOrUpdate(u);
+			}
+		}catch(HibernateException e){
+			log.error(e, "fail delete logical user.");
+			throw e;
+		}	
+	}
+	
+	@Override
+	public User getUserByOpenID(String opendid) throws HibernateException {
+		try{
+			Session session = HibernateUtil.instance().currentSession();
+			Criteria c = session.createCriteria(User.class);
+			c.add(Restrictions.eq("openId", opendid));
+			List<User> list = c.list();
+			//因为openid已经限定唯一性，查到的结果最多为一条
+			return list.size() > 0 ? list.get(0) : null;
+
+		}catch(HibernateException e){
+			log.error(e, "fail get user by openid.");
+			throw e;
+		}
+	}
+	
+	@Override
+	public List<Shop> getShopsByUser(User u, int start, int length) throws HibernateException{
+		if( this.getUserByOpenID(u.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot get user's shop since the user is deleted.");
+		}
+		List<Shop> result =  new ArrayList<Shop>();		
+		try{	
+			Session session = HibernateUtil.instance().currentSession();	
+			String hql = "from Shop as s inner join s.users as u where u.openId=? and s.delete_flag=false";
+			Query query = session.createQuery(hql).setString(0, u.getOpenId());
+			query.setFirstResult(start);
+			query.setMaxResults(length);
+			List<Object> temp = query.list();
+			for(Object obj : temp){
+				result.add((Shop)((Object[])obj)[0]);
+			}
+			return result;
+			
+		}catch(HibernateException e){
+			log.error(e, "fail add  commodities.");
+			throw e;
+		}
+       
 	}
 
 }

@@ -22,10 +22,12 @@ public class ShopDAOImpl  implements ShopDAO{
 	private Logger log = Logger.getMsgLogger();
 	
 	@Override
-	public List getShops() throws HibernateException {
+	public List<Shop> getShops() throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			return session.createQuery("from " + Shop.class.getName()).list();
+			Criteria c = session.createCriteria(Shop.class);
+			c.add(Restrictions.eq("delete_flag", false));
+			return c.list();
 		} catch(HibernateException ex){
 			log.error(ex, "fail get  shopes.");
 			throw ex;
@@ -52,6 +54,19 @@ public class ShopDAOImpl  implements ShopDAO{
 		}
 		
 	}
+	
+	@Override
+	public void deleteLogicalShop(Shop... shops) throws HibernateException {
+		try{
+			for(Shop s : shops){
+				s.setDelete_flag(true);
+				this.saveOrUpdate(s);
+			}
+		}catch(HibernateException e){
+			log.error(e, "fail get shop by openid.");
+			throw e;
+		}
+	}
 
 	@Override
 	public Shop getShopByID(long id) throws HibernateException {
@@ -69,10 +84,13 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public List<User> getUsersByShop(Shop shop, int start, int length) throws HibernateException{
-		Session session = HibernateUtil.instance().currentSession();
-		List<User> result =  new ArrayList<User>();
-		try{
-			String hql = "from User as u inner join u.shops as s where s.openId=?";
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot get shop's users since the shop is deleted.");
+		}
+		List<User> result =  new ArrayList<User>();		
+		try{	
+			Session session = HibernateUtil.instance().currentSession();	
+			String hql = "from User as u inner join u.shops as s where s.openId=? and u.delete_flag=false";
 			Query query = session.createQuery(hql).setString(0, shop.getOpenId());
 			query.setFirstResult(start);
 			query.setMaxResults(length);
@@ -98,7 +116,6 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void addShop(Shop... shopes) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
 		try{
 			for (Shop s : shopes){
 				s.setDelete_flag(false);
@@ -112,6 +129,9 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void addCommodity(Shop shop, Commodity... commodities)  throws HibernateException{
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot add shop's commodity since the shop is deleted.");
+		}
 		Session session = HibernateUtil.instance().currentSession();
 		try{
 			for(Commodity c : commodities){
@@ -127,9 +147,11 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void addSales(Shop shop, Sales... saleses)  throws HibernateException {
-		
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot add shop's sales since the shop is deleted.");
+		}
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Sales s : saleses){
 				s.setShop(shop);
 				session.save(s);
@@ -142,9 +164,9 @@ public class ShopDAOImpl  implements ShopDAO{
 		
 	}
 	
-	public void saveOrUpdate(Shop... shops) throws HibernateException{
-		Session session = HibernateUtil.instance().currentSession();
+	public void saveOrUpdate(Shop... shops) throws HibernateException{	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Shop s : shops){
 				session.saveOrUpdate(s);
 			}
@@ -156,8 +178,11 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void updateCommodity(Shop shop, Commodity... commodities)  throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot update shop's commodity since the shop is deleted.");
+		}
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Commodity c : commodities){
 				c.setShop(shop);
 				session.update(c);
@@ -173,8 +198,11 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public void delteCommoditity(Shop shop, Commodity... commodities)
 			throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot delete shop's commodity since the shop is deleted.");
+		}
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			if(commodities == null){
 				commodities = shop.getCommodities().toArray(new Commodity[shop.getCommodities().size()]) ;
 			}
@@ -192,8 +220,11 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public void deleteSales(Shop shop, Sales... saleses)
 			throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot delete shop's sales since the shop is deleted.");
+		}
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			if(saleses == null){
 				saleses = shop.getSales().toArray(new Sales[shop.getSales().size()]) ;
 			}
@@ -211,8 +242,11 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public void updateSales(Shop shop, Sales... saleses)
 			throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+		if( this.getShopByOpenID(shop.getOpenId()).isDelete_flag()){
+			throw new HibernateException("cannot update shop's sales since the shop is deleted.");
+		}	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			for(Sales c : saleses){
 				session.update(c);
 			}
@@ -242,17 +276,6 @@ public class ShopDAOImpl  implements ShopDAO{
 		}
 	}
 
-	@Override
-	public void deleteLogicalShop(Shop... shops) throws HibernateException {
-		try{
-			for(Shop s : shops){
-				s.setDelete_flag(true);
-				this.saveOrUpdate(s);
-			}
-		}catch(HibernateException e){
-			log.error(e, "fail get shop by openid.");
-			throw e;
-		}
-	}
+
 
 }

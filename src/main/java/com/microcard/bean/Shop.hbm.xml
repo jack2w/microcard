@@ -53,6 +53,12 @@
         <property name="subscribeTime" type="java.sql.Timestamp">
             <column name="SUBSCRIBETIME" />
         </property>
+         <property name="code" type="java.lang.String">
+        <column name="CODE"/>
+        </property>        
+         <property name="delete_flag" type= "java.lang.Boolean" >
+            <column name="DELETEFLAG" default="false"/>
+        </property>
       	<set name="users" inverse="false" cascade="save-update" table="tbl_user_shop" lazy = "true">
             <key column="SHOP_ID"></key>
             <many-to-many class="com.microcard.bean.User"
@@ -70,11 +76,5 @@
             </key>
             <one-to-many class="com.microcard.bean.Sales" />
         </set>
-        <property name="code" type="java.lang.String">
-        <column name="CODE"/>
-        </property>
-         <property name="delete_flag" type= "java.lang.Boolean" >
-            <column name="DELETEFLAG" default="false"/>
-        </property>
     </class>
 </hibernate-mapping>

@@ -290,7 +290,7 @@ public class Shop {
 		this.code = code;
 	}
 
-	public boolean getDelete_flag() {
+	public boolean isDelete_flag() {
 		return delete_flag;
 	}
 
