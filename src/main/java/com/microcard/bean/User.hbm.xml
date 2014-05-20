@@ -47,6 +47,9 @@
         <property name="subscribeTime" type="java.sql.Timestamp">
             <column name="SUBSCRIBETIME" />
         </property>
+        <property name="deleteFlag" type= "java.lang.Boolean" >
+            <column name="DELETEFLAG" default="false"/>
+        </property>
  		 <set name="shops" inverse="true" cascade="save-update" table="tbl_user_shop" lazy = "true">
             <key column="USER_ID"></key>
             <many-to-many class="com.microcard.bean.Shop"

@@ -96,8 +96,8 @@ public class Shop {
 	/**
 	 * 是否已取消订阅
 	 */
-	private boolean delete_flag;
-	
+	private boolean deleteFlag;
+
 	/**
 	 * 商铺的会员用户，与User有多对多的关系，注意该字段需要延迟加载，数据库需要有多对多关系的中间表
 	 */
@@ -289,13 +289,15 @@ public class Shop {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-	public boolean getDelete_flag() {
-		return delete_flag;
-	}
-
-	public void setDelete_flag(boolean flag) {
-		this.delete_flag = flag;
-	}
 	
+	
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+
 }

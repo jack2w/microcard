@@ -117,13 +117,12 @@ public class HibernateUtil {
 	/**
 	 * 提交并关闭session
 	 */
-	public void commitTransactionAndColoseSession(){
+	public void commitTransaction(){
 		Transaction tx = (Transaction)tLocaltx.get();
 		try{
 			if(tx != null && !tx.wasCommitted() && !tx.wasRolledBack()){
 				tx.commit();
 				tLocaltx.set(null);
-				closeSession();
 			}
 		} catch(HibernateException e){
 			log.error("can't commit a transaction.");

@@ -32,7 +32,9 @@ body {
 .search_form {
 	width: 100%;
 	height: 40px;
-	margin-top: 3%;
+	padding-top: 3%;
+	background: url("../resources/images/header.jpg");
+	box-shadow: #666 0 0 5px;
 }
 
 .sinput {
@@ -42,20 +44,20 @@ body {
 	padding: 4px 7px;
 	color: b3b3b3;
 	border: 1px solid #999;
-	border-radius: 2px 0px 0px 2px;
+	border-radius: 2px;
 	background-color: #fbfbfb;
-	margin-left: 10%;
+	margin-left: 12%;
 }
 
 .sbtn {
 	width: 10%;
-	height: 31px;
+	height: 30px;
+	margin-left:2%;
 	padding: 0 12px;
-	margin-left: -1px;
-	border-radius: 0 2px 2px 0;
-	border: 1px solid #4d90fe;
-	background-color: #4d90fe;
-	font-size: 12px;
+	border-radius: 2px;
+	border: 1px solid #99CC33;
+	background-color: #99CC33;
+	font-size: 1em;
 	color: #f3f7fc;
 	position: absolute;
 }
@@ -79,7 +81,6 @@ body {
 	float: left;
 	border-bottom: 1px dashed #B5B5B5;
 	height: 100px;
-	background: WhiteSmoke;
 }
 
 .commodityAbout {
@@ -95,22 +96,25 @@ body {
 	box-shadow: #666 0 0 5px;
 	margin: 2% 4% 0 2%;
 	border-radius: 2px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	
+}
+
+#commodityName {
+	font-size: 1.2em;
+	color: #6E6E6E;
 }
 
 #goodsPrice {
 	float: left;
 	width: auto;
 	font-size: 1.5em;
+	color: red;
 }
 
 .click_more {
 	width: 100%;
 	height: 60px;
 	line-height: 60px;
-	background: #F3F3F3;
 	border: solid 1px #EFEFEF;
 	text-align: center;
 }
@@ -133,7 +137,6 @@ body {
 
 .dialog {
 	position: fixed;
-	_position: absolute;
 	top: 5%;
 	left: 5%;
 	right: 5%;
@@ -141,7 +144,7 @@ body {
 	width: 90%;
 	height: 90%;
 	z-index: 6;
-	background: #EEEEE0;
+	background: #E9E9E9;
 	box-shadow: #666 0 0 5px;
 	border-radius: 4px;
 }
@@ -151,23 +154,18 @@ body {
 	height: 40px;
 	width: 100%;
 	text-align: center;
-	border-bottom: 1px solid #B5B5B5;
-	background: #F0F0F0;
+	background: url("../resources/images/header.jpg");
 }
 
 .dialog_title {
 	height: 40px;
 	line-height: 40px;
-}
-
-.dialog_close {
-	float: right;
-	height: 40px;
-	line-height: 40px;
+	color: white;
+	font-size: 1.2em;
 }
 
 .dialog_content ul li {
-	margin: 5% 0 5% 2%;
+	margin: 5% 0 5% 5%;
 }
 
 .dialog_content ul li input {
@@ -180,6 +178,11 @@ body {
 	margin-left: 4%;
 	border-radius: 4px;
 	margin-left: 4%;
+	border: 1px solid #B5B5B5;
+}
+
+.dialog_cancle {
+	
 }
 </style>
 <script type="text/javascript">
@@ -192,8 +195,8 @@ body {
 									"<div class='commodity'> "
 											+ "<img src='../resources/images/commodityPic/photo" + i + ".jpg'> "
 											+ "<div class='commodityAbout'>"
-											+ "<h5 style='font-size: 1.2em' id='commodityName'>肯德基豪华午餐</h5>"
-											+ "<span id='goodsPrice'>￥15</span></div></div>");
+											+ "<h5 id='commodityName'>肯德基豪华午餐</h5>"
+											+ "<span id='goodsPrice'>￥15.00</span></div></div>");
 				}
 
 				/** 点击商品修改商品信息 **/
@@ -212,11 +215,11 @@ body {
 				/** 获取商品图片的url值 **/
 				$("#dialog_commodityImgUrl").change(function() {
 					$("#imgUrl").attr("src", $(this).val());
-					
+
 				});
 
 				/** 关闭dialog **/
-				$(".dialog_close").click(function() {
+				$(".dialog_cancle").click(function() {
 					$(".commodityInfo").fadeOut("normal");
 				});
 
@@ -224,7 +227,7 @@ body {
 				$(".addbtn").click(function() {
 					$("#dialog_commodityName").val("");
 					$("#dialog_commodityPrice").val("");
-					$("#imgUrl").attr("src","");
+					$("#imgUrl").attr("src", "");
 					$(".commodityInfo").fadeIn("normal");
 
 				});
@@ -238,30 +241,30 @@ body {
 		<div class="search_form">
 			<form action="#" method="get">
 				<input type="text" name="s" class="sinput" placeholder="输入 回车搜索">
-				<input type="submit" value="搜索" class="sbtn">
-			<img src="../resources/images/addbtn.jpg" class="addbtn">
+				<input type="submit" value="搜索" class="sbtn"> <img
+					src="../resources/images/addbtn.png" class="addbtn">
 			</form>
 		</div>
 		<div class="commodityList">
 			<div class="commodity">
 				<img src="../resources/images/commodityPic/photo1.jpg">
 				<div class="commodityAbout">
-					<h5 style="font-size: 1.2em" id="commodityName">肯德基豪华午餐</h5>
-					<span id="goodsPrice">￥15</span>
+					<h5 id="commodityName">肯德基豪华午餐</h5>
+					<span id="goodsPrice">￥15.00</span>
 				</div>
 			</div>
 			<div class="commodity">
 				<img src="../resources/images/commodityPic/photo2.jpg">
 				<div class="commodityAbout">
-					<h5 style="font-size: 1.2em" id="commodityName">麦当劳豪华午餐</h5>
-					<span id="goodsPrice">￥15</span>
+					<h5 id="commodityName">麦当劳豪华午餐</h5>
+					<span id="goodsPrice">￥15.00</span>
 				</div>
 			</div>
 			<div class="commodity">
 				<img src="../resources/images/commodityPic/photo3.jpg">
 				<div class="commodityAbout">
-					<h5 style="font-size: 1.2em" id="commodityName">德克士豪华午餐</h5>
-					<span id="goodsPrice">￥15</span>
+					<h5 id="commodityName">德克士豪华午餐</h5>
+					<span id="goodsPrice">￥15.00</span>
 				</div>
 			</div>
 		</div>
@@ -272,7 +275,7 @@ body {
 			<div class="dialog">
 				<form action="">
 					<div class="dialog_bar">
-						<span class="dialog_title">标题</span><span class="dialog_close">[关闭]</span>
+						<span class="dialog_title">标题</span>
 					</div>
 					<div class="dialog_content">
 						<ul style="list-style: none; display: inline;">
@@ -283,14 +286,16 @@ body {
 							<li>商品图片:<input type="file" name="dialog_commodityImgUrl"
 								id="dialog_commodityImgUrl" style="display: none;"
 								onchange="imgUrl.scr=value"><img name="imgUrl"
-								id="imgUrl" > <input type="button" value="选取图片"
+								id="imgUrl"> <input type="button" value="选取图片"
 								onclick="dialog_commodityImgUrl.click()"
-								style="border: 1px solid #B5B5B5">
+								style="width: 30%; height: 30px; border-radius: 2px; border: 1px solid #B5B5B5">
 							</li>
 						</ul>
 						<div style="width: 100%; text-align: center;">
+							<input class="dialog_cancle" type="button" value="取消"
+								style="width: 30%; height: 30px; border-radius: 2px; border: 1px solid #B5B5B5">
 							<input class="dialog_save" type="submit" value="保存"
-								style="width: 60%; height: 30px; border-radius: 2px;">
+								style="width: 30%; height: 30px; border-radius: 2px; border: 1px solid #B5B5B5">
 						</div>
 
 					</div>

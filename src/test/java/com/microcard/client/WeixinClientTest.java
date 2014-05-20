@@ -5,11 +5,13 @@ package com.microcard.client;
 
 import static org.junit.Assert.*;
 
+import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Shop;
+import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.token.TokenManager;
 
 /**
@@ -26,6 +28,7 @@ public class WeixinClientTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		HibernateUtil.instance().beginTransaction();
 	}
 
 	/**
@@ -33,6 +36,12 @@ public class WeixinClientTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		try{
+			HibernateUtil.instance().commitTransaction();
+		}
+		catch(HibernateException e){
+			HibernateUtil.instance().rollbackTransaction();
+		}
 	}
 
 	/**

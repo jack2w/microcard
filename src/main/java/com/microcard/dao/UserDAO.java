@@ -13,11 +13,18 @@ public interface UserDAO {
 	public List<User> getUsers() throws HibernateException;
 	
 	/**
-	 * 删除用户以及该用户和商铺及购买记录的相关信息
+	 * 物理删除用户以及该用户和商铺及购买记录的相关信息
 	 * @param u
 	 * @throws HibernateException
 	 */
-	public void deleteUser(User... user) throws HibernateException;
+	public void deletePhsycalUser(User... user) throws HibernateException;
+	
+	/**
+	 * 逻辑删除用户
+	 * @param u
+	 * @throws HibernateException
+	 */
+	public void deleteLogicalUser(User... user) throws HibernateException;
 	
 	public User getUserByID(String id) throws HibernateException;
 	
@@ -68,5 +75,24 @@ public interface UserDAO {
 	 * 删除商铺，如果shops为null，删除所有该用户关联的商铺信息
 	 */
 	public void deleteShop(User u, Shop... shops) throws HibernateException;
+
+	/**
+	 * 通过openid获得用户
+	 * @param opendid
+	 * @return
+	 * @throws HibernateException
+	 */
+	User getUserByOpenID(String opendid) throws HibernateException;
+
+	/**
+	 * 分页获得用户关注的shops
+	 * @param u
+	 * @param start
+	 * @param length
+	 * @return
+	 * @throws HibernateException
+	 */
+	List<Shop> getShopsByUser(User u, int start, int length)
+			throws HibernateException;
 	
 }

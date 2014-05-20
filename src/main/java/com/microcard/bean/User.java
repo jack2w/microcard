@@ -73,6 +73,19 @@ public class User {
 	private String headImgUrl;
 	
 	/**
+	 * 是否已取消订阅
+	 */
+	private boolean deleteFlag;
+
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+	/**
 	 * 用户订阅时间，从微信中获取
 	 */
 	private Timestamp subscribeTime;
@@ -231,7 +244,6 @@ public class User {
 
 	public void setRecords(Set<Record> records) {
 		this.records = records;
-	}
-	
+	}	
 	
 }

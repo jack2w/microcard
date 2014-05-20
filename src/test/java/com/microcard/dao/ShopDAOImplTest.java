@@ -1,15 +1,14 @@
 package com.microcard.dao;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
-import java.util.List;
-
+import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Shop;
-import com.microcard.bean.User;
+import com.microcard.client.WeixinClient;
 import com.microcard.dao.hibernate.HibernateUtil;
 
 public class ShopDAOImplTest {
@@ -21,34 +20,38 @@ public class ShopDAOImplTest {
 
 	@After
 	public void tearDown() throws Exception {
-		HibernateUtil.instance().commitTransactionAndColoseSession();
+		try{
+			HibernateUtil.instance().commitTransaction();
+		}
+		catch(HibernateException e){
+			HibernateUtil.instance().rollbackTransaction();
+		}
 	}
 
 	@Test
 	public void testGetShops() {
-		List<Shop> shopes = DAOFactory.createShopDAO().getShops();
-		for(Shop s : shopes){
-			System.out.println(s.getDelete_flag());
-		}
-	}
-
-	@Test
-	public void testDeleteShop() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testGetShopByID() {
+	public void testDeletePhysicalShop() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testDeleteLogicalShop() {
 		fail("Not yet implemented");
 	}
 
 	
+	public void testGetShopByID() {
+		Shop s = DAOFactory.createShopDAO().getShopByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
+		System.out.println(s.getOpenId());
+	}
+
+	@Test
 	public void testGetUsersByShop() {
-		Shop s = DAOFactory.createShopDAO().getShopByOpenID("200001");
-		List<User> us = DAOFactory.createShopDAO().getUsersByShop(s, 5, 10);
-		for(User  u : us){
-			System.out.println(u.getOpenId());
-		}
+		fail("Not yet implemented");
 	}
 
 	@Test
@@ -56,14 +59,16 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	
+	@Test
 	public void testAddShop() {
-	Shop s1 = new Shop();
-	s1.setOpenId("200001");
-	Shop s2 = new Shop();
-	s2.setOpenId("200002");
-	DAOFactory.createShopDAO().addShop(s1,s2);
-
+		try {
+			Shop shop = WeixinClient.getShopInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
+			DAOFactory.createShopDAO().addShop(shop);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Test
@@ -96,24 +101,14 @@ public class ShopDAOImplTest {
 		fail("Not yet implemented");
 	}
 
-	
-	public void testgetShopByOpenID() {
-	Shop s1 = DAOFactory.createShopDAO().getShopByOpenID("100001");
-	System.out.println(s1.getOpenId());
-	}
-	
 	@Test
 	public void testUpdateSales() {
 		fail("Not yet implemented");
 	}
-	
-	
-	public void testdeleteLogicalShop() {
-		Shop s1 = DAOFactory.createShopDAO().getShopByOpenID("200001");
-		DAOFactory.createShopDAO().deleteLogicalShop(s1);
-		
+
+	@Test
+	public void testGetShopByOpenID() {
+		fail("Not yet implemented");
 	}
-	
-	
 
 }

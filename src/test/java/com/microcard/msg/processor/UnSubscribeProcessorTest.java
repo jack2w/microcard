@@ -1,43 +1,37 @@
-/**
- * 
- */
 package com.microcard.msg.processor;
 
+import static org.junit.Assert.*;
+
 import org.hibernate.HibernateException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.microcard.bean.Shop;
 import com.microcard.client.WeixinClient;
 import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
-import com.microcard.msg.Msg;
 import com.microcard.msg.ReceivedSubscribeMsg;
 
-/**
- * @author jiyaguang
- *
- */
-public class UnSubscribeProcessor implements IMsgProcessor {
+public class UnSubscribeProcessorTest {
 
-	/* (non-Javadoc)
-	 * @see com.microcard.msg.processor.IMsgProcessor#proccess(com.microcard.msg.Msg)
-	 */
-	/**
-	 * 成功返回空字符串，失败返回空，一般不会失败
-	 */
-	@Override
-	public String proccess(Msg msg) throws Exception {
-		
-		if(!(msg instanceof ReceivedSubscribeMsg)) {
-			
-			throw new Exception("is not Subscribe msg" + msg.toString());
-		}
-		try{
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testProccess() throws Exception {
+
+			try{
 				HibernateUtil.instance().beginTransaction();
 				
-				ReceivedSubscribeMsg subscribeMsg = (ReceivedSubscribeMsg)msg;
 				//根据订阅消息获得的openid,向微信获取该用户的信息
-				Shop shop = WeixinClient.getShopInfo(subscribeMsg.getFromUserName());
+				Shop shop = WeixinClient.getShopInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
 				
 				Shop s = DAOFactory.createShopDAO().getShopByOpenID(shop.getOpenId());
 				if(s != null){
@@ -54,9 +48,10 @@ public class UnSubscribeProcessor implements IMsgProcessor {
 			} finally{
 				HibernateUtil.instance().closeSession();
 			}
-		return null;
+	
 		
 		
+	
 	}
 
 }
