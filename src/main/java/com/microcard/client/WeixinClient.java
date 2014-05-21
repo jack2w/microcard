@@ -10,6 +10,7 @@ import net.sf.json.JSONSerializer;
 
 import com.microcard.bean.Sex;
 import com.microcard.bean.Shop;
+import com.microcard.bean.User;
 import com.microcard.exception.WeixinException;
 import com.microcard.log.Logger;
 import com.microcard.token.TokenManager;
@@ -27,7 +28,7 @@ public class WeixinClient {
 	}
 	
 	/**
-	 * 根据openId获取该openId的微信用户信息
+	 * 根据openId获取该openId的微信商铺信息
 	 * @param openId
 	 * @return
 	 * @throws Exception
@@ -47,6 +48,29 @@ public class WeixinClient {
 		Shop shop = parseShop(result);
 		log.debug("end getShopInfo, shop operid is " + shop.getOpenId());
 		return shop;
+	}
+	
+	/**
+	 * 根据openId获取该openId的微信用户信息
+	 * @param openId
+	 * @return
+	 * @throws Exception
+	 */
+	public static User getUserInfo(String openId) throws Exception {
+        String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+TokenManager.getUserToken()+"&openid="+openId+"&lang=zh_CN";
+		log.debug("begin getShopInfo from url " + url);
+		HttpDefaultClient client = new HttpDefaultClient(url);
+		String result = client.doGet();
+		//如果微信返回的是错误信息则抛出异常
+		WeixinException exception = WeixinException.parseException(result);
+		if(exception != null) {
+			throw exception;
+		}
+		//根据微信返回的结果解析成shop类
+		
+		User user = parseUser(result);
+		log.debug("end getShopInfo, shop operid is " + user.getOpenId());
+		return user;
 	}
 	
 	/**
@@ -156,5 +180,22 @@ public class WeixinClient {
 		Timestamp timestamp = new Timestamp(createTime);
 		shop.setSubscribeTime(timestamp);
 		return shop;
+	}
+	
+	public static User parseUser(String msg) {
+		
+		User user = new User();
+		JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( msg );
+		user.setOpenId(jsonObject.getString("openid"));
+		user.setNickName(jsonObject.getString("nickname"));
+		user.setSex(Sex.valueOf(jsonObject.getInt("sex")));
+		user.setCity(jsonObject.getString("city"));
+		user.setProvince(jsonObject.getString("province"));
+		user.setCountry(jsonObject.getString("country"));
+		user.setHeadImgUrl(jsonObject.getString("headimgurl"));
+		long createTime = jsonObject.getLong("subscribe_time") * 1000L;
+		Timestamp timestamp = new Timestamp(createTime);
+		user.setSubscribeTime(timestamp);
+		return user;
 	}
 }

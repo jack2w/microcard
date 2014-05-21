@@ -3,7 +3,8 @@
  */
 package com.microcard.client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.hibernate.HibernateException;
 import org.junit.After;
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Shop;
+import com.microcard.bean.User;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.token.TokenManager;
 
@@ -53,6 +55,9 @@ public class WeixinClientTest {
 			Shop shop = WeixinClient.getShopInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
 			System.out.println(shop.getNickName());
 			assertNotNull(shop);
+			User user = WeixinClient.getUserInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
+			System.out.println(shop.getNickName());
+			assertNotNull(user);
 		}catch(Exception e) {
 			fail(e.getMessage());
 		}

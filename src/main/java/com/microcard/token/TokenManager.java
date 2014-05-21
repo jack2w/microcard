@@ -18,6 +18,7 @@ import com.microcard.log.Logger;
  */
 public class TokenManager {
 
+	//Shop info
 	public static final String ShopAppId = "wxe6297940decb5dee";
 	
 	public static final String ShopAppSecret = "85beed8c47ee619028b34303045f3e42";
@@ -29,6 +30,19 @@ public class TokenManager {
 	private static int shop_expire_time = 7200 *1000;
 	
 	private static long shopLastTokenTime = 0;
+	
+	//User info
+	public static final String UserAppId = "wxe6297940decb5dee";
+	
+	public static final String UserAppSecret = "85beed8c47ee619028b34303045f3e42";
+	
+	private static String userToken = null;
+	
+	private static Object userTokenAvailable = new Object();
+	
+	private static int user_expire_time = 7200 *1000;
+	
+	private static long userLastTokenTime = 0;
 	
 	public static String getShopToken() throws Exception {
 		long current = System.currentTimeMillis();
@@ -68,6 +82,47 @@ public class TokenManager {
 		synchronized(shopTokenAvailable) {
 			getShopTokenFromWeixin();
 			return shopToken;
+		}
+	}
+	
+	public static String getUserToken() throws Exception {
+		long current = System.currentTimeMillis();
+		if(userToken !=null &&  (current - userLastTokenTime) < user_expire_time )
+		  return userToken;
+		
+		
+		synchronized(userTokenAvailable) {
+			 current = System.currentTimeMillis();  //重新判断
+			if(userToken == null || (current - userLastTokenTime) > user_expire_time) {
+				userLastTokenTime =  System.currentTimeMillis();
+				getUserTokenFromWeixin();
+				return userToken;
+			}
+			return userToken;
+		}
+	}
+	
+	private static String getUserTokenFromWeixin() throws Exception {
+		Logger.getOperLogger().debug("begin take token from weixin");
+        URI uri = new URI("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+UserAppId+"&secret="+UserAppSecret);
+        HttpDefaultClient client = new HttpDefaultClient(uri);
+        
+        String result = client.doGet();
+        
+        WeixinException exception = WeixinException.parseException(result);
+        if(exception != null) throw exception;
+        
+        JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( result );  				
+		userToken = jsonObject.getString("access_token");
+		user_expire_time = jsonObject.getInt("expires_in") * 1000;    
+		
+        return userToken;
+	}
+	
+	public static String refreshUserToken() throws Exception{
+		synchronized(userTokenAvailable) {
+			getUserTokenFromWeixin();
+			return userToken;
 		}
 	}
 }
