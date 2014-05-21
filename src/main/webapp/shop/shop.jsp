@@ -1,4 +1,3 @@
-<%@page import="javax.swing.JOptionPane"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ page isELIgnored="false"%>
@@ -146,11 +145,13 @@ table tr td:LAST-CHILD {
 	document.onreadystatechange = subSomething;
 	function subSomething() {
 		if (document.readyState == "complete") {
+			/** OpenId为空时提示错误  **/
 			if ($("#shopOpenId") == null || $("#shopOpenId").val() == "") {
 				$.Zebra_Dialog('数据错误，请重新获取！', {
 					'type' : 'error',
 					'title' : '错误'
 				});
+			/** shop为空时提示错误  **/
 			} else if ($("#shop") == null || $("#shop").val() == "") {
 				$.Zebra_Dialog('数据库异常！', {
 					'type' : 'error',
@@ -158,41 +159,37 @@ table tr td:LAST-CHILD {
 				});
 			}
 		}
+
 	}
 
 	function changeClick() {
-		var data = new Array();
+		/** 点击修改跳转到编辑界面  **/
 		if ($(".header-modify").is(":visible")) {
 			$(".header-modify").hide();
 			$(".header-submit").show();
 			$("td span").hide();
 			$("td input,td textarea").show();
-
-			$("td span").each(function(i) {
-				data[i] = $(this).html();
-			});
-
-			$("#shopName").val(data[0]);
-			$("#shopPhone").val(data[1]);
-			$("#shopAddress").val(data[2]);
-			$("#shopMemo").val(data[3]);
-
 		} else {
+			/** 点击完成跳转到显示界面  **/
 			$(".header-submit").hide();
 			$(".header-modify").show();
 			$("td input,td textarea").hide();
 			$("td span").show();
 
-			data[0] = $("#shopName").val();
-			data[1] = $("#shopPhone").val();
-			data[2] = $("#shopAddress").val();
-			data[3] = $("#shopMemo").val();
-			$("td span").each(function(i) {
-				$(this).html(data[i]);
-			});
+			/** 提交数据到shopServlet **/
 			$("form").submit();
 		}
 	}
+
+	$(function() {
+		/** 商品名称为空时直接跳转到编辑界面  **/
+		if ($("td span:first-child").html == "") {
+			$(".header-modify").hide();
+			$(".header-submit").show();
+			$("td span").hide();
+			$("td input,td textarea").show();
+		}
+	})
 </script>
 </head>
 <body>
@@ -216,28 +213,29 @@ table tr td:LAST-CHILD {
 			<table rules="rows">
 				<tr>
 					<td>商铺名称:</td>
-					<td><span>${shop.name}</span><input
+					<td><span></span><input value="${shop.name}"
 						style="display: none;" type="text" name="shopName" id="shopName"></td>
 				</tr>
 				<tr>
 					<td>商铺电话:</td>
-					<td><span>${shop.phone}</span><input
+					<td><span>${shop.phone}</span><input value="${shop.phone}"
 						style="display: none;" type="tel" name="shopPhone" id="shopPhone"></td>
 				</tr>
 				<tr>
 					<td>商铺地址:</td>
-					<td><span>${shop.address}</span><input
+					<td><span>${shop.address}</span><input value="${shop.address}"
 						style="display: none;" type="text" name="shopAddress"
 						id="shopAddress"></td>
 				</tr>
 				<tr>
 					<td>商铺简介:</td>
 					<td><span>${shop.memo}</span> <textarea
-							style="display: none; height: 80px" name="shopMemo" id="shopMemo"></textarea></td>
+							style="display: none; height: 80px" name="shopMemo" id="shopMemo">${shop.memo}</textarea></td>
 				</tr>
 			</table>
-			<input type="hidden" name="shopOpenId" id="shopOpenId" value="${opendId}">
-			<input type="hidden" name="shop" id="shop" value="${shop}">
+			<input type="hidden" name="shopOpenId" id="shopOpenId"
+				value="${opendId}"> <input type="hidden" name="shop"
+				id="shop" value="${shop}">
 		</div>
 	</form>
 </body>
