@@ -46,10 +46,12 @@ public class SubscribeProcessor implements IMsgProcessor {
 			}
 			HibernateUtil.instance().commitTransaction();
 		} catch(HibernateException e){
-			Logger.getOperLogger().error(e, "scribe event save to database failed.");
+			Logger.getOperLogger().error(e, "subscribe message process failed,  database error.");
 			HibernateUtil.instance().rollbackTransaction();
-			throw new Exception("scribe event save to database failed");
-		} finally{
+		} catch(Exception ex ){
+			Logger.getOperLogger().error(ex, "subscribe message process failed, unkonwn error.");
+			HibernateUtil.instance().rollbackTransaction();
+		}finally{
 			HibernateUtil.instance().closeSession();
 		}
 

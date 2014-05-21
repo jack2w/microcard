@@ -276,6 +276,14 @@ public class ShopDAOImpl  implements ShopDAO{
 		}
 	}
 
-
+	@Override
+	public void updateShopByOpenid(Shop... shops) throws HibernateException {
+		for(Shop s : shops){
+			if(this.getShopByOpenID(s.getOpenId()) != null){
+				
+			}
+				
+		}	
+	}
 
 }

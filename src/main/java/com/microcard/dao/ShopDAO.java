@@ -46,13 +46,20 @@ public interface ShopDAO {
 	public Shop getShopByOpenID(String opendid) throws HibernateException;
 		
 	/**
-	 * 更新商铺
-	 * 1.仅更新一个单一的Shop对象，对其他关联信息的更新需要调用相关方法
+	 * 更新商铺，默认更新方法，根据商铺id进行更新，若id存在更新，若不存在添加
+	 * 1.仅更新单一的Shop对象，对其他关联信息的更新需要调用相关方法
 	 * @param shop
 	 * @throws HibernateException
 	 */
 	public void updateShop(Shop... shop) throws HibernateException;
 	
+	/**
+	 * 更新商铺,该方法根据openid来进行更新，若存在该openid的商铺则更新，若不存在则添加一条记录
+	 * 1.仅更新单一的Shop对象，对其他关联信息的更新需要调用相关方法
+	 * @param shop
+	 * @throws HibernateException
+	 */
+	public void updateShopByOpenid(Shop... shops) throws HibernateException;
 	
 	/**
 	 * 添加一条商铺记录，不包含其他关联数据，其他关联信息的添加需要调用其他相关方法

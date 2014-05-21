@@ -1,43 +1,36 @@
-/**
- * 
- */
 package com.microcard.msg.processor.user;
 
-import org.hibernate.HibernateException;
+import static org.junit.Assert.*;
 
-import com.microcard.bean.Shop;
+import org.hibernate.HibernateException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.microcard.bean.User;
-import com.microcard.client.WeixinClient;
 import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
-import com.microcard.msg.Msg;
 import com.microcard.msg.ReceivedUnsubscribeMsg;
-import com.microcard.msg.processor.IMsgProcessor;
 
-/**
- * @author jack
- *
- */
-public class UserUnsubscribeProcessor  implements IMsgProcessor {
+public class UserUnsubscribeProcessorTest {
 
-	/* (non-Javadoc)
-	 * @see com.microcard.msg.processor.IMsgProcessor#proccess(com.microcard.msg.Msg)
-	 */
-	@Override
-	public String proccess(Msg msg) throws Exception {
-		// TODO 根据ReceivedUnscribeMsg中fromUserName对应User的openid找到User
-		// TODO 如果存在这个User，然后把这个User设置逻辑删除，如果不存在不处理，日志中记录warn日志，说明取消订阅不应该存在找不到的用户
-		if(!(msg instanceof ReceivedUnsubscribeMsg)){
-			return null;
-		}
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testProccess() {
 		try{
 			HibernateUtil.instance().beginTransaction();
 			
-			ReceivedUnsubscribeMsg unsubscribeMsg = (ReceivedUnsubscribeMsg)msg;
 			//根据订阅消息获得的openid,向微信获取该用户的信息
 			
-			User u = DAOFactory.createUserDAO().getUserByOpenID(unsubscribeMsg.getFromUserName());
+			User u = DAOFactory.createUserDAO().getUserByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
 			
 			if(u == null){
 				Logger.getOperLogger().warn("取消订阅不应该存在不存在的用户。");
@@ -56,8 +49,7 @@ public class UserUnsubscribeProcessor  implements IMsgProcessor {
 		}finally{
 			HibernateUtil.instance().closeSession();
 		}
-		
-		return null;
+
 	}
 
 }

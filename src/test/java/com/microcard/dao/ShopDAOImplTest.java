@@ -56,10 +56,12 @@ public class ShopDAOImplTest {
 
 	@Test
 	public void testUpdateShop() {
-		fail("Not yet implemented");
+		Shop s = DAOFactory.createShopDAO().getShopByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
+		s.setAddress("beijing");
+		DAOFactory.createShopDAO().updateShop(s);
 	}
 
-	@Test
+	
 	public void testAddShop() {
 		try {
 			Shop shop = WeixinClient.getShopInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
