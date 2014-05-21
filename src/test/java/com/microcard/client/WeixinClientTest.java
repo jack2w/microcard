@@ -6,14 +6,13 @@ package com.microcard.client;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Shop;
 import com.microcard.bean.User;
-import com.microcard.dao.hibernate.HibernateUtil;
+import com.microcard.msg.OpenIdQuery;
 import com.microcard.token.TokenManager;
 
 /**
@@ -30,7 +29,6 @@ public class WeixinClientTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		HibernateUtil.instance().beginTransaction();
 	}
 
 	/**
@@ -38,12 +36,7 @@ public class WeixinClientTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		try{
-			HibernateUtil.instance().commitTransaction();
-		}
-		catch(HibernateException e){
-			HibernateUtil.instance().rollbackTransaction();
-		}
+
 	}
 
 	/**
@@ -83,7 +76,22 @@ public class WeixinClientTest {
 	 */
 	@Test
 	public void testDownloadCodePic() {
-		fail("Not yet implemented");
+		
+	}
+	
+	@Test
+	public void testGetShopList() {
+		
+		OpenIdQuery query;
+		try {
+			query = WeixinClient.getShopList(null);
+			assertNotNull(query);
+			System.out.println(query.toString());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+
+		
 	}
 
 }

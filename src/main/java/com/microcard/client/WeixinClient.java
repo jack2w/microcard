@@ -5,6 +5,7 @@ package com.microcard.client;
 
 import java.sql.Timestamp;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
@@ -13,6 +14,7 @@ import com.microcard.bean.Shop;
 import com.microcard.bean.User;
 import com.microcard.exception.WeixinException;
 import com.microcard.log.Logger;
+import com.microcard.msg.OpenIdQuery;
 import com.microcard.token.TokenManager;
 
 /**
@@ -165,6 +167,11 @@ public class WeixinClient {
 		return url;
 	}
 	
+	/**
+	 * 根据json消息解析成Shop
+	 * @param msg
+	 * @return
+	 */
 	public static Shop parseShop(String msg) {
 		
 		Shop shop = new Shop();
@@ -182,6 +189,11 @@ public class WeixinClient {
 		return shop;
 	}
 	
+	/**
+	 * 根据JSON消息解析成User 
+	 * @param msg
+	 * @return
+	 */
 	public static User parseUser(String msg) {
 		
 		User user = new User();
@@ -198,4 +210,67 @@ public class WeixinClient {
 		user.setSubscribeTime(timestamp);
 		return user;
 	}
+	
+	 /**
+	  * 向微信服务器获取商铺用户列表
+	  * @return 返回商铺的openid
+	  */
+	public static OpenIdQuery getShopList(String openId) throws Exception {
+		String nextOpenId = openId == null ?  "" : openId;
+		String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token="+TokenManager.getShopToken()+"&next_openid="+nextOpenId;
+		log.debug("begin getShopList from url: " + url);
+		HttpDefaultClient client = new HttpDefaultClient(url);
+		String result = client .doGet();
+		log.debug("received result: " + result);
+		WeixinException exception = WeixinException.parseException(result);
+		if(exception != null) {
+			throw exception;
+		}
+		OpenIdQuery list = parseOpenIdList(result);
+		log.debug("end getShopList, openId is " + list.toString());
+		return list;
+	}
+	
+	public static OpenIdQuery parseOpenIdList(String msg) {
+		OpenIdQuery query = new OpenIdQuery();
+		JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON( msg );
+		String nextOpenId = jsonObject.getString("next_openid");
+		int total = jsonObject.getInt("total");
+		int count = jsonObject.getInt("count");
+		query.setCount(count);
+		query.setTotal(total);
+		query.setNextOpenId(nextOpenId);
+		
+		JSONObject data = jsonObject.getJSONObject("data");
+		
+		JSONArray array = data.getJSONArray("openid");
+		if(array == null) return query;
+		for(Object o : array.toArray() ) {
+			if(o instanceof String) { 
+				query.addOpenId((String)o);
+			}
+		}
+		return query;
+	}
+	
+	/**
+	 * 向微信服务器获取会员用户列表
+	 * @return
+	 */
+	public static OpenIdQuery getUserList(String openId) throws Exception {
+		String nextOpenId = openId == null ?  "" : openId;
+		String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token="+TokenManager.getUserToken()+"&next_openid="+nextOpenId;
+		log.debug("begin getUserList from url: " + url);
+		HttpDefaultClient client = new HttpDefaultClient(url);
+		String result = client .doGet();
+		log.debug("received result: " + result);
+		WeixinException exception = WeixinException.parseException(result);
+		if(exception != null) {
+			throw exception;
+		}
+		OpenIdQuery query = parseOpenIdList(result);
+		log.debug("end getUserList, openId is " + query.toString());
+		return query;
+	}
+	
 }
