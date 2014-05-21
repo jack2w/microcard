@@ -1,3 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@ page isELIgnored="false"%>
+<%@page import="com.microcard.bean.*"%>
+<%@page import="com.microcard.client.*"%>
+<%@page import="com.microcard.exception.*"%>
+<%@page import="com.microcard.msg.*"%>
+<%@page import="java.util.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,7 +114,7 @@ body {
 }
 </style>
 <script type="text/javascript">
-	$(function() {
+/* 	$(function() {
 		for (var i = 1; i <= 40; i++) {
 			$(".memberList")
 					.append(
@@ -118,7 +126,7 @@ body {
 									+ "<span id='buyTime'>2014-12-23 下午</span></div></div></div>")
 
 		}
-	})
+	}) */
 </script>
 </head>
 <body>
@@ -131,37 +139,31 @@ body {
 					class="sbtn">
 			</form>
 		</div>
+
 		<div class="memberList">
-			<div class="member">
-				<img src="../resources/images/memberFace/1.jpg">
+		<%
+			OpenIdQuery query = WeixinClient.getShopList(null);
+			int count = 0;
+			for(String openId : query.getOpenIdList()) {
+				count++;
+				Shop shop = WeixinClient.getShopInfo(openId);
+				
+		%>
+				<div class="member">
+				<img src="<%=shop.getHeadImgUrl()%>">
 				<div class="memberAbout">
-					<h5 style="font-size: 1.2em" id="memberName">张三</h5>
+					<h5 style="font-size: 1.2em" id="memberName"><%=shop.getNickName()%></h5>
 					<div>
-						<span id="goodsName">巴黎欧莱雅巴黎欧莱雅巴黎欧莱雅巴黎欧莱雅</span> <span
-							id="buyTime">2014-12-23 下午</span>
+						<span id="goodsName"><%=shop.getCity()%></span> <span
+							id="buyTime"><%=shop.getSubscribeTime().toLocaleString()%></span>
 					</div>
 				</div>
-			</div>
-			<div class="member">
-				<img src="../resources/images/memberFace/2.jpg">
-				<div class="memberAbout">
-					<h5 style="font-size: 1.2em" id="memberName">李四</h5>
-					<div>
-						<span id="goodsName">肯德基豪华午餐</span> <span id="buyTime">2014-22-11
-							下午</span>
-					</div>
-				</div>
-			</div>
-			<div class="member">
-				<img src="../resources/images/memberFace/3.jpg">
-				<div class="memberAbout">
-					<h5 style="font-size: 1.2em" id="memberName">王五</h5>
-					<div>
-						<span id="goodsName">麦当劳香辣鸡腿堡</span> <span id="buyTime">2014-22-11
-							下午</span>
-					</div>
-				</div>
-			</div>
+			</div>	
+		
+		<%
+				if(count >= 10) break;
+			}
+		%>
 		</div>
 		<div class="click_more" style="clear: both;">点击查看更多</div>
 	</div>
