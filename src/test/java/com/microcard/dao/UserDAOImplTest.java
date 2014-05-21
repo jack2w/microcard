@@ -79,6 +79,7 @@ public class UserDAOImplTest {
 		try {
 			User u2 = new User();
 			u2.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w5");
+			u2.setAddress("上海");
 			User u3 = new User();
 			u3.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w4");
 			User u4 = new User();

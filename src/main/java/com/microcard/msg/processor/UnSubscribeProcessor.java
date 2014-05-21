@@ -12,6 +12,7 @@ import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
 import com.microcard.msg.Msg;
 import com.microcard.msg.ReceivedSubscribeMsg;
+import com.microcard.msg.ReceivedUnsubscribeMsg;
 
 /**
  * @author jiyaguang
@@ -28,14 +29,14 @@ public class UnSubscribeProcessor implements IMsgProcessor {
 	@Override
 	public String proccess(Msg msg) throws Exception {
 		
-		if(!(msg instanceof ReceivedSubscribeMsg)) {
+		if(!(msg instanceof ReceivedUnsubscribeMsg)) {
 			
 			throw new Exception("is not Subscribe msg" + msg.toString());
 		}
 		try{
 				HibernateUtil.instance().beginTransaction();
 				
-				ReceivedSubscribeMsg subscribeMsg = (ReceivedSubscribeMsg)msg;
+				ReceivedUnsubscribeMsg subscribeMsg = (ReceivedUnsubscribeMsg)msg;
 				//根据订阅消息获得的openid,向微信获取该用户的信息
 				Shop shop = WeixinClient.getShopInfo(subscribeMsg.getFromUserName());
 				
@@ -48,10 +49,12 @@ public class UnSubscribeProcessor implements IMsgProcessor {
 				HibernateUtil.instance().commitTransaction();
 			
 			} catch(HibernateException e){
-				Logger.getOperLogger().error(e, "unscribe event save to database failed.");
+				Logger.getOperLogger().error(e, "unsubscribe message process failed,  database error.");
 				HibernateUtil.instance().rollbackTransaction();
-				throw new Exception("unscribe event save to database failed");
-			} finally{
+			}  catch(Exception ex){
+				Logger.getOperLogger().error(ex, "unsubscribe message process failed, unkonwn error.");
+				HibernateUtil.instance().rollbackTransaction();
+			}finally{
 				HibernateUtil.instance().closeSession();
 			}
 		return null;

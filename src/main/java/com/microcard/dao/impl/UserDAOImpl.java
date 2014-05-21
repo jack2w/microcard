@@ -165,7 +165,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void addShops(User u, Shop... shops) throws HibernateException {
-		if( this.getUserByOpenID(u.getOpenId()).isDeleteFlag()){
+		if( u.isDeleteFlag() == true ){
 			throw new HibernateException("cannot add user's shops since the user is deleted.");
 		}	
 		try{
