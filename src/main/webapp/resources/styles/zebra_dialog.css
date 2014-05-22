@@ -1,40 +1,28 @@
 .ZebraDialog {
     font-family: Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 1em;
     background: #FFF;
     padding: 0px;
-    width: 350px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-box-shadow: 0px 0px 4px 2px #222;
-    -moz-box-shadow: 0px 0px 4px 2px #222;
+    width: 60%;
+    border-radius: 2px;
     box-shadow: 0px 0px 4px 2px #222;
-    *border: 1px solid #666;    /* IE6 & 7 */
-    border: 1px solid #666\9;   /* IE8 */
 }
 
 .ZebraDialog .ZebraDialog_Title {
     margin: 0;
     padding: 5px 10px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 1em;
     background: #222;
     color: #FFF;
     text-align: left;
-    -webkit-border-top-left-radius: 4px;
-    -webkit-border-top-right-radius: 4px;
-    -moz-border-radius-topleft: 4px;
-    -moz-border-radius-topright: 4px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    *padding: 7px 10px;     /* IE6 & 7 */
-    padding: 7px 10px\9;    /* IE8 */
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 
-.ZebraDialog .ZebraDialog_Body              { background-repeat: no-repeat; background-position: 10px 10px; padding: 10px; text-align: left }
+.ZebraDialog .ZebraDialog_Body              { background-repeat: no-repeat; padding: 5% 5% 5% 30%; text-align: left }
 
-.ZebraDialog .ZebraDialog_Icon              { padding: 10px 10px 10px 68px; min-height: 48px; _height: 48px }
+.ZebraDialog .ZebraDialog_Icon              { margin: 5% 0 5% 5%; min-height: 30px; _height: 30px }
 
 .ZebraDialog .ZebraDialog_Confirmation      { background-image: url('confirmation.png') }
 .ZebraDialog .ZebraDialog_Error             { background-image: url('error.png') }
@@ -45,13 +33,9 @@
 .ZebraDialog .ZebraDialog_Buttons {
     background: #E5E5E5;
     border-top: 1px solid #DADADA;
-    padding: 5px 5px 5px 10px;
-    -webkit-border-bottom-left-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
-    -moz-border-radius-bottomleft: 5px;
-    -moz-border-radius-bottomright: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    padding: 2%;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
 }
 
 .ZebraDialog .ZebraDialog_Buttons a {
@@ -60,15 +44,13 @@
     color: #000;
     background: transparent;
     border: 1px solid #AAA;
-    padding: 4px 10px;
+    padding: 1% 2%;
     float: right;
-    margin-right: 5px;
-    min-width: 60px;
-    _width: 60px;
+    margin-right: 4%;
+    min-width: 20%;
+    _width: 20%;
     text-align: center;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .ZebraDialog .ZebraDialog_Buttons a:hover   { background: #717366; color: #FFF }
