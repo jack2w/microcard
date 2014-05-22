@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page isELIgnored="false"%>
 <%@page import="com.microcard.bean.Shop"%>
 <%@page import="com.microcard.dao.DAOFactory"%>
@@ -93,7 +92,7 @@ table {
 }
 
 table tr {
-	font-size: 1.5em;
+	font-size: 1.2em;
 	height: 80px;
 }
 
@@ -111,56 +110,8 @@ table tr td:LAST-CHILD {
 	width: 70%;
 }
 
-。errorDialog {
-	display: none;
-}
-
-.dialog-overlay {
-	position: fixed;
-	_position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 3;
-	background-color: #101010;
-	opacity: .4;
-}
-
-.dialog {
-	position: fixed;
-	top: 20%;
-	left: 20%;
-	right: 20%;
-	bottom: 40%;
-	width: 60%;
-	height: 40%;
-	z-index: 6;
-	background: #E9E9E9;
-	box-shadow: #666 0 0 5px;
-	border-radius: 4px;
-}
 </style>
 <script type="text/javascript">
-	document.onreadystatechange = subSomething;
-	function subSomething() {
-		if (document.readyState == "complete") {
-			/** OpenId为空时提示错误  **/
-			if ($("#shopOpenId") == null || $("#shopOpenId").val() == "") {
-				$.Zebra_Dialog('数据错误，请重新获取！', {
-					'type' : 'error',
-					'title' : '错误'
-				});
-			/** shop为空时提示错误  **/
-			} else if ($("#shop") == null || $("#shop").val() == "") {
-				$.Zebra_Dialog('数据库异常！', {
-					'type' : 'error',
-					'title' : '错误'
-				});
-			}
-		}
-
-	}
 
 	function changeClick() {
 		/** 点击修改跳转到编辑界面  **/
@@ -182,8 +133,23 @@ table tr td:LAST-CHILD {
 	}
 
 	$(function() {
+
+			/** OpenId为空时提示错误  **/
+			if ($("#shopOpenId").val() == "") {
+				$.Zebra_Dialog('数据错误，请重新获取！', {
+					'type' : 'error',
+					'title' : '错误'
+				});
+			/** shop为空时提示错误  **/
+			} else if ($("#shop").val() == "") {
+				$.Zebra_Dialog('无此商铺数据！', {
+					'type' : 'error',
+					'title' : '错误'
+				});
+			};
+		
 		/** 商品名称为空时直接跳转到编辑界面  **/
-		if ($("td span:first-child").html == "") {
+		if ($("td span:first-child").html() == "") {
 			$(".header-modify").hide();
 			$(".header-submit").show();
 			$("td span").hide();
@@ -213,7 +179,7 @@ table tr td:LAST-CHILD {
 			<table rules="rows">
 				<tr>
 					<td>商铺名称:</td>
-					<td><span></span><input value="${shop.name}"
+					<td><span>${shop.name}</span><input value="${shop.name}"
 						style="display: none;" type="text" name="shopName" id="shopName"></td>
 				</tr>
 				<tr>
