@@ -92,7 +92,7 @@ public class HttpDefaultClient {
         msgLog.info("doGet() " + url.toString());
         
         BufferedReader reader = new BufferedReader(new InputStreamReader(
-        		urlCon.getInputStream()));
+        		urlCon.getInputStream(),"UTF-8"));
         StringBuffer result = new StringBuffer();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -146,7 +146,7 @@ public class HttpDefaultClient {
         urlCon.getOutputStream().close();
         
         BufferedReader reader = new BufferedReader(new InputStreamReader(
-        		urlCon.getInputStream()));
+        		urlCon.getInputStream(),"UTF-8"));
         StringBuffer result = new StringBuffer();
         String line;
         while ((line = reader.readLine()) != null) {
