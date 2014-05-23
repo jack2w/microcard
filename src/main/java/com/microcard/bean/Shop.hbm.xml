@@ -11,9 +11,6 @@
         <property name="openId" type="java.lang.String"  >
             <column name="OPENID" not-null="true"/>
         </property>
-        <property name="String" type="java.lang.String">
-            <column name="STRING" />
-        </property>
         <property name="name" type="java.lang.String">
             <column name="NAME" />
         </property>

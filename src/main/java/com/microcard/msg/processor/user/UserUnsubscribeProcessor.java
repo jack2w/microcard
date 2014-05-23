@@ -5,9 +5,7 @@ package com.microcard.msg.processor.user;
 
 import org.hibernate.HibernateException;
 
-import com.microcard.bean.Shop;
 import com.microcard.bean.User;
-import com.microcard.client.WeixinClient;
 import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;

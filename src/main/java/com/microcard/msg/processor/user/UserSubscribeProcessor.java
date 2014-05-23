@@ -36,7 +36,9 @@ public class UserSubscribeProcessor implements IMsgProcessor {
 			throw new Exception("is not Subscribe msg" + msg.toString());
 		}
 		try{
-				ReceivedSubscribeMsg receivedsubscribemsg = (ReceivedSubscribeMsg)msg;
+			
+			HibernateUtil.instance().beginTransaction();
+			ReceivedSubscribeMsg receivedsubscribemsg = (ReceivedSubscribeMsg)msg;
 				
 				//检查user是否存在，不存在增加记录，存在更新用户信息
 //				User u = DAOFactory.createUserDAO().getUserByOpenID(receivedsubscribemsg.getFromUserName()) ;
@@ -47,25 +49,28 @@ public class UserSubscribeProcessor implements IMsgProcessor {
 //					DAOFactory.createUserDAO().saveUser(u);
 //				}
 				//从微信服务器获得用户信息，如果数据库里存在会更新用户基本数据，不会影响关联信息，如果不存在会添加一条用户数据
-				User u = WeixinClient.getUserInfo(receivedsubscribemsg.getFromUserName());
-				DAOFactory.createUserDAO().saveUser(u);
+			User u = WeixinClient.getUserInfo(receivedsubscribemsg.getFromUserName());
+			DAOFactory.createUserDAO().saveUser(u);
 				
-				String eventkey = receivedsubscribemsg.getEventKey();
-				if(eventkey != null && eventkey.length() != 0){
-					String shopid = eventkey.substring(eventkey.lastIndexOf("_") + 1, eventkey.length());
-					Shop s = DAOFactory.createShopDAO().getShopByID(Long.parseLong(shopid));
-					if(s == null){
-						Logger.getOperLogger().warn("用户订阅事件获取的shop信息不存在。");
-						return null;
-					}
-					DAOFactory.createUserDAO().addShops(u, s);
-		} 
+			String eventkey = receivedsubscribemsg.getEventKey();
+			if(eventkey != null && eventkey.length() != 0){
+				String shopid = eventkey.substring(eventkey.lastIndexOf("_") + 1, eventkey.length());
+				Shop s = DAOFactory.createShopDAO().getShopByID(Long.parseLong(shopid));
+				if(s == null){
+					Logger.getOperLogger().warn("用户订阅事件获取的shop信息不存在。");
+				}else {
+					DAOFactory.createUserDAO().addShops(u, s);	
+				}
+			}
+			HibernateUtil.instance().commitTransaction();
 		}  catch(HibernateException e){
 				Logger.getOperLogger().error(e, "user subscribe message process failed,  database error.");
 				HibernateUtil.instance().rollbackTransaction();
+				throw e;
 		}  catch(Exception ex){
 				Logger.getOperLogger().error(ex, "user subscribe message process failed, unkonwn error.");
 				HibernateUtil.instance().rollbackTransaction();
+				throw ex;
 		}finally{
 				HibernateUtil.instance().closeSession();
 		}

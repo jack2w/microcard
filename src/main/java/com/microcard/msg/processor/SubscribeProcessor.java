@@ -40,6 +40,13 @@ public class SubscribeProcessor implements IMsgProcessor {
 			HibernateUtil.instance().beginTransaction();
 			Shop s = DAOFactory.createShopDAO().getShopByOpenID(shop.getOpenId());
 			if(s != null){
+				s.setAddress(shop.getAddress());
+				s.setCity(shop.getCity());
+				s.setCountry(shop.getCountry());
+				s.setHeadImgUrl(shop.getHeadImgUrl());
+				s.setNickName(shop.getNickName());
+				s.setSex(shop.getSex());
+				s.setProvince(shop.getProvince());
 				DAOFactory.createShopDAO().addShop(s);
 			} else{
 				DAOFactory.createShopDAO().addShop(shop);
@@ -48,9 +55,11 @@ public class SubscribeProcessor implements IMsgProcessor {
 		} catch(HibernateException e){
 			Logger.getOperLogger().error(e, "subscribe message process failed,  database error.");
 			HibernateUtil.instance().rollbackTransaction();
+			throw e;
 		} catch(Exception ex ){
 			Logger.getOperLogger().error(ex, "subscribe message process failed, unkonwn error.");
 			HibernateUtil.instance().rollbackTransaction();
+			throw ex;
 		}finally{
 			HibernateUtil.instance().closeSession();
 		}

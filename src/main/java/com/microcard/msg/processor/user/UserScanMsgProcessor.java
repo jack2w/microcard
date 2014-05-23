@@ -34,6 +34,7 @@ public class UserScanMsgProcessor implements IMsgProcessor {
 		//TODO 如果该User不存在则添加一条User记录，存在则检查该Shop是否已经跟这个User建立关系
 		//TODO 如果这个User和Shop没有关系，则建立他们之间的关系
 		try{
+			HibernateUtil.instance().beginTransaction();
 			ReceivedScanMsg receivescanmsg = (ReceivedScanMsg)msg;
 			User u = DAOFactory.createUserDAO().getUserByOpenID(receivescanmsg.getFromUserName());
 			Shop s = DAOFactory.createShopDAO().getShopByID(Long.parseLong(receivescanmsg.getEventKey()));
@@ -45,16 +46,20 @@ public class UserScanMsgProcessor implements IMsgProcessor {
 			} else if(u.isDeleteFlag()){
 				DAOFactory.createUserDAO().saveUser(u);
 			}
-			
-			DAOFactory.createUserDAO().addShops(u, s);
+			if(s != null)
+				DAOFactory.createUserDAO().addShops(u, s);
+			else
+				Logger.getOperLogger().error("should exist Shop with shop id "+receivescanmsg.getEventKey()+",  but not!");
 			
 			HibernateUtil.instance().commitTransaction();
 		} catch(HibernateException e){
 			Logger.getOperLogger().error(e, "user scan message process failed,  database error.");
 			HibernateUtil.instance().rollbackTransaction();
+			throw e;
 		}  catch(Exception ex){
 			Logger.getOperLogger().error(ex, "user scan message process failed, unkonwn error.");
 			HibernateUtil.instance().rollbackTransaction();
+			throw ex;
 		}finally{
 			HibernateUtil.instance().closeSession();
 		}

@@ -90,19 +90,19 @@ public class PageForward extends HttpServlet {
 		switch(page){
 		  
 		case Menu.Menu_Key_Shop_COMMODITY:
-			response.sendRedirect("commodity/commodity.html");
+			response.sendRedirect("shop/commodity.jsp?OPENID"+openId);
 			break;
 		case Menu.MENU_Key_Shop_MEMBER:
-			response.sendRedirect("member/member.html");
+			response.sendRedirect("shop/member.jsp?OPENID"+openId);
 			break;
 		case Menu.MENU_Key_Shop_RECORD:
-			response.sendRedirect("record/record.html");
+			response.sendRedirect("shop/record.html?OPENID"+openId);
 			break;
 		case Menu.MENU_Key_Shop_SALES:
-			response.sendRedirect("sales/sales.html");
+			response.sendRedirect("shop/sales.html?OPENID"+openId);
 			break;
 		case Menu.MENU_Key_Shop_SHOPINFO:
-			response.sendRedirect("shop/shop.html");
+			response.sendRedirect("shop/shop.jsp?OPENID"+openId);
 			break;
 		case Menu.Menu_Key_Shop_Code:
 			processCode(openId,request,response);

@@ -11,7 +11,6 @@ import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
 import com.microcard.msg.Msg;
-import com.microcard.msg.ReceivedSubscribeMsg;
 import com.microcard.msg.ReceivedUnsubscribeMsg;
 
 /**
@@ -51,9 +50,11 @@ public class UnSubscribeProcessor implements IMsgProcessor {
 			} catch(HibernateException e){
 				Logger.getOperLogger().error(e, "unsubscribe message process failed,  database error.");
 				HibernateUtil.instance().rollbackTransaction();
+				throw e;
 			}  catch(Exception ex){
 				Logger.getOperLogger().error(ex, "unsubscribe message process failed, unkonwn error.");
 				HibernateUtil.instance().rollbackTransaction();
+				throw ex;
 			}finally{
 				HibernateUtil.instance().closeSession();
 			}
