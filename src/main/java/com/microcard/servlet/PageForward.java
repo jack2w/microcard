@@ -89,22 +89,22 @@ public class PageForward extends HttpServlet {
 	private void forward(String page ,String openId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		switch(page){
 		  
-		case Menu.Menu_Key_COMMODITY:
+		case Menu.Menu_Key_Shop_COMMODITY:
 			response.sendRedirect("commodity/commodity.html");
 			break;
-		case Menu.MENU_Key_MEMBER:
+		case Menu.MENU_Key_Shop_MEMBER:
 			response.sendRedirect("member/member.html");
 			break;
-		case Menu.MENU_Key_RECORD:
+		case Menu.MENU_Key_Shop_RECORD:
 			response.sendRedirect("record/record.html");
 			break;
-		case Menu.MENU_Key_SALES:
+		case Menu.MENU_Key_Shop_SALES:
 			response.sendRedirect("sales/sales.html");
 			break;
-		case Menu.MENU_Key_SHOP:
+		case Menu.MENU_Key_Shop_SHOPINFO:
 			response.sendRedirect("shop/shop.html");
 			break;
-		case Menu.Menu_Key_Code:
+		case Menu.Menu_Key_Shop_Code:
 			processCode(openId,request,response);
 			break;
 		default:

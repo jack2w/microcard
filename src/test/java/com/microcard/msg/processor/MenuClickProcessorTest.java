@@ -46,7 +46,7 @@ public class MenuClickProcessorTest extends TestCase {
 		msg.setCreateTime("1395157159");
 		msg.setMsgType("event");
 		msg.setEvent("CLICK");
-		msg.setEventKey(Menu.MENU_Key_SHOP);
+		msg.setEventKey(Menu.MENU_Key_Shop_SHOPINFO);
 		
 		MenuClickProcessor processor = new MenuClickProcessor();
 		try {

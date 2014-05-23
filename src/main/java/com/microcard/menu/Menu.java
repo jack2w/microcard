@@ -15,17 +15,30 @@ import net.sf.json.JSONSerializer;
  */
 public class Menu {
 	
-	public static final String MENU_Key_RECORD = "Menu_Key_Record";
+	//会员->会员信息
+	public static final String MENU_Key_User_USERINFO = "Menu_Key_User_UserInfo";
 	
-	public static final String MENU_Key_SALES = "Menu_Key_Sales";
+	//会员->商铺
+	public static final String MENU_Key_User_SHOP = "Menu_Key_User_Shop";
 	
-	public static final String MENU_Key_MEMBER = "Menu_Key_Member";
 	
-	public static final String MENU_Key_SHOP = "Menu_Key_Shop";
+	//商铺->销售记录
+	public static final String MENU_Key_Shop_RECORD = "Menu_Key_Shop_Record";
 	
-	public static final String Menu_Key_COMMODITY     = "Menu_Key_Commodity";
+	//商铺->营销
+	public static final String MENU_Key_Shop_SALES = "Menu_Key_Shop_Sales";
 	
-	public static final String Menu_Key_Code     = "Menu_Key_Code";
+	//商铺->会员
+	public static final String MENU_Key_Shop_MEMBER = "Menu_Key_Shop_Member";
+	
+	//商铺->商铺信息
+	public static final String MENU_Key_Shop_SHOPINFO= "Menu_Key_Shop_ShopInfo";
+	
+	//商铺->商品
+	public static final String Menu_Key_Shop_COMMODITY     = "Menu_Key_Shop_Commodity";
+	
+	//商铺->二维码
+	public static final String Menu_Key_Shop_Code     = "Menu_Key_Shop_Code";
 	
 	private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
 	
