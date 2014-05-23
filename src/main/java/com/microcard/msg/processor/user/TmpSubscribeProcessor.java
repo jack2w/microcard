@@ -9,6 +9,7 @@ import com.microcard.bean.Shop;
 import com.microcard.bean.User;
 import com.microcard.client.WeixinClient;
 import com.microcard.dao.DAOFactory;
+import com.microcard.dao.ShopDAO;
 import com.microcard.dao.UserDAO;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
@@ -20,7 +21,7 @@ import com.microcard.msg.processor.IMsgProcessor;
  * @author jack
  *
  */
-public class UserSubscribeProcessor implements IMsgProcessor {
+public class TmpSubscribeProcessor implements IMsgProcessor {
 
 	/* (non-Javadoc)
 	 * @see com.microcard.msg.processor.IMsgProcessor#proccess(com.microcard.msg.Msg)
@@ -41,15 +42,6 @@ public class UserSubscribeProcessor implements IMsgProcessor {
 			HibernateUtil.instance().beginTransaction();
 			ReceivedSubscribeMsg receivedsubscribemsg = (ReceivedSubscribeMsg)msg;
 				
-				//检查user是否存在，不存在增加记录，存在更新用户信息
-//				User u = DAOFactory.createUserDAO().getUserByOpenID(receivedsubscribemsg.getFromUserName()) ;
-//				if(u == null){
-//					u = WeixinClient.getUserInfo(receivedsubscribemsg.getFromUserName());
-//				}
-//				if(u.isDeleteFlag()){
-//					DAOFactory.createUserDAO().saveUser(u);
-//				}
-				//从微信服务器获得用户信息，如果数据库里存在会更新用户基本数据，不会影响关联信息，如果不存在会添加一条用户数据
 			UserDAO userDao = DAOFactory.createUserDAO();
 			
 			User userD = userDao.getUserByOpenID(receivedsubscribemsg.getFromUserName());	
@@ -67,6 +59,21 @@ public class UserSubscribeProcessor implements IMsgProcessor {
 				userDao.saveUser(userW);
 			}
 			
+			ShopDAO shopDao = DAOFactory.createShopDAO();
+			Shop shopD = shopDao.getShopByOpenID(receivedsubscribemsg.getFromUserName());
+			Shop shopW = WeixinClient.getShopInfo(receivedsubscribemsg.getFromUserName());
+			if(shopD != null) {
+				shopD.setAddress(shopW.getAddress());
+				shopD.setCity(shopW.getCity());
+				shopD.setCountry(shopW.getCountry());
+				shopD.setHeadImgUrl(shopW.getHeadImgUrl());
+				shopD.setNickName(shopW.getNickName());
+				shopD.setSex(shopW.getSex());
+				shopD.setProvince(shopW.getProvince());
+				shopDao.addShop(shopD);
+			}else {
+				shopDao.addShop(shopW);
+			}
 				
 			String eventkey = receivedsubscribemsg.getEventKey();
 			if(eventkey != null && eventkey.length() != 0){

@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.microcard.bean.Shop;
 import com.microcard.client.WeixinClient;
+import com.microcard.dao.DAOFactory;
 import com.microcard.exception.WeixinException;
 import com.microcard.log.Logger;
 import com.microcard.menu.Menu;
+import com.microcard.msg.ReceivedSubscribeMsg;
+import com.microcard.msg.processor.SubscribeProcessor;
 import com.microcard.token.TokenManager;
 import com.microcard.util.ErrorPage;
 
@@ -115,6 +119,22 @@ public class PageForward extends HttpServlet {
 	}
 	
 	private void processCode(String openId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		try {
+			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
+			if(shop == null) {
+				SubscribeProcessor processor = new SubscribeProcessor();
+				ReceivedSubscribeMsg msg = new ReceivedSubscribeMsg();
+				msg.setFromUserName(openId);
+			    processor.proccess(msg);
+			}
+		} catch (Exception e) {
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println(ErrorPage.createPage("添加商铺信息有误: " + e.getMessage()));
+			return;
+		}
+		
 		
 		String token = null;
 		
