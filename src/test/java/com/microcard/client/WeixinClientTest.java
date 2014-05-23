@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import com.microcard.bean.Shop;
 import com.microcard.bean.User;
-import com.microcard.msg.OpenIdQuery;
 import com.microcard.token.TokenManager;
 
 /**
@@ -79,19 +78,5 @@ public class WeixinClientTest {
 		
 	}
 	
-	@Test
-	public void testGetShopList() {
-		
-		OpenIdQuery query;
-		try {
-			query = WeixinClient.getShopList(null);
-			assertNotNull(query);
-			System.out.println(query.toString());
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
-
-		
-	}
 
 }
