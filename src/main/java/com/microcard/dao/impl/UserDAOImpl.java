@@ -262,4 +262,17 @@ public class UserDAOImpl implements UserDAO{
        
 	}
 
+	@Override
+	public User getUserByID(long id) throws HibernateException {
+		User u = null;
+		try{
+			Session session = HibernateUtil.instance().currentSession();
+	        u = (User)session.load(User.class.getName(), id);
+		} catch(HibernateException ex){
+			log.error(ex, "fail get user by id.");
+			throw ex;
+		}
+		return u;
+	}
+
 }

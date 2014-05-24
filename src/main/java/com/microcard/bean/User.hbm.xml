@@ -3,11 +3,14 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 2014-5-15 20:31:50 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.microcard.bean.User" table="tbl_user">
-        <id name="openId" type="java.lang.String">
-            <column name="OPENID" />
-            <generator class="assigned" />
+    <class name="com.microcard.bean.User" table="tbl_user">    
+        <id name="id" type="long">
+         <column name="ID" />
+        <generator class="native" />
         </id>
+        <property name="openId" type="java.lang.String"  >
+            <column name="OPENID" not-null="true"/>
+        </property>
         <property name="nickName" type="java.lang.String">
             <column name="NICKNAME" />
         </property>

@@ -13,6 +13,11 @@ import java.util.Set;
 public class User {
 
 	/**
+	 * 自增id号
+	 */
+	private long id;
+
+	/**
 	 * 微信中的用户id，从微信中获取，在某一个公共账号下用户id唯一，为主建，建表时除了这个字段不可为空外，其它字段都可以为空
 	 */
 	private String openId;
@@ -245,5 +250,13 @@ public class User {
 	public void setRecords(Set<Record> records) {
 		this.records = records;
 	}	
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 	
 }

@@ -1,12 +1,15 @@
 package com.microcard.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microcard.bean.Commodity;
 import com.microcard.bean.Shop;
 import com.microcard.client.WeixinClient;
 import com.microcard.dao.hibernate.HibernateUtil;
@@ -61,7 +64,7 @@ public class ShopDAOImplTest {
 		DAOFactory.createShopDAO().updateShop(s);
 	}
 
-	
+	@Test
 	public void testAddShop() {
 		try {
 			Shop shop = WeixinClient.getShopInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
@@ -75,12 +78,27 @@ public class ShopDAOImplTest {
 
 	@Test
 	public void testAddCommodity() {
-		fail("Not yet implemented");
+		try{
+		Shop shop =  DAOFactory.createShopDAO().getShopByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
+		Commodity[] cs = new Commodity[30];
+		for(int i = 0; i < 30; i++){
+			Commodity c = new Commodity();
+			c.setName("手表" + i);
+			c.setPrice(10000 + (i * 1000));
+			cs[i] = c;
+		}
+		DAOFactory.createShopDAO().addCommodity(shop, cs);
+//		DAOFactory.createShopDAO().addCommodity(shop, new Commodity());
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
 	public void testAddSales() {
-		fail("Not yet implemented");
+		List<Commodity> commodities = DAOFactory.createShopDAO().getCommodity("o2gmduEx55FVt10DoRwMcHC7H5w8", 0, -1);
+		System.out.println(commodities.size());
 	}
 
 	@Test

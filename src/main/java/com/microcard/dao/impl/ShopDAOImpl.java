@@ -129,7 +129,8 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public void addCommodity(Shop shop, Commodity... commodities)  throws HibernateException{
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
+		Shop s = this.getShopByOpenID(shop.getOpenId());
+		if(s == null || s.isDeleteFlag() ){
 			throw new HibernateException("cannot add shop's commodity since the shop is deleted.");
 		}
 		Session session = HibernateUtil.instance().currentSession();
@@ -138,7 +139,6 @@ public class ShopDAOImpl  implements ShopDAO{
 				c.setShop(shop);
 				session.save(c);
 			}
-			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
 			log.error(e, "fail add  commodities.");
 			throw e;
@@ -259,9 +259,9 @@ public class ShopDAOImpl  implements ShopDAO{
 	}
 
 	@Override
-	public Shop getShopByOpenID(String opendid) throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+	public Shop getShopByOpenID(String opendid) throws HibernateException {	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			Criteria c = session.createCriteria(Shop.class);
 			c.add(Restrictions.eq("openId", opendid));
 			List<Shop> list = c.list();
@@ -277,13 +277,24 @@ public class ShopDAOImpl  implements ShopDAO{
 	}
 
 	@Override
-	public void updateShopByOpenid(Shop... shops) throws HibernateException {
-		for(Shop s : shops){
-			if(this.getShopByOpenID(s.getOpenId()) != null){
-				
+	public List<Commodity> getCommodity(String openid, int start, int length) {
+			Shop s = this.getShopByOpenID(openid);
+			if( s == null ||   s.isDeleteFlag()){
+				throw new HibernateException("cannot get shop's commodity since the shop is not exist.");
+			}	
+		try{
+			Session session = HibernateUtil.instance().currentSession();
+			if(length < 0){
+				return session.createFilter(s.getCommodities(), "").setFirstResult(start).list();
 			}
-				
-		}	
+			else{
+				return session.createFilter(s.getCommodities(), "").setFirstResult(start).setMaxResults(length).list();
+			}
+
+		}catch(HibernateException e){
+			log.error(e, "fail get shop by openid.");
+			throw e;
+		}
 	}
 
 }

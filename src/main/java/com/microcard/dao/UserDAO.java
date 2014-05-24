@@ -29,6 +29,19 @@ public interface UserDAO {
 	public User getUserByID(String id) throws HibernateException;
 	
 	/**
+	 * 获得指定openid的用户
+	 */
+	public User getUserByOpenID(String opendid) throws HibernateException;
+	
+	/**
+	 * 获得指定id的用户
+	 * 
+	 * @return 
+	 * @throws HibernateException
+	 */
+	public User getUserByID(long id) throws HibernateException;
+	
+	/**
 	 * 该方法修改的仅是用户信息，涉及到集合的属性比如购买记录和商铺信息需要调用相关方法
 	 * @param user
 	 * @throws HibernateException
@@ -75,14 +88,6 @@ public interface UserDAO {
 	 * 删除商铺，如果shops为null，删除所有该用户关联的商铺信息
 	 */
 	public void deleteShop(User u, Shop... shops) throws HibernateException;
-
-	/**
-	 * 通过openid获得用户
-	 * @param opendid
-	 * @return
-	 * @throws HibernateException
-	 */
-	User getUserByOpenID(String opendid) throws HibernateException;
 
 	/**
 	 * 分页获得用户关注的shops

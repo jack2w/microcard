@@ -51,7 +51,14 @@ public class UserDAOImplTest {
 
 	@Test
 	public void testSaveUser() {
-		fail("Not yet implemented");
+		User u2 = new User();
+		u2.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w5");
+		u2.setAddress("上海");
+		User u3 = new User();
+		u3.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w4");
+		User u4 = new User();
+		u4.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w3");
+		DAOFactory.createUserDAO().saveUser(u2,u3,u4);
 	}
 
 	@Test
@@ -77,14 +84,13 @@ public class UserDAOImplTest {
 	@Test
 	public void testAddShops() {
 		try {
-			User u2 = new User();
-			u2.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w5");
-			u2.setAddress("上海");
-			User u3 = new User();
-			u3.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w4");
-			User u4 = new User();
-			u4.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w3");
-			DAOFactory.createUserDAO().saveUser(u2,u3,u4);
+			User u2 = DAOFactory.createUserDAO().getUserByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w5");
+			User u3 = DAOFactory.createUserDAO().getUserByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w4");
+			User u4 = DAOFactory.createUserDAO().getUserByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w3");
+			Shop s = DAOFactory.createShopDAO().getShopByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
+			DAOFactory.createUserDAO().addShops(u2, s);
+			DAOFactory.createUserDAO().addShops(u3, s);
+			DAOFactory.createUserDAO().addShops(u4, s);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

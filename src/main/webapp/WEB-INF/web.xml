@@ -39,6 +39,12 @@
 		<description></description>
 		<servlet-class>com.microcard.servlet.User.UserEntryServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CommodityServlet</servlet-name>
+		<display-name>CommodityServlet</display-name>
+		<description></description>
+		<servlet-class>com.microcard.servlet.CommodityServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>ShopEntryServlet</servlet-name>
 		<url-pattern>/shopentry</url-pattern>
@@ -60,6 +66,10 @@
 	<servlet-mapping>
 		<servlet-name>UserEntryServlet</servlet-name>
 		<url-pattern>/userentry</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CommodityServlet</servlet-name>
+		<url-pattern>/commodityServlet.do</url-pattern>
 	</servlet-mapping>
 
 	<resource-ref>
