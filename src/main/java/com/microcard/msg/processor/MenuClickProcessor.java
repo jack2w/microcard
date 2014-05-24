@@ -31,19 +31,19 @@ public class MenuClickProcessor implements IMsgProcessor {
 		
 		switch(menuMsg.getEventKey()){
 		  
-			case Menu.Menu_Key_COMMODITY:
+			case Menu.Menu_Key_Shop_COMMODITY:
 				result = processCommodity(responseMsg);
 				break;
-			case Menu.MENU_Key_MEMBER:
+			case Menu.MENU_Key_Shop_MEMBER:
 				result = processMember(responseMsg);
 				break;
-			case Menu.MENU_Key_RECORD:
+			case Menu.MENU_Key_Shop_RECORD:
 				result = processRecord(responseMsg);
 				break;
-			case Menu.MENU_Key_SHOP:
+			case Menu.MENU_Key_Shop_SHOPINFO:
 				result = processShop(responseMsg);
 				break;
-			case Menu.Menu_Key_Code:
+			case Menu.Menu_Key_Shop_Code:
 				result = processKeyCode(msg.getFromUserName());
 				break;
 		}

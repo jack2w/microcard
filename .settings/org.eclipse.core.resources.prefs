@@ -3,10 +3,15 @@ encoding//src/main/java/com/microcard/menu/Menu.java=UTF-8
 encoding//src/main/java/com/microcard/menu/MicroCardMenuBuilder.java=UTF-8
 encoding//src/main/java/com/microcard/msg/processor/TextMsgProcessor.java=UTF-8
 encoding//src/main/java/com/microcard/token/TokenManager.java=UTF-8
+<<<<<<< HEAD
 encoding//src/main/webapp/commodity/commodity.html=UTF-8
 encoding//src/main/webapp/commodity/commodity.jsp=UTF-8
 encoding//src/main/webapp/member/member.jsp=UTF-8
 encoding//src/main/webapp/record/record.html=UTF-8
+=======
+>>>>>>> c7d4df3bd34e0c18947533dcc4ab4cde6d71e27e
 encoding//src/main/webapp/resources/styles/code.css=UTF-8
 encoding//src/main/webapp/resources/styles/error.css=UTF-8
+encoding//src/main/webapp/shop/member.jsp=UTF-8
+encoding//src/main/webapp/shop/record.html=UTF-8
 encoding/<project>=UTF-8

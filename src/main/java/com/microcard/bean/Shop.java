@@ -24,11 +24,6 @@ public class Shop {
 	private long id;
 	
 	/**
-	 * 商铺的二维码信息
-	 */
-	private String String;
-	
-	/**
 	 * 商铺名称,由商铺用户输入
 	 */
 	private String name;
@@ -89,7 +84,7 @@ public class Shop {
 	private Timestamp subscribeTime;
 	
 	/**
-	 * 
+	 * 商铺二维码
 	 */
 	private String code;
 	
@@ -145,15 +140,7 @@ public class Shop {
 	public void setOpenId(String openId) {
 		this.openId = openId;
 	}
-
-	public String getString() {
-		return String;
-	}
-
-	public void setString(String string) {
-		String = string;
-	}
-
+	
 	public String getName() {
 		return name;
 	}

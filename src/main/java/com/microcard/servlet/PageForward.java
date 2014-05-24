@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.microcard.bean.Shop;
 import com.microcard.client.WeixinClient;
+import com.microcard.dao.DAOFactory;
 import com.microcard.exception.WeixinException;
 import com.microcard.log.Logger;
 import com.microcard.menu.Menu;
+import com.microcard.msg.ReceivedSubscribeMsg;
+import com.microcard.msg.processor.SubscribeProcessor;
 import com.microcard.token.TokenManager;
 import com.microcard.util.ErrorPage;
 
@@ -89,22 +93,22 @@ public class PageForward extends HttpServlet {
 	private void forward(String page ,String openId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		switch(page){
 		  
-		case Menu.Menu_Key_COMMODITY:
-			response.sendRedirect("commodity/commodity.html");
+		case Menu.Menu_Key_Shop_COMMODITY:
+			response.sendRedirect("shop/commodity.jsp?OPENID"+openId);
 			break;
-		case Menu.MENU_Key_MEMBER:
-			response.sendRedirect("member/member.html");
+		case Menu.MENU_Key_Shop_MEMBER:
+			response.sendRedirect("shop/member.jsp?OPENID"+openId);
 			break;
-		case Menu.MENU_Key_RECORD:
-			response.sendRedirect("record/record.html");
+		case Menu.MENU_Key_Shop_RECORD:
+			response.sendRedirect("shop/record.html?OPENID"+openId);
 			break;
-		case Menu.MENU_Key_SALES:
-			response.sendRedirect("sales/sales.html");
+		case Menu.MENU_Key_Shop_SALES:
+			response.sendRedirect("shop/sales.html?OPENID"+openId);
 			break;
-		case Menu.MENU_Key_SHOP:
-			response.sendRedirect("shop/shop.html");
+		case Menu.MENU_Key_Shop_SHOPINFO:
+			response.sendRedirect("shop/shop.jsp?OPENID"+openId);
 			break;
-		case Menu.Menu_Key_Code:
+		case Menu.Menu_Key_Shop_Code:
 			processCode(openId,request,response);
 			break;
 		default:
@@ -115,6 +119,22 @@ public class PageForward extends HttpServlet {
 	}
 	
 	private void processCode(String openId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		try {
+			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
+			if(shop == null) {
+				SubscribeProcessor processor = new SubscribeProcessor();
+				ReceivedSubscribeMsg msg = new ReceivedSubscribeMsg();
+				msg.setFromUserName(openId);
+			    processor.proccess(msg);
+			}
+		} catch (Exception e) {
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println(ErrorPage.createPage("添加商铺信息有误: " + e.getMessage()));
+			return;
+		}
+		
 		
 		String token = null;
 		

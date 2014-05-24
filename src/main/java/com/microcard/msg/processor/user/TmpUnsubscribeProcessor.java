@@ -5,6 +5,7 @@ package com.microcard.msg.processor.user;
 
 import org.hibernate.HibernateException;
 
+import com.microcard.bean.Shop;
 import com.microcard.bean.User;
 import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
@@ -17,7 +18,7 @@ import com.microcard.msg.processor.IMsgProcessor;
  * @author jack
  *
  */
-public class UserUnsubscribeProcessor  implements IMsgProcessor {
+public class TmpUnsubscribeProcessor  implements IMsgProcessor {
 
 	/* (non-Javadoc)
 	 * @see com.microcard.msg.processor.IMsgProcessor#proccess(com.microcard.msg.Msg)
@@ -43,6 +44,13 @@ public class UserUnsubscribeProcessor  implements IMsgProcessor {
 				DAOFactory.createUserDAO().deleteLogicalUser(u);
 			}
 
+			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(unsubscribeMsg.getFromUserName());
+			if(shop == null){
+				Logger.getOperLogger().warn("取消订阅不应该存在不存在的商铺。");
+			} else{
+				DAOFactory.createShopDAO().deleteLogicalShop(shop);
+			}		
+			
 			HibernateUtil.instance().commitTransaction();
 		
 		} catch(HibernateException e){

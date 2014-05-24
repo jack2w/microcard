@@ -20,27 +20,39 @@ public class MicroCardMenuBuilder {
 		
 		Menu menu = new Menu();
 		
-		//商品
+		//记一笔
+		MenuViewItem record = new MenuViewItem("记一笔",buildUrl(Menu.MENU_Key_Shop_RECORD));
+		menu.addItem(record);	
 		
-		MenuViewItem record = new MenuViewItem("商品",buildUrl(Menu.Menu_Key_COMMODITY));
-		menu.addItem(record);
-
 		//会员
-		MenuViewItem member = new MenuViewItem("会员",buildUrl(Menu.MENU_Key_MEMBER));
-		menu.addItem(member);
+		MenuItem user = new MenuItem("会员");
+		menu.addItem(user);		
+		//会员->信息
+		MenuViewItem userInfo = new MenuViewItem("信息",buildUrl(Menu.MENU_Key_User_USERINFO));
+		user.addSubMenuItem(userInfo);		
+		//会员->商铺
+		MenuViewItem userShop = new MenuViewItem("商铺",buildUrl(Menu.MENU_Key_User_USERINFO));
+		user.addSubMenuItem(userShop);		
+
 		
-		//设置
-		MenuItem setting = new MenuItem("设置");
-		menu.addItem(setting);
-		//设置->商铺
-		MenuViewItem shop = new MenuViewItem("商铺",buildUrl(Menu.MENU_Key_SHOP));
-		setting.addSubMenuItem(shop);
-		//设置->商品
-		MenuViewItem commodity = new MenuViewItem("营销",buildUrl(Menu.MENU_Key_SALES));
-		setting.addSubMenuItem(commodity);
+		//商铺
+		MenuItem shop = new MenuItem("商铺");
+		menu.addItem(shop);
+		//商铺->商铺信息
+		MenuViewItem shopInfo = new MenuViewItem("信息",buildUrl(Menu.MENU_Key_Shop_SHOPINFO));
+		shop.addSubMenuItem(shopInfo);
+		//商铺->营销
+		MenuViewItem salses = new MenuViewItem("营销",buildUrl(Menu.MENU_Key_Shop_SALES));
+		shop.addSubMenuItem(salses);
+		//商铺->商品
+		MenuViewItem commodity = new MenuViewItem("商品",buildUrl(Menu.Menu_Key_Shop_COMMODITY));
+		shop.addSubMenuItem(commodity);
+		//商铺->会员
+		MenuViewItem member = new MenuViewItem("会员",buildUrl(Menu.MENU_Key_Shop_MEMBER));
+		shop.addSubMenuItem(member);
 		//设置->二维码
-		MenuViewItem code = new MenuViewItem("二维码",buildUrl(Menu.Menu_Key_Code));
-		setting.addSubMenuItem(code);
+		MenuViewItem code = new MenuViewItem("二维码",buildUrl(Menu.Menu_Key_Shop_Code));
+		shop.addSubMenuItem(code);
 		
 		return menu;
 	}
