@@ -34,11 +34,8 @@ public class UserScanMsgProcessor implements IMsgProcessor {
 		//TODO 如果该User不存在则添加一条User记录，存在则检查该Shop是否已经跟这个User建立关系
 		//TODO 如果这个User和Shop没有关系，则建立他们之间的关系
 		try{
-<<<<<<< HEAD
-			
-=======
 			HibernateUtil.instance().beginTransaction();
->>>>>>> c7d4df3bd34e0c18947533dcc4ab4cde6d71e27e
+
 			ReceivedScanMsg receivescanmsg = (ReceivedScanMsg)msg;
 			User u = DAOFactory.createUserDAO().getUserByOpenID(receivescanmsg.getFromUserName());
 			Shop s = DAOFactory.createShopDAO().getShopByID(Long.parseLong(receivescanmsg.getEventKey()));
