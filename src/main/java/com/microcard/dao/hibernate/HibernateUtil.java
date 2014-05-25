@@ -89,7 +89,7 @@ public class HibernateUtil {
 		Session session = (Session)tLocalsess.get();
 		tLocalsess.set(null);
 		try{
-			if(session != null || session.isOpen()){
+			if(session != null && session.isOpen()){
 				session.close();
 			}
 		} catch(HibernateException e){
