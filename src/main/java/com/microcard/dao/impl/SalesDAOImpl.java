@@ -21,7 +21,7 @@ public class SalesDAOImpl implements SalesDAO{
 			Session session = HibernateUtil.instance().currentSession();
 			return session.createQuery("from " + Sales.class.getName()).list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  sales.");
+			log.error(ex, "failed get all sales.");
 			throw ex;
 		}
 	}
@@ -34,7 +34,7 @@ public class SalesDAOImpl implements SalesDAO{
 				session.delete(s);
 			}		
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  Sales.");
+			log.error(ex, "failed delete sales.");
 			throw ex;
 		}
 		
@@ -47,7 +47,7 @@ public class SalesDAOImpl implements SalesDAO{
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (Sales)session.load(Sales.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get sales by id.");
+			log.error(ex, "failed get sales by id.");
 			throw ex;
 		}
 		return s;
@@ -68,7 +68,7 @@ public class SalesDAOImpl implements SalesDAO{
 				for(Sales s : sales)
 				session.save(s);
 		}catch(HibernateException e){
-			log.error(e, "fail add  sales.");
+			log.error(e, "failed add sales.");
 			throw e;
 		}	
 	}
@@ -78,7 +78,7 @@ public class SalesDAOImpl implements SalesDAO{
 		try{
 				session.saveOrUpdate(s);
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a Sales.");
+			log.error(e, "failed save or update sales.");
 			throw e;
 		}
 	}
@@ -94,7 +94,7 @@ public class SalesDAOImpl implements SalesDAO{
 			}
 			this.saveOrUpdate(sales);
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodities.");
+			log.error(e, "failed add commodities to sale.");
 			throw e;
 		}
 		
@@ -110,7 +110,7 @@ public class SalesDAOImpl implements SalesDAO{
 				session.update(c);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodity.");
+			log.error(e, "failed update commodity to sale.");
 			throw e;
 		}
 		
@@ -128,7 +128,7 @@ public class SalesDAOImpl implements SalesDAO{
 				session.update(c);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail delete  commodity.");
+			log.error(e, "failed delete commodity from sale.");
 			throw e;
 		}
 		

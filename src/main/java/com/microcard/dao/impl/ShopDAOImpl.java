@@ -29,7 +29,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			c.add(Restrictions.eq("deleteFlag", false));
 			return c.list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  shopes.");
+			log.error(ex, "failed get all shops.");
 			throw ex;
 		}
 	}
@@ -49,7 +49,7 @@ public class ShopDAOImpl  implements ShopDAO{
 				session.delete(s);
 			}
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  shope.");
+			log.error(ex, "failed delete physically shop.");
 			throw ex;
 		}
 		
@@ -63,7 +63,7 @@ public class ShopDAOImpl  implements ShopDAO{
 				this.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail get shop by openid.");
+			log.error(e, "failed delete logically shop.");
 			throw e;
 		}
 	}
@@ -75,7 +75,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (Shop)session.load(Shop.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get shope by id.");
+			log.error(ex, "failed get shop by id.");
 			throw ex;
 		}
 		return s;
@@ -101,7 +101,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			return result;
 			
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodities.");
+			log.error(e, "failed get users from shop.");
 			throw e;
 		}
        
@@ -122,7 +122,7 @@ public class ShopDAOImpl  implements ShopDAO{
 				this.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodities.");
+			log.error(e, "failed add shop.");
 			throw e;
 		}
 	}
@@ -140,7 +140,7 @@ public class ShopDAOImpl  implements ShopDAO{
 				session.save(c);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodities.");
+			log.error(e, "failed add commodities to shop.");
 			throw e;
 		}
 	}
@@ -158,7 +158,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
-			log.error(e, "fail add  sales.");
+			log.error(e, "failed add sales to shop.");
 			throw e;
 		}
 		
@@ -171,7 +171,7 @@ public class ShopDAOImpl  implements ShopDAO{
 				session.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a shop.");
+			log.error(e, "failed save or update shop.");
 			throw e;
 		}
 	}
@@ -189,7 +189,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
-			log.error(e, "fail update  commodities.");
+			log.error(e, "failed update commodities to shop.");
 			throw e;
 		}
 		
@@ -211,7 +211,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
-			log.error(e, "fail delete  commodities.");
+			log.error(e, "failed delete commodities from shop.");
 			throw e;
 		}
 		
@@ -233,7 +233,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
-			log.error(e, "fail delete  sales.");
+			log.error(e, "failed delete sales from shop.");
 			throw e;
 		}
 		
@@ -252,7 +252,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
-			log.error(e, "fail update sales.");
+			log.error(e, "fail update sales to shop.");
 			throw e;
 		}
 		
@@ -271,7 +271,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 			return null;
 		}catch(HibernateException e){
-			log.error(e, "fail get shop by openid.");
+			log.error(e, "failed get shop by openid.");
 			throw e;
 		}
 	}
@@ -292,7 +292,7 @@ public class ShopDAOImpl  implements ShopDAO{
 			}
 
 		}catch(HibernateException e){
-			log.error(e, "fail get shop by openid.");
+			log.error(e, "failed get commdities by shop openid.");
 			throw e;
 		}
 	}

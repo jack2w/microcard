@@ -20,7 +20,7 @@ public class RecordDAOImpl implements RecordDAO {
 			Session session = HibernateUtil.instance().currentSession();
 			return session.createQuery("from " + Record.class.getName()).list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  Record.");
+			log.error(ex, "failed get all records.");
 			throw ex;
 		}
 	}
@@ -33,7 +33,7 @@ public class RecordDAOImpl implements RecordDAO {
 				session.delete(s);
 			}		
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  Record.");
+			log.error(ex, "failed delete record.");
 			throw ex;
 		}
 
@@ -46,7 +46,7 @@ public class RecordDAOImpl implements RecordDAO {
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (Record)session.load(Record.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get record by id.");
+			log.error(ex, "failed get record by id.");
 			throw ex;
 		}
 		return s;
@@ -67,7 +67,7 @@ public class RecordDAOImpl implements RecordDAO {
 				for(Record r : records)
 				session.save(r);
 		}catch(HibernateException e){
-			log.error(e, "fail add  Record.");
+			log.error(e, "failed add record.");
 			throw e;
 		}	
 
@@ -78,7 +78,7 @@ public class RecordDAOImpl implements RecordDAO {
 		try{
 				session.saveOrUpdate(r);
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a Sales.");
+			log.error(e, "failed save or update a record.");
 			throw e;
 		}
 	}

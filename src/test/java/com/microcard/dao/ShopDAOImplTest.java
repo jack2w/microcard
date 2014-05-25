@@ -67,7 +67,7 @@ public class ShopDAOImplTest {
 	@Test
 	public void testAddShop() {
 		try {
-			Shop shop = WeixinClient.getShopInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
+			Shop shop = WeixinClient.getShopInfo("o2gmduF6NicaYlrYc0OKsbYeYVE4");
 			DAOFactory.createShopDAO().addShop(shop);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

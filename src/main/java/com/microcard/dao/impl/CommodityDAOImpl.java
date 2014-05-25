@@ -27,7 +27,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 			Session session = HibernateUtil.instance().currentSession();
 			return session.createQuery("from " + Commodity.class.getName()).list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  Commodity.");
+			log.error(ex, "failed get all commodities.");
 			throw ex;
 		}
 	}
@@ -44,7 +44,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 				session.delete(s);
 			}		
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  Commodity.");
+			log.error(ex, "failed delete commodity.");
 			throw ex;
 		}
 
@@ -60,7 +60,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (Commodity)session.load(Commodity.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get commodity by id.");
+			log.error(ex, "failed get commodity by id.");
 			throw ex;
 		}
 		return s;
@@ -88,7 +88,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 				for(Commodity hc : commoditys)
 				session.save(hc);
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodity.");
+			log.error(e, "failed add commodity.");
 			throw e;
 		}	
 
@@ -100,7 +100,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 		try{
 				session.saveOrUpdate(commodity);
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a commodity.");
+			log.error(e, "failed save or update a commodity.");
 			throw e;
 		}
 		

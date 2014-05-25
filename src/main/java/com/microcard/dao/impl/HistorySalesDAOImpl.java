@@ -18,7 +18,7 @@ public class HistorySalesDAOImpl implements HistorySalesDAO {
 			Session session = HibernateUtil.instance().currentSession();
 			return session.createQuery("from " + HistorySales.class.getName()).list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  HistorySales.");
+			log.error(ex, "failed get all historysales.");
 			throw ex;
 		}
 	}
@@ -32,7 +32,7 @@ public class HistorySalesDAOImpl implements HistorySalesDAO {
 				session.delete(s);
 			}		
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  HistorySales.");
+			log.error(ex, "failed delete historysales.");
 			throw ex;
 		}
 
@@ -46,7 +46,7 @@ public class HistorySalesDAOImpl implements HistorySalesDAO {
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (HistorySales)session.load(HistorySales.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get historyCommodity by id.");
+			log.error(ex, "failed get historysales by id.");
 			throw ex;
 		}
 		return s;
@@ -68,7 +68,7 @@ public class HistorySalesDAOImpl implements HistorySalesDAO {
 				for(HistorySales hs : historySales)
 				session.save(hs);
 		}catch(HibernateException e){
-			log.error(e, "fail add  historySales.");
+			log.error(e, "failed add  historysales.");
 			throw e;
 		}	
 
@@ -81,7 +81,7 @@ public class HistorySalesDAOImpl implements HistorySalesDAO {
 		try{
 				session.saveOrUpdate(historySales);
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a historySales.");
+			log.error(e, "failed save or update a historysales.");
 			throw e;
 		}		
 		

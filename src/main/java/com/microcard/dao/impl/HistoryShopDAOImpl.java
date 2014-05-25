@@ -19,7 +19,7 @@ public class HistoryShopDAOImpl implements HistoryShopDAO {
 			Session session = HibernateUtil.instance().currentSession();
 			return session.createQuery("from " + HistoryShop.class.getName()).list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  HistoryShop.");
+			log.error(ex, "failed get all historyshops.");
 			throw ex;
 		}
 	}
@@ -33,7 +33,7 @@ public class HistoryShopDAOImpl implements HistoryShopDAO {
 				session.delete(s);
 			}		
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  HistoryShop.");
+			log.error(ex, "failed delete historyshop.");
 			throw ex;
 		}
 
@@ -46,7 +46,7 @@ public class HistoryShopDAOImpl implements HistoryShopDAO {
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (HistoryShop)session.load(HistoryShop.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get historyShop by id.");
+			log.error(ex, "failed get historyshop by id.");
 			throw ex;
 		}
 		return s;
@@ -69,7 +69,7 @@ public class HistoryShopDAOImpl implements HistoryShopDAO {
 				for(HistoryShop hs : historyShops)
 				session.save(hs);
 		}catch(HibernateException e){
-			log.error(e, "fail add  historyShop.");
+			log.error(e, "failed add historyshop.");
 			throw e;
 		}	
 
@@ -81,7 +81,7 @@ public class HistoryShopDAOImpl implements HistoryShopDAO {
 		try{
 				session.saveOrUpdate(historyShop);
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a historyShop.");
+			log.error(e, "failed save or update a historyshop.");
 			throw e;
 		}		
 	}

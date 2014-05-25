@@ -22,7 +22,7 @@ public class UserDAOImpl implements UserDAO{
 	private Logger log = Logger.getMsgLogger();
 	
 	@Override
-	public List getUsers() throws HibernateException {
+	public List<User> getUsers() throws HibernateException {
 		
 		try{
 			Session session = HibernateUtil.instance().currentSession();
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO{
 			c.add(Restrictions.eq("deleteFlag", false));
 			return c.list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get users.");
+			log.error(ex, "failed get all users.");
 			throw ex;
 		}
 		
@@ -54,7 +54,7 @@ public class UserDAOImpl implements UserDAO{
 				session.delete(u);
 			}			
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete user.");
+			log.error(ex, "failed delete phsycally user.");
 			throw ex;
 		}
 	}
@@ -66,7 +66,7 @@ public class UserDAOImpl implements UserDAO{
 			Session session = HibernateUtil.instance().currentSession();
 	       u = (User)session.load(User.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get user by id.");
+			log.error(ex, "failed get user by id.");
 			throw ex;
 		}
 		return u;
@@ -99,7 +99,7 @@ public class UserDAOImpl implements UserDAO{
 				session.saveOrUpdate(u);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a user.");
+			log.error(e, "failed save or update a user.");
 			throw e;
 		}
 		
@@ -118,7 +118,7 @@ public class UserDAOImpl implements UserDAO{
 			}
 			this.saveOrUpdate(u);
 		}catch(HibernateException e){
-			log.error(e, "fail add  records.");
+			log.error(e, "failed add  records to user.");
 			throw e;
 		}
 		
@@ -137,7 +137,7 @@ public class UserDAOImpl implements UserDAO{
 			}
 			this.saveOrUpdate(u);
 		}catch(HibernateException e){
-			log.error(e, "fail add  records.");
+			log.error(e, "failed update records to user.");
 			throw e;
 		}
 		
@@ -157,7 +157,7 @@ public class UserDAOImpl implements UserDAO{
 				session.delete(r);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail add  records.");
+			log.error(e, "failed delete records from user.");
 			throw e;
 		}
 		
@@ -177,8 +177,8 @@ public class UserDAOImpl implements UserDAO{
 				s.getUsers().add(u);
 				session.saveOrUpdate(s);
 			}
-		}catch(HibernateException e){
-			log.error(e, "fail add  shops.");
+		}catch(HibernateException e){ 
+			log.error(e, "failed add shop.");
 			throw e;
 		}
 		
@@ -202,7 +202,7 @@ public class UserDAOImpl implements UserDAO{
 				session.saveOrUpdate(s);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail delete  shops.");
+			log.error(e, "failed delete shop from user.");
 			throw e;
 		}
 		
@@ -216,7 +216,7 @@ public class UserDAOImpl implements UserDAO{
 				this.saveOrUpdate(u);
 			}
 		}catch(HibernateException e){
-			log.error(e, "fail delete logical user.");
+			log.error(e, "failed delete logically user.");
 			throw e;
 		}	
 	}
@@ -232,7 +232,7 @@ public class UserDAOImpl implements UserDAO{
 			return list.size() > 0 ? list.get(0) : null;
 
 		}catch(HibernateException e){
-			log.error(e, "fail get user by openid.");
+			log.error(e, "failed get user by openid.");
 			throw e;
 		}
 	}
@@ -256,7 +256,7 @@ public class UserDAOImpl implements UserDAO{
 			return result;
 			
 		}catch(HibernateException e){
-			log.error(e, "fail add  commodities.");
+			log.error(e, "failed get shops from user.");
 			throw e;
 		}
        
@@ -269,7 +269,7 @@ public class UserDAOImpl implements UserDAO{
 			Session session = HibernateUtil.instance().currentSession();
 	        u = (User)session.load(User.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get user by id.");
+			log.error(ex, "failed get user by id.");
 			throw ex;
 		}
 		return u;

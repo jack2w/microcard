@@ -27,7 +27,7 @@ public class HistoryCommodityDAOImpl implements HistoryCommodityDAO {
 			Session session = HibernateUtil.instance().currentSession();
 			return session.createQuery("from " + HistoryCommodity.class.getName()).list();
 		} catch(HibernateException ex){
-			log.error(ex, "fail get  HistoryCommodity.");
+			log.error(ex, "failed get all historycommodities.");
 			throw ex;
 		}
 	}
@@ -44,7 +44,7 @@ public class HistoryCommodityDAOImpl implements HistoryCommodityDAO {
 				session.delete(s);
 			}		
 		} catch(HibernateException ex){
-			log.error(ex, "fail delete  historyCommoditys.");
+			log.error(ex, "failed delete historycommodities.");
 			throw ex;
 		}
 
@@ -61,7 +61,7 @@ public class HistoryCommodityDAOImpl implements HistoryCommodityDAO {
 			Session session = HibernateUtil.instance().currentSession();
 	        s = (HistoryCommodity)session.load(HistoryCommodity.class.getName(), id);
 		} catch(HibernateException ex){
-			log.error(ex, "fail get historyCommodity by id.");
+			log.error(ex, "failed get historycommodity by id.");
 			throw ex;
 		}
 		return s;
@@ -90,7 +90,7 @@ public class HistoryCommodityDAOImpl implements HistoryCommodityDAO {
 				for(HistoryCommodity hc : historyCommoditys)
 				session.save(hc);
 		}catch(HibernateException e){
-			log.error(e, "fail add  historycommoditys.");
+			log.error(e, "failed add  historycommodities.");
 			throw e;
 		}	
 
@@ -103,7 +103,7 @@ public class HistoryCommodityDAOImpl implements HistoryCommodityDAO {
 		try{
 				session.saveOrUpdate(historyCommodity);
 		}catch(HibernateException e){
-			log.error(e, "fail save or update a historyCommodity.");
+			log.error(e, "failed save or update a historycommodities.");
 			throw e;
 		}
 		
