@@ -36,7 +36,6 @@ public class CommodityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		Logger.getOperLogger().info("name" + request.getParameter("name"));
 	}
 
 	/**
@@ -48,15 +47,24 @@ public class CommodityServlet extends HttpServlet {
 
 		try {
 			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
 			String name = request.getParameter("name");
 			String id = request.getParameter("id");
 			String price = request.getParameter("price");
+			if(price.contains(".")){
+				price = price.substring(0, price.indexOf("."));
+			}
 			String openid = request.getParameter("openid");
+			String oper = request.getParameter("oper");
 			Logger.getOperLogger().info("name : " + name);
 			Logger.getOperLogger().info("id : " + id);
-			Logger.getOperLogger().info("price : " + price);
+			Logger.getOperLogger().info("price : " +price);
 			Logger.getOperLogger().info("openid: " + openid);
+			Logger.getOperLogger().info("oper: " + oper);
 
+			if(oper == null || oper.equals("") || openid == null || openid.equals("")){
+				throw new Exception("oper or openid is null");
+			}
 			HibernateUtil.instance().beginTransaction();
 			Shop s = DAOFactory.createShopDAO().getShopByOpenID(openid);
 
@@ -67,21 +75,26 @@ public class CommodityServlet extends HttpServlet {
 
 			if (id != null && id.length() != 0) {
 				obj.setId(Long.parseLong(id));
-				DAOFactory.createShopDAO().updateCommodity(s, obj);
+				if(oper.equals("delete")){
+					DAOFactory.createShopDAO().delteCommoditity(s, obj);
+				} else{
+					DAOFactory.createShopDAO().updateCommodity(s, obj);
+				}			
 			} else {
 				DAOFactory.createShopDAO().addCommodity(s, obj);
 			}
 			HibernateUtil.instance().commitTransaction();
-			response.getWriter().write("成功");
+			response.getWriter().write("{\"result\":\"" + "操作成功" + "\"}");
 		} catch (HibernateException e) {
 			HibernateUtil.instance().rollbackTransaction();
-			Logger.getOperLogger().warn("添加或更新商品记录失败");
-			response.getWriter().write("添加或更新商品记录失败");
-		} catch(Exception ex){
+			Logger.getOperLogger().warn("操作商品信息失败");
+			response.getWriter().write("操作商品信息失败--" + e.getMessage());
+			response.getWriter().write("操作商品信息失败");
+		} catch (Exception ex) {
 			HibernateUtil.instance().rollbackTransaction();
-			Logger.getOperLogger().warn("添加或更新商品记录失败");
-			response.getWriter().write("添加或更新商品记录失败");
-		} finally{
+			Logger.getOperLogger().warn("操作商品信息失败");
+			response.getWriter().write("操作商品信息失败--" + ex.getMessage());
+		} finally {
 			HibernateUtil.instance().closeSession();
 		}
 

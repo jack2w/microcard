@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>我的商铺</title>
+<title>我的商品</title>
 <link href="../resources/styles/bootstrap.min.css" rel="stylesheet" />
 <link href="../resources/styles/zebra_dialog.css" rel="stylesheet" />
 <script type="text/javascript" src="../resources/js/jquery.js" /></script>
@@ -204,7 +204,7 @@ body {
 		});
 
 		/** 添加商品 **/
-		$(".addbtn").click(function() {
+		$(".addbtn").click(function(event) {
 			$("#dialog_commodityName").val("");
 			$("#dialog_commodityPrice").val("");
 			$("#imgUrl").attr("src", "");
@@ -226,8 +226,31 @@ body {
 				'title' : '提示',
 				'buttons' : [ 'Yes', 'No' ],
 				'onClose' : function(caption) {
-					if (caption == 'Yes') {
-						del.parent(".commodity").remove();
+					if (caption == 'Yes') {			
+						$.ajax({ 
+					        type: "post",
+					        dataType: "json", traditional:true,
+					        data: { name: del.parent(".commodity").find("h5").html(),
+					        	    price:  del.parent(".commodity").find("span").html().split("￥")[1],
+					        	    id: del.parent(".commodity").find("#commodityid").val(),
+					        	    openid: $("#openid").val(),
+					        	    oper: 'delete'
+					              },
+					        url: 'http://localhost:8080/microcard/commodityServlet.do',
+					        error: function( jqXHR, textStatus, errorThrown){		        
+					       	 $.Zebra_Dialog(jqXHR.responseText ,
+			        				 {'type': 'error',
+			        			     'title': '错误'});        	
+					        },		          
+					       success: function(data){
+					    	   $.Zebra_Dialog(data.result ,
+				        				 {'type': 'information',
+				        			     'title': '成功'}); 
+					    	   del.parent(".commodity").remove();
+					        } 
+					       
+					    });
+				
 					} else {
 						return;
 					}
@@ -243,15 +266,25 @@ body {
 		        data: { name: $('#dialog_commodityName').val(),
 		        	    price:  $('#dialog_commodityPrice').val(),
 		        	    id: $('#commodityid').val(),
-		        	    openid: $("#openid").val()
+		        	    openid: $("#openid").val(),
+		        	    oper: 'updateorsave'
 		              },
 		        url: 'http://localhost:8080/microcard/commodityServlet.do',
-		        error: function(XMLHttpRequest, textStatus, errorThrow){
-		            alert("XMLHttpRequest: " + XMLHttpRequest.val() + "\ntextStatus: " + textStatus);
-		          },
-		        sucess: function(data, textStatus){
-		        	alert("data:" + data + "\n status :" + textStatus);
-		        }
+		        error: function( jqXHR, textStatus, errorThrown){		        
+		       	 $.Zebra_Dialog(jqXHR.responseText ,
+        				 {'type': 'error',
+        			     'title': '错误'});        	
+		        },		          
+		       success: function(data){	    
+		    	   $.Zebra_Dialog(data.result ,
+	        				 {'type': 'information',
+	        			     'title': '成功',
+	        			     'buttons' : [ 'Yes' ],
+	        			     'onClose': function(caption) {
+	        			    	 window.location.reload();
+	        			     }
+		    	   });
+		        } 
 		       
 		    });
 		});
