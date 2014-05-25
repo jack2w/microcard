@@ -1,6 +1,7 @@
 package com.microcard.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -59,20 +60,28 @@ public class ShopServlet extends HttpServlet {
 		try {
 			HibernateUtil.instance().beginTransaction();
 			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
-			shop.setOpenId(openId);
 			shop.setName(name);
 			shop.setPhone(phone);
 			shop.setAddress(address);
 			shop.setMemo(memo);
 			DAOFactory.createShopDAO().updateShop(shop);
 			HibernateUtil.instance().commitTransaction();
-			request.setAttribute("updateShop", shop);
+			// request.setAttribute("updateShop", shop);
+			response.setCharacterEncoding("utf-8");
+			PrintWriter out = response.getWriter();
+			// 将数据拼接成JSON格式
+			out.print("{\"shopName\":\"" + shop.getName()
+					+ "\",\"shopPhone\":\"" + shop.getPhone() 
+					+ "\",\"shopAddress\":\"" + shop.getAddress() 
+					+ "\",\"shopMemo\":\"" + shop.getMemo() + "\"}");
+			out.flush();
+			out.close();
 		} catch (HibernateException exception) {
 			log.error("update failed case:" + exception);
 		}
-		//request.getRequestDispatcher("shop/shop.jsp")
-		//		.forward(request, response);
-		response.sendRedirect("shop/shop.jsp?OPENID=" + openId);
+		// request.getRequestDispatcher("shop/shop.jsp")
+		// .forward(request, response);
+		// response.sendRedirect("shop/shop.jsp?OPENID=" + openId);
 	}
 
 }

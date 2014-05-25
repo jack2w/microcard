@@ -127,8 +127,37 @@ table tr td:LAST-CHILD {
 			$("td input,td textarea").hide();
 			$("td span").show();
 
-			/** 提交数据到shopServlet **/
-			$("form").submit();
+			/** 提交数据到shopServlet 
+			$("form").submit();**/
+			$.ajax({
+				url : "../shopservlet",
+				type : "post",
+				dataType : "json",
+				data : {
+					shopName : $('#shopName').val(),
+					shopPhone : $('#shopPhone').val(),
+					shopAddress : $('#shopAddress').val(),
+					shopMemo : $('#shopMemo').val(),
+					shopOpenId : $('#shopOpenId').val(),
+				},
+				success : function(data) {
+					var dataList =  new Array();
+					dataList[0] = data.shopName;
+					dataList[1] = data.shopPhone;
+					dataList[2] = data.shopAddress;
+					dataList[3] = data.shopMemo;
+					$("td span").each(function(i) {
+						$(this).html(dataList[i]);
+					});
+				},
+				error : function(userName) {
+					$.Zebra_Dialog('该商铺不存在，请重新输入', {
+						    'type':     'error',
+						    'title':    '错误'
+						});
+				}
+			});
+
 		}
 	}
 
@@ -166,7 +195,7 @@ table tr td:LAST-CHILD {
 		request.setAttribute("shop", shop);
 	%>
 	<!-- this is header -->
-	<form method="post" action="../shopservlet">
+	
 		<div class="header">
 			<div class="title" id="titleString">我的商铺</div>
 			<a onclick="changeClick()" class="change"> <span
@@ -203,6 +232,6 @@ table tr td:LAST-CHILD {
 				value="${opendId}"> <input type="hidden" name="shop"
 				id="shop" value="${shop}">
 		</div>
-	</form>
+	
 </body>
 </html>
