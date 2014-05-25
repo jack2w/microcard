@@ -269,7 +269,7 @@ body {
 		        	    openid: $("#openid").val(),
 		        	    oper: 'updateorsave'
 		              },
-		        url: 'http://localhost:8080/microcard/commodityServlet.do',
+		        url: "../commodityServlet.do",
 		        error: function( jqXHR, textStatus, errorThrown){		        
 		       	 $.Zebra_Dialog(jqXHR.responseText ,
         				 {'type': 'error',
@@ -343,7 +343,7 @@ body {
 						<div style="width: 100%; text-align: center;">
 							<input class="dialog_cancle" type="button" value="取消"
 								style="width: 30%; height: 30px; border-radius: 2px; border: 1px solid #B5B5B5">
-							<input class="dialog_save" type="submit" value="保存"
+							<input class="dialog_save" type="button" value="保存"
 								style="width: 30%; height: 30px; border-radius: 2px; border: 1px solid #B5B5B5">
 							<input type="hidden" id="commodityid">
 							<input type="hidden" id="openid" value="${param.OPENID}">

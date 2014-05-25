@@ -84,6 +84,7 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public List<User> getUsersByShop(Shop shop, int start, int length) throws HibernateException{
+		if(shop == null) return null;
 		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
 			throw new HibernateException("cannot get shop's users since the shop is deleted.");
 		}
