@@ -94,19 +94,19 @@ public class PageForward extends HttpServlet {
 		switch(page){
 		  
 		case Menu.Menu_Key_Shop_COMMODITY:
-			response.sendRedirect("shop/commodity.jsp?OPENID"+openId);
+			response.sendRedirect("shop/commodity.jsp?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_MEMBER:
-			response.sendRedirect("shop/member.jsp?OPENID"+openId);
+			response.sendRedirect("shop/member.jsp?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_RECORD:
-			response.sendRedirect("shop/record.html?OPENID"+openId);
+			response.sendRedirect("shop/record.html?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_SALES:
-			response.sendRedirect("shop/sales.html?OPENID"+openId);
+			response.sendRedirect("shop/sales.html?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_SHOPINFO:
-			response.sendRedirect("shop/shop.jsp?OPENID"+openId);
+			response.sendRedirect("shop/shop.jsp?OPENID="+openId);
 			break;
 		case Menu.Menu_Key_Shop_Code:
 			processCode(openId,request,response);
@@ -119,9 +119,9 @@ public class PageForward extends HttpServlet {
 	}
 	
 	private void processCode(String openId, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+		Shop shop = null;
 		try {
-			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
+		    shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
 			if(shop == null) {
 				SubscribeProcessor processor = new SubscribeProcessor();
 				ReceivedSubscribeMsg msg = new ReceivedSubscribeMsg();
@@ -154,7 +154,7 @@ public class PageForward extends HttpServlet {
 		//获取二维码的ticket
 		String ticket = null;
 		try {
-			ticket = WeixinClient.getShopTicket(token,123);//TODO 暂用临时二维码进行测试
+			ticket = WeixinClient.getShopTicket(token,shop.getId());//TODO 暂用临时二维码进行测试
 			
 		} catch (Exception e) {
 			

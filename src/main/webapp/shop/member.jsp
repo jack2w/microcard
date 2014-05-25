@@ -5,6 +5,9 @@
 <%@page import="com.microcard.client.*"%>
 <%@page import="com.microcard.exception.*"%>
 <%@page import="com.microcard.msg.*"%>
+<%@page import="com.microcard.dao.*"%>
+<%@page import="com.microcard.dao.impl.*"%>
+<%@page import="com.microcard.dao.hibernate.*"%>
 <%@page import="java.util.*"%>
 <!DOCTYPE html>
 <html>
@@ -142,26 +145,26 @@ body {
 
 		<div class="memberList">
 		<%
-			OpenIdQuery query = WeixinClient.getShopList(null);
-			int count = 0;
-			for(String openId : query.getOpenIdList()) {
-				count++;
-				Shop shop = WeixinClient.getShopInfo(openId);
-				
+		    String openId = request.getParameter("OPENID");
+		    ShopDAO shopDao = DAOFactory.createShopDAO();
+		    Shop shop = shopDao.getShopByOpenID(openId);
+		    List<User> list = new ArrayList<User>();
+		    if(shop != null)
+		      list = shopDao.getUsersByShop(shop, 0, -1);
+		    
+			for(User user : list) {
 		%>
 				<div class="member">
-				<img src="<%=shop.getHeadImgUrl()%>">
+				<img src="<%=user.getHeadImgUrl()%>">
 				<div class="memberAbout">
-					<h5 style="font-size: 1.2em" id="memberName"><%=shop.getNickName()%></h5>
+					<h5 style="font-size: 1.2em" id="memberName"><%=user.getNickName()%></h5>
 					<div>
-						<span id="goodsName"><%=shop.getCity()%></span> <span
-							id="buyTime"><%=shop.getSubscribeTime().toLocaleString()%></span>
+						<span id="goodsName"><%=user.getCity()%></span> <span
+							id="buyTime"><%=user.getSubscribeTime().toLocaleString()%></span>
 					</div>
 				</div>
 			</div>	
-		
 		<%
-				if(count >= 10) break;
 			}
 		%>
 		</div>
