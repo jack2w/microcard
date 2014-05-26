@@ -100,10 +100,10 @@ public class PageForward extends HttpServlet {
 			response.sendRedirect("shop/member.jsp?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_RECORD:
-			response.sendRedirect("shop/record.html?OPENID="+openId);
+			response.sendRedirect("shop/record.jsp?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_SALES:
-			response.sendRedirect("shop/sales.html?OPENID="+openId);
+			response.sendRedirect("shop/sales.jsp?OPENID="+openId);
 			break;
 		case Menu.MENU_Key_Shop_SHOPINFO:
 			response.sendRedirect("shop/shop.jsp?OPENID="+openId);
@@ -111,6 +111,12 @@ public class PageForward extends HttpServlet {
 		case Menu.Menu_Key_Shop_Code:
 			processCode(openId,request,response);
 			break;
+		case Menu.MENU_Key_User_USERINFO:
+			response.sendRedirect("user/userinfo.jsp?OPENID="+openId);
+			break;
+		case Menu.MENU_Key_User_SHOP:
+			response.sendRedirect("user/shop.jsp?OPENID="+openId);
+			break;			
 		default:
 			response.setContentType("text/html");
 			response.getOutputStream().println(ErrorPage.createPage("could't find page by " + page ));

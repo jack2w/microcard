@@ -31,7 +31,7 @@ public class MicroCardMenuBuilder {
 		MenuViewItem userInfo = new MenuViewItem("信息",buildUrl(Menu.MENU_Key_User_USERINFO));
 		user.addSubMenuItem(userInfo);		
 		//会员->商铺
-		MenuViewItem userShop = new MenuViewItem("商铺",buildUrl(Menu.MENU_Key_User_USERINFO));
+		MenuViewItem userShop = new MenuViewItem("商铺",buildUrl(Menu.MENU_Key_User_SHOP));
 		user.addSubMenuItem(userShop);		
 
 		
