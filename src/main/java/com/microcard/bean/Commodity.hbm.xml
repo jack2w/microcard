@@ -31,6 +31,9 @@
         <property name="discount" type="double">
             <column name="DISCOUNT" />
         </property>
+        <property name="deleteFlag" type= "java.lang.Boolean" >
+            <column name="DELETEFLAG" default="false"/>
+        </property>
         <many-to-one name="sales" class="com.microcard.bean.Sales">
             <column name="SALES_ID" />
         </many-to-one>

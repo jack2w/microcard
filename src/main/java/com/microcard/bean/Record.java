@@ -4,6 +4,7 @@
 package com.microcard.bean;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * 用户购买记录
@@ -25,7 +26,27 @@ public class Record {
 	/**
 	 * 商铺名称
 	 */
-	private HistoryShop shop;
+	private Shop shop;
+	
+	/**
+	 * 购买价格
+	 */
+	private double price;
+	
+	/**
+	 * 奖励
+	 */
+	private double bonus;
+	
+	/**
+	 * 是否用掉奖励
+	 */
+	private boolean bonusUsed;
+	
+	/**
+	 * 是否删除
+	 */
+	private boolean deleteFlag;
 	
 	/**
 	 * 购买发生时间
@@ -33,14 +54,16 @@ public class Record {
 	private Timestamp time;
 	
 	/**
-	 * 购买的商品
+	 * 该营销参加的商品，具有1对多关系,需要延迟加载
 	 */
-	private HistoryCommodity commodity;
+	private Set<Commodity> commodities;
 	
 	/**
 	 * 购买商品的折扣
 	 */
-	private HistorySales sales;
+	private Sales sales;
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -72,14 +95,6 @@ public class Record {
 		this.id = id;
 	}
 
-	public HistoryShop getShop() {
-		return shop;
-	}
-
-	public void setShop(HistoryShop shop) {
-		this.shop = shop;
-	}
-
 	public Timestamp getTime() {
 		return time;
 	}
@@ -88,28 +103,110 @@ public class Record {
 		this.time = time;
 	}
 
-	public HistoryCommodity getCommodity() {
-		return commodity;
-	}
-
-	public void setCommodity(HistoryCommodity commodity) {
-		this.commodity = commodity;
-	}
-
-	public HistorySales getSales() {
-		return sales;
-	}
-
-	public void setSales(HistorySales sales) {
-		this.sales = sales;
-	}
-
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	/**
+	 * @return the shop
+	 */
+	public Shop getShop() {
+		return shop;
+	}
+
+	/**
+	 * @param shop the shop to set
+	 */
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	/**
+	 * @return the bonus
+	 */
+	public double getBonus() {
+		return bonus;
+	}
+
+	/**
+	 * @param bonus the bonus to set
+	 */
+	public void setBonus(double bonus) {
+		this.bonus = bonus;
+	}
+
+	/**
+	 * @return the bonusUsed
+	 */
+	public boolean isBonusUsed() {
+		return bonusUsed;
+	}
+
+	/**
+	 * @param bonusUsed the bonusUsed to set
+	 */
+	public void setBonusUsed(boolean bonusUsed) {
+		this.bonusUsed = bonusUsed;
+	}
+
+	/**
+	 * @return the deleteFlag
+	 */
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	/**
+	 * @param deleteFlag the deleteFlag to set
+	 */
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+
+	/**
+	 * @return the commodities
+	 */
+	public Set<Commodity> getCommodities() {
+		return commodities;
+	}
+
+	/**
+	 * @param commodities the commodities to set
+	 */
+	public void setCommodities(Set<Commodity> commodities) {
+		this.commodities = commodities;
+	}
+
+	/**
+	 * @return the sales
+	 */
+	public Sales getSales() {
+		return sales;
+	}
+
+	/**
+	 * @param sales the sales to set
+	 */
+	public void setSales(Sales sales) {
+		this.sales = sales;
 	}
 	
 	

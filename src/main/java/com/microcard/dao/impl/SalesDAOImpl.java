@@ -19,7 +19,7 @@ public class SalesDAOImpl implements SalesDAO{
 	public List getSales() throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			return session.createQuery("from " + Sales.class.getName()).list();
+			return session.createQuery("from " + Sales.class.getName() +" s where s.deleteFlag=false").list();
 		} catch(HibernateException ex){
 			log.error(ex, "failed get all sales.");
 			throw ex;
@@ -31,7 +31,8 @@ public class SalesDAOImpl implements SalesDAO{
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 			for(Sales s : sales){
-				session.delete(s);
+				s.setDeleteFlag(true);
+				session.saveOrUpdate(s);
 			}		
 		} catch(HibernateException ex){
 			log.error(ex, "failed delete sales.");

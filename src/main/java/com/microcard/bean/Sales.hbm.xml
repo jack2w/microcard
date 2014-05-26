@@ -17,7 +17,16 @@
         <property name="memo" type="java.lang.String">
             <column name="MEMO" />
         </property>
-        <set name="commodities" table="COMMODITY" inverse="false" lazy="true" cascade="delete">
+        <property name="price" type="double">
+            <column name="PRICE" />
+        </property>
+        <property name="bonus" type="double">
+            <column name="BONUS" />
+        </property>
+        <property name="deleteFlag" type= "java.lang.Boolean" >
+            <column name="DELETEFLAG" default="false"/>
+        </property>
+        <set name="commodities" table="COMMODITY" inverse="false" lazy="true" cascade="save-update">
             <key>
                 <column name="SALES_ID" />
             </key>

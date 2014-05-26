@@ -33,6 +33,21 @@ public class Sales {
 	private String memo;
 	
 	/**
+	 * 营销价格
+	 */
+	private double price;
+	
+	/**
+	 * 奖励
+	 */
+	private double bonus;
+	
+	/**
+	 * 是否删除
+	 */
+	private boolean deleteFlag;
+	
+	/**
 	 * 该营销参加的商品，具有1对多关系,需要延迟加载
 	 */
 	private Set<Commodity> commodities;
@@ -97,6 +112,48 @@ public class Sales {
 
 	public void setCommodities(Set<Commodity> commodities) {
 		this.commodities = commodities;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	/**
+	 * @return the bonus
+	 */
+	public double getBonus() {
+		return bonus;
+	}
+
+	/**
+	 * @param bonus the bonus to set
+	 */
+	public void setBonus(double bonus) {
+		this.bonus = bonus;
+	}
+
+	/**
+	 * @return the deleteFlag
+	 */
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	/**
+	 * @param deleteFlag the deleteFlag to set
+	 */
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 	
 	

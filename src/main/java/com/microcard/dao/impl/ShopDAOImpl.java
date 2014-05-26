@@ -208,7 +208,8 @@ public class ShopDAOImpl  implements ShopDAO{
 				commodities = shop.getCommodities().toArray(new Commodity[shop.getCommodities().size()]) ;
 			}
 			for(Commodity c : commodities){
-				session.delete(c);
+				c.setDeleteFlag(true);
+				session.saveOrUpdate(c);
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
@@ -230,7 +231,8 @@ public class ShopDAOImpl  implements ShopDAO{
 				saleses = shop.getSales().toArray(new Sales[shop.getSales().size()]) ;
 			}
 			for(Sales c : saleses){
-				session.delete(c);
+				c.setDeleteFlag(true);
+				session.saveOrUpdate(c);
 			}
 			this.saveOrUpdate(shop);
 		}catch(HibernateException e){
@@ -283,15 +285,18 @@ public class ShopDAOImpl  implements ShopDAO{
 			if( s == null ||   s.isDeleteFlag()){
 				throw new HibernateException("cannot get shop's commodity since the shop is not exist.");
 			}	
+		List<Commodity> result =  new ArrayList<Commodity>();		
 		try{
-			Session session = HibernateUtil.instance().currentSession();
-			if(length < 0){
-				return session.createFilter(s.getCommodities(), "").setFirstResult(start).list();
+			Session session = HibernateUtil.instance().currentSession();	
+			String hql = "from Commodity c where c.deleteFlag=false";
+			Query query = session.createQuery(hql);
+			query.setFirstResult(start);
+			query.setMaxResults(length);
+			List<Object> temp = query.list();
+			for(Object obj : temp){
+				result.add((Commodity)((Object[])obj)[0]);
 			}
-			else{
-				return session.createFilter(s.getCommodities(), "").setFirstResult(start).setMaxResults(length).list();
-			}
-
+			return result;
 		}catch(HibernateException e){
 			log.error(e, "failed get commdities by shop openid.");
 			throw e;

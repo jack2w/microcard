@@ -25,7 +25,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 	public List<Commodity> getAllCommodity() throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			return session.createQuery("from " + Commodity.class.getName()).list();
+			return session.createQuery("from " + Commodity.class.getName() +" c where c.deleteFlag=false").list();
 		} catch(HibernateException ex){
 			log.error(ex, "failed get all commodities.");
 			throw ex;
@@ -41,7 +41,8 @@ public class CommodityDAOImpl implements CommodityDAO {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 			for(Commodity s : commoditys){
-				session.delete(s);
+				s.setDeleteFlag(true);
+				session.saveOrUpdate(s);
 			}		
 		} catch(HibernateException ex){
 			log.error(ex, "failed delete commodity.");

@@ -11,17 +11,32 @@
         <many-to-one name="user" class="com.microcard.bean.User">
             <column name="USER_ID" />
         </many-to-one>
-        <many-to-one name="shop" class="com.microcard.bean.HistoryShop">
+        <many-to-one name="shop" class="com.microcard.bean.Shop">
             <column name="SHOP_ID" />
         </many-to-one>
         <property name="time" type="java.sql.Timestamp">
             <column name="TIME" />
         </property>
-        <many-to-one name="commodity" class="com.microcard.bean.HistoryCommodity">
-            <column name= "HISTORYCOMMODITY_ID" />
-        </many-to-one>
-        <many-to-one name="sales" class="com.microcard.bean.HistorySales">
-            <column name="HISTORYSALES_ID" />
+        <property name="price" type="double">
+            <column name="PRICE" />
+        </property>
+        <property name="bonus" type="double">
+            <column name="BONUS" />
+        </property>
+        <property name="bonusUsed" type= "java.lang.Boolean" >
+            <column name="BONUSUSED" default="false"/>
+        </property>
+        <property name="deleteFlag" type= "java.lang.Boolean" >
+            <column name="DELETEFLAG" default="false"/>
+        </property>
+        <set name="commodities" table="COMMODITY" inverse="false" lazy="true" cascade="save-update">
+            <key>
+                <column name="RECORD_ID" />
+            </key>
+            <one-to-many class="com.microcard.bean.Commodity" />
+        </set>
+        <many-to-one name="sales" class="com.microcard.bean.Sales">
+            <column name="SALES_ID" />
         </many-to-one>
     </class>
 </hibernate-mapping>

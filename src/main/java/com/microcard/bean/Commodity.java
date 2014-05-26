@@ -49,6 +49,11 @@ public class Commodity {
 	 * 该商品的营销类型
 	 */
 	private Sales sales;
+	
+	/**
+	 * 是否删除
+	 */
+	private boolean deleteFlag;
 
 	@Override
 	public int hashCode() {
@@ -134,6 +139,20 @@ public class Commodity {
 
 	public void setSales(Sales sales) {
 		this.sales = sales;
+	}
+
+	/**
+	 * @return the deleteFlag
+	 */
+	public boolean isDeleteFlag() {
+		return deleteFlag;
+	}
+
+	/**
+	 * @param deleteFlag the deleteFlag to set
+	 */
+	public void setDeleteFlag(boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 	
 	  

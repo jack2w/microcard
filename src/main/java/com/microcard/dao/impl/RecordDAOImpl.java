@@ -18,7 +18,7 @@ public class RecordDAOImpl implements RecordDAO {
 	public List getRecords() throws HibernateException {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-			return session.createQuery("from " + Record.class.getName()).list();
+			return session.createQuery("from " + Record.class.getName() + " r where r.deleteFlag=false").list();
 		} catch(HibernateException ex){
 			log.error(ex, "failed get all records.");
 			throw ex;
@@ -30,7 +30,8 @@ public class RecordDAOImpl implements RecordDAO {
 		try{
 			Session session = HibernateUtil.instance().currentSession();
 			for(Record s : records){
-				session.delete(s);
+				s.setDeleteFlag(true);
+				session.saveOrUpdate(s);
 			}		
 		} catch(HibernateException ex){
 			log.error(ex, "failed delete record.");
