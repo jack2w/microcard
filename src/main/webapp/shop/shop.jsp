@@ -94,6 +94,7 @@ table {
 table tr {
 	font-size: 1.2em;
 	height: 80px;
+	border-bottom: 1px solid #E1E1E1;
 }
 
 td input,td textarea {

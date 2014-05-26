@@ -236,7 +236,7 @@ body {
 					        	    openid: $("#openid").val(),
 					        	    oper: 'delete'
 					              },
-					        url: 'http://localhost:8080/microcard/commodityServlet.do',
+					        url: "../commodityServlet.do",
 					        error: function( jqXHR, textStatus, errorThrown){		        
 					       	 $.Zebra_Dialog(jqXHR.responseText ,
 			        				 {'type': 'error',
@@ -325,7 +325,6 @@ body {
 			</div>
 			</c:forEach>
 		</div>
-		<div class="click_more" style="clear: both;">点击查看更多</div>
 		<div class="commodityInfo">
 			<div class="dialog-overlay"></div>
 			<!-- 对话框 -->

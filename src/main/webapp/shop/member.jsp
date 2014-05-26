@@ -35,6 +35,7 @@ body {
 	position: absolute;
 	height: auto;
 	min-height: 100%;
+	width: 100%;
 }
 
 .search_form {
@@ -95,7 +96,7 @@ body {
 
 #goodsName {
 	float: left;
-	width: 46%;
+	width: 40%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -103,7 +104,7 @@ body {
 }
 
 #buyTime {
-	width: 34%;
+	width: 40%;
 	float: right;
 }
 
@@ -157,9 +158,9 @@ body {
 				<div class="member">
 				<img src="<%=user.getHeadImgUrl()%>">
 				<div class="memberAbout">
-					<h5 style="font-size: 1.2em" id="memberName"><%=user.getNickName()%></h5>
+					<h5 style="font-size: 1.2em" id="memberName">&nbsp;<%=user.getNickName()%></h5>
 					<div>
-						<span id="goodsName"><%=user.getCity()%></span> <span
+						<span id="goodsName">&nbsp;<%=user.getCity()%></span> <span
 							id="buyTime"><%=user.getSubscribeTime().toLocaleString()%></span>
 					</div>
 				</div>
@@ -167,8 +168,6 @@ body {
 		<%
 			}
 		%>
-		</div>
-		<div class="click_more" style="clear: both;">点击查看更多</div>
 	</div>
 </body>
 </html>

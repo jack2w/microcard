@@ -106,15 +106,15 @@ table tr td input {
 	<!-- this is content -->
 	<div class="content">
 		<table class="record">
-			<tr style="border-bottom: 1px solid #6E6E6E">
+			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>会员ID：</td>
 				<td><input type="number" id="userId"><img id="tipImg" ></td>
 			</tr>
-			<tr style="border-bottom: 1px solid #6E6E6E">
+			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>会员姓名：</td>
 				<td id="userName"></td>
 			</tr>
-			<tr style="border-bottom: 1px solid #6E6E6E">
+			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>支付金额：</td>
 				<td><input type="number" style="margin-top: 2%" value="400.00"></td>
 			</tr>
@@ -134,11 +134,11 @@ table tr td input {
 				<td></td>
 				<td><input type="checkbox">沐浴露</td>
 			</tr>
-			<tr style="border-bottom: 1px solid #6E6E6E">
+			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td></td>
 				<td><input type="checkbox">毛巾</td>
 			</tr>
-			<tr style="border-bottom: 1px solid #6E6E6E">
+			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>返还金额：</td>
 				<td>¥200.00</td>
 			</tr>
