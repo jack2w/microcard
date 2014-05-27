@@ -288,14 +288,16 @@ public class ShopDAOImpl  implements ShopDAO{
 		List<Commodity> result =  new ArrayList<Commodity>();		
 		try{
 			Session session = HibernateUtil.instance().currentSession();	
-			String hql = "from Commodity c where c.deleteFlag=false";
+			String hql = "from Commodity c where c.shop=? and c.deleteFlag=false";
 			Query query = session.createQuery(hql);
+			query.setEntity(0, s);
 			query.setFirstResult(start);
 			query.setMaxResults(length);
 			List<Object> temp = query.list();
 			for(Object obj : temp){
-				result.add((Commodity)((Object[])obj)[0]);
+				result.add((Commodity)obj);
 			}
+			log.debug("commodity size is " + result.size());
 			return result;
 		}catch(HibernateException e){
 			log.error(e, "failed get commdities by shop openid.");
