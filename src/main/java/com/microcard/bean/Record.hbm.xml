@@ -29,12 +29,11 @@
         <property name="deleteFlag" type= "java.lang.Boolean" >
             <column name="DELETEFLAG" default="false"/>
         </property>
-        <set name="commodities" table="COMMODITY" inverse="false" lazy="true" cascade="save-update">
-            <key>
-                <column name="RECORD_ID" />
-            </key>
-            <one-to-many class="com.microcard.bean.Commodity" />
-        </set>
+ 	    <set name="commodities" inverse="false" cascade="save-update" table="tbl_record_commodity" lazy = "true">
+            <key column="RECORD_ID"></key>
+            <many-to-many class="com.microcard.bean.Commodity"
+                column="COMMODITY_ID"></many-to-many>
+        </set>        
         <many-to-one name="sales" class="com.microcard.bean.Sales">
             <column name="SALES_ID" />
         </many-to-one>

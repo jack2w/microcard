@@ -21,12 +21,9 @@
         <!-- Mapping files -->
         <mapping resource="com/microcard/bean/User.hbm.xml"/>
         <mapping resource="com/microcard/bean/Commodity.hbm.xml"/>
-        <mapping resource="com/microcard/bean/HistoryCommodity.hbm.xml"/>
-        <mapping resource="com/microcard/bean/HistorySales.hbm.xml"/>
         <mapping resource="com/microcard/bean/Record.hbm.xml"/>
         <mapping resource="com/microcard/bean/Sales.hbm.xml"/>
-        <mapping resource="com/microcard/bean/Shop.hbm.xml"/>
-        <mapping resource="com/microcard/bean/HistoryShop.hbm.xml"/>      
+        <mapping resource="com/microcard/bean/Shop.hbm.xml"/>  
 
     </session-factory>
 
