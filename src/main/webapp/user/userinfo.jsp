@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page isELIgnored="false"%>
 <%@page import="com.microcard.bean.User"%>
+<%@page import="com.microcard.msg.*"%>
+<%@page import="com.microcard.msg.processor.user.*"%>
 <%@page import="com.microcard.dao.DAOFactory"%>
 <%@page import="com.microcard.dao.hibernate.*"%>
 <!DOCTYPE html>
@@ -94,7 +96,7 @@ table {
 
 table tr {
 	font-size: 1.2em;
-	height: 80px;
+	height: 50px;
 	border-bottom: 1px solid #E1E1E1;
 }
 
@@ -104,7 +106,7 @@ td input,td textarea {
 
 table tr td:FIRST-CHILD {
 	width: 30%;
-	text-align: center;
+	text-align: left;
 }
 
 table tr td:LAST-CHILD {
@@ -190,8 +192,15 @@ table tr td:LAST-CHILD {
 	<%
 	try{
 		HibernateUtil.instance().beginTransaction();
-		String opendId = request.getParameter("OPENID");
-		User user = DAOFactory.createUserDAO().getUserByOpenID(opendId);
+		String openId = request.getParameter("OPENID");
+		User user = DAOFactory.createUserDAO().getUserByOpenID(openId);
+		if(user == null) {//如果用户为空，则手动添加到数据库
+			ReceivedSubscribeMsg msg = new ReceivedSubscribeMsg();
+			msg.setFromUserName(openId);
+			UserSubscribeProcessor processor = new UserSubscribeProcessor();
+			processor.proccess(msg);
+			user = DAOFactory.createUserDAO().getUserByOpenID(openId);
+		}
 		request.setAttribute("user", user);
 	}finally{
 		HibernateUtil.instance().closeSession();
@@ -210,37 +219,37 @@ table tr td:LAST-CHILD {
 		<div class="content">
 			<table rules="rows">
 				<tr>
-					<td>会员ID:</td>
+					<td>&nbsp;会员ID:</td>
 					<td><div>${user.id}</div></td>
 				</tr>
 				<tr>
-					<td>会员昵称:</td>
+					<td>&nbsp;会员昵称:</td>
 					<td><div>${user.nickName}</div></td>
 				</tr>
 				<tr>
-					<td>真实姓名:</td>
+					<td>&nbsp;真实姓名:</td>
 					<td><span>${user.name}</span><input value="${user.name}"
 						style="display: none; height:30px" type="text" name="username"
 						id="username"></td>
 				</tr>
 				<tr>
-					<td>联系地址:</td>
+					<td>&nbsp;联系地址:</td>
 					<td><span>${user.address}</span><input value="${user.address}"
 						style="display: none; height:30px" type="text" name="useraddress"
 						id="useraddress"></td>
 				</tr>
 				<tr>
-					<td>联系方式:</td>
+					<td>&nbsp;联系方式:</td>
 					<td><span>${user.phone1}</span><input value="${user.phone1}"
 						style="display: none; height:30px" type="text" name="userphone1"
 						id="userphone1"></td>
 				</tr>
 				<tr>
-					<td>国家:</td>
+					<td>&nbsp;国家:</td>
 					<td><div>${user.country}</div></td>
 				</tr>
 				<tr>
-					<td>城市:</td>
+					<td>&nbsp;城市:</td>
 					<td><div>${user.city}</div></td>
 				</tr>
 				
