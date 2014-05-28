@@ -120,4 +120,12 @@ public interface ShopDAO {
 	 */
 	public void saveOrUpdate(Shop... shops) throws HibernateException;
 	
+	/**
+	 * 分页查找营销信息
+	 * @param shop
+	 * @return
+	 * @throws HibernateException
+	 */
+	public List<Sales> getSalesByShop(String openid, int start, int length) throws HibernateException;
+	
 }

@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Commodity;
+import com.microcard.bean.Sales;
 import com.microcard.bean.Shop;
 import com.microcard.client.WeixinClient;
 import com.microcard.dao.hibernate.HibernateUtil;
@@ -97,8 +98,27 @@ public class ShopDAOImplTest {
 
 	@Test
 	public void testAddSales() {
-		List<Commodity> commodities = DAOFactory.createShopDAO().getCommodity("o2gmduEx55FVt10DoRwMcHC7H5w8", 0, -1);
-		System.out.println(commodities.size());
+		try{
+			Sales[] ss = new Sales[100];
+			for(int i = 0; i < 100; i++){
+				Sales s = new Sales();
+				s.setName("123");
+				ss[i] = s;
+			}
+			Shop s =  DAOFactory.createShopDAO().getShopByOpenID("o2gmduEx55FVt10DoRwMcHC7H5w8");
+			 DAOFactory.createShopDAO().addSales(s, ss);
+	//		List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop("o2gmduEx55FVt10DoRwMcHC7H5w8", 0, 100);
+	//		System.out.println(sales.size());
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testgetSales(){
+		List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop("o2gmduEx55FVt10DoRwMcHC7H5w8", 0, 100);
+		System.out.println(sales.size());
 	}
 
 	@Test

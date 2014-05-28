@@ -100,4 +100,15 @@ public interface UserDAO {
 	List<Shop> getShopsByUser(User u, int start, int length)
 			throws HibernateException;
 	
+	/**
+	 * 根据用户和商铺获得所有购买记录
+	 * @param u
+	 * @param s
+	 * @param start
+	 * @param length
+	 * @return
+	 * @throws HibernateException
+	 */
+	List<Record> getRecordsByUser(User u, Shop s,  int start, int length) throws HibernateException;
+	
 }

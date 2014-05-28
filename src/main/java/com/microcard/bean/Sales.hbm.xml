@@ -6,7 +6,7 @@
     <class name="com.microcard.bean.Sales" table="tbl_sales">
         <id name="id" type="long">
             <column name="ID" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <many-to-one name="shop" class="com.microcard.bean.Shop" >
             <column name="SHOP_ID" />

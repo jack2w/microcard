@@ -17,18 +17,18 @@ import com.microcard.dao.ShopDAO;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
 
-public class ShopDAOImpl  implements ShopDAO{
+public class ShopDAOImpl implements ShopDAO {
 
 	private Logger log = Logger.getMsgLogger();
-	
+
 	@Override
 	public List<Shop> getShops() throws HibernateException {
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
 			Criteria c = session.createCriteria(Shop.class);
 			c.add(Restrictions.eq("deleteFlag", false));
 			return c.list();
-		} catch(HibernateException ex){
+		} catch (HibernateException ex) {
 			log.error(ex, "failed get all shops.");
 			throw ex;
 		}
@@ -43,26 +43,26 @@ public class ShopDAOImpl  implements ShopDAO{
 	 * @throws HibernateException
 	 */
 	public void deletePhysicalShop(Shop... shops) throws HibernateException {
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			for(Shop s : shops){
+			for (Shop s : shops) {
 				session.delete(s);
 			}
-		} catch(HibernateException ex){
+		} catch (HibernateException ex) {
 			log.error(ex, "failed delete physically shop.");
 			throw ex;
 		}
-		
+
 	}
-	
+
 	@Override
 	public void deleteLogicalShop(Shop... shops) throws HibernateException {
-		try{
-			for(Shop s : shops){
+		try {
+			for (Shop s : shops) {
 				s.setDeleteFlag(true);
 				this.saveOrUpdate(s);
 			}
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed delete logically shop.");
 			throw e;
 		}
@@ -71,209 +71,221 @@ public class ShopDAOImpl  implements ShopDAO{
 	@Override
 	public Shop getShopByID(long id) throws HibernateException {
 		Shop s = null;
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-	        s = (Shop)session.load(Shop.class.getName(), id);
-		} catch(HibernateException ex){
+			s = (Shop) session.load(Shop.class.getName(), id);
+		} catch (HibernateException ex) {
 			log.error(ex, "failed get shop by id.");
 			throw ex;
 		}
 		return s;
 	}
-	
 
 	@Override
-	public List<User> getUsersByShop(Shop shop, int start, int length) throws HibernateException{
-		if(shop == null) return null;
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
-			throw new HibernateException("cannot get shop's users since the shop is deleted.");
+	public List<User> getUsersByShop(Shop shop, int start, int length)
+			throws HibernateException {
+		if (shop == null)
+			return null;
+		if (this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot get shop's users since the shop is deleted.");
 		}
-		List<User> result =  new ArrayList<User>();		
-		try{	
-			Session session = HibernateUtil.instance().currentSession();	
+		List<User> result = new ArrayList<User>();
+		try {
+			Session session = HibernateUtil.instance().currentSession();
 			String hql = "from User as u inner join u.shops as s where s.openId=? and u.deleteFlag=false";
-			Query query = session.createQuery(hql).setString(0, shop.getOpenId());
+			Query query = session.createQuery(hql).setString(0,
+					shop.getOpenId());
 			query.setFirstResult(start);
 			query.setMaxResults(length);
 			List<Object> temp = query.list();
-			for(Object obj : temp){
-				result.add((User)((Object[])obj)[0]);
+			for (Object obj : temp) {
+				result.add((User) ((Object[]) obj)[0]);
 			}
 			return result;
-			
-		}catch(HibernateException e){
+
+		} catch (HibernateException e) {
 			log.error(e, "failed get users from shop.");
 			throw e;
 		}
-       
+
 	}
-	
+
 	@Override
 	public void updateShop(Shop... shops) throws HibernateException {
 
 		this.saveOrUpdate(shops);
-		
+
 	}
 
 	@Override
 	public void addShop(Shop... shopes) throws HibernateException {
-		try{
-			for (Shop s : shopes){
+		try {
+			for (Shop s : shopes) {
 				s.setDeleteFlag(false);
 				this.saveOrUpdate(s);
 			}
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed add shop.");
 			throw e;
 		}
 	}
 
 	@Override
-	public void addCommodity(Shop shop, Commodity... commodities)  throws HibernateException{
+	public void addCommodity(Shop shop, Commodity... commodities)
+			throws HibernateException {
 		Shop s = this.getShopByOpenID(shop.getOpenId());
-		if(s == null || s.isDeleteFlag() ){
-			throw new HibernateException("cannot add shop's commodity since the shop is deleted.");
+		if (s == null || s.isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot add shop's commodity since the shop is deleted.");
 		}
 		Session session = HibernateUtil.instance().currentSession();
-		try{
-			for(Commodity c : commodities){
+		try {
+			for (Commodity c : commodities) {
 				c.setShop(shop);
 				session.save(c);
 			}
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed add commodities to shop.");
 			throw e;
 		}
 	}
 
 	@Override
-	public void addSales(Shop shop, Sales... saleses)  throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
-			throw new HibernateException("cannot add shop's sales since the shop is deleted.");
+	public void addSales(Shop shop, Sales... saleses) throws HibernateException {
+		if (this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot add shop's sales since the shop is deleted.");
 		}
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			for(Sales s : saleses){
+			for (Sales s : saleses) {
 				s.setShop(shop);
 				session.save(s);
 			}
-			this.saveOrUpdate(shop);
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed add sales to shop.");
 			throw e;
 		}
-		
+
 	}
-	
-	public void saveOrUpdate(Shop... shops) throws HibernateException{	
-		try{
+
+	public void saveOrUpdate(Shop... shops) throws HibernateException {
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			for(Shop s : shops){
+			for (Shop s : shops) {
 				session.saveOrUpdate(s);
 			}
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed save or update shop.");
 			throw e;
 		}
 	}
 
 	@Override
-	public void updateCommodity(Shop shop, Commodity... commodities)  throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
-			throw new HibernateException("cannot update shop's commodity since the shop is deleted.");
+	public void updateCommodity(Shop shop, Commodity... commodities)
+			throws HibernateException {
+		if (this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot update shop's commodity since the shop is deleted.");
 		}
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			for(Commodity c : commodities){
+			for (Commodity c : commodities) {
 				c.setShop(shop);
 				session.update(c);
 			}
 			this.saveOrUpdate(shop);
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed update commodities to shop.");
 			throw e;
 		}
-		
+
 	}
 
 	@Override
 	public void delteCommoditity(Shop shop, Commodity... commodities)
 			throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
-			throw new HibernateException("cannot delete shop's commodity since the shop is deleted.");
+		if (this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot delete shop's commodity since the shop is deleted.");
 		}
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			if(commodities == null){
-				commodities = shop.getCommodities().toArray(new Commodity[shop.getCommodities().size()]) ;
+			if (commodities == null) {
+				commodities = shop.getCommodities().toArray(
+						new Commodity[shop.getCommodities().size()]);
 			}
-			for(Commodity c : commodities){
+			for (Commodity c : commodities) {
 				c.setDeleteFlag(true);
 				session.saveOrUpdate(c);
 			}
 			this.saveOrUpdate(shop);
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed delete commodities from shop.");
 			throw e;
 		}
-		
+
 	}
 
 	@Override
 	public void deleteSales(Shop shop, Sales... saleses)
 			throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
-			throw new HibernateException("cannot delete shop's sales since the shop is deleted.");
+		if (this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot delete shop's sales since the shop is deleted.");
 		}
-		try{
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			if(saleses == null){
-				saleses = shop.getSales().toArray(new Sales[shop.getSales().size()]) ;
+			if (saleses == null) {
+				saleses = shop.getSales().toArray(
+						new Sales[shop.getSales().size()]);
 			}
-			for(Sales c : saleses){
+			for (Sales c : saleses) {
 				c.setDeleteFlag(true);
 				session.saveOrUpdate(c);
 			}
 			this.saveOrUpdate(shop);
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed delete sales from shop.");
 			throw e;
 		}
-		
+
 	}
 
 	@Override
 	public void updateSales(Shop shop, Sales... saleses)
 			throws HibernateException {
-		if( this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()){
-			throw new HibernateException("cannot update shop's sales since the shop is deleted.");
-		}	
-		try{
+		if (this.getShopByOpenID(shop.getOpenId()).isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot update shop's sales since the shop is deleted.");
+		}
+		try {
 			Session session = HibernateUtil.instance().currentSession();
-			for(Sales c : saleses){
+			for (Sales c : saleses) {
 				session.update(c);
 			}
 			this.saveOrUpdate(shop);
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "fail update sales to shop.");
 			throw e;
 		}
-		
+
 	}
 
 	@Override
-	public Shop getShopByOpenID(String opendid) throws HibernateException {	
-		try{
+	public Shop getShopByOpenID(String opendid) throws HibernateException {
+		try {
 			Session session = HibernateUtil.instance().currentSession();
 			Criteria c = session.createCriteria(Shop.class);
 			c.add(Restrictions.eq("openId", opendid));
 			List<Shop> list = c.list();
-			//因为openid已经限定唯一性，查到的结果最多为一条
-			if(list.size() > 0){
+			// 因为openid已经限定唯一性，查到的结果最多为一条
+			if (list.size() > 0) {
 				return list.get(0);
 			}
 			return null;
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed get shop by openid.");
 			throw e;
 		}
@@ -281,26 +293,55 @@ public class ShopDAOImpl  implements ShopDAO{
 
 	@Override
 	public List<Commodity> getCommodity(String openid, int start, int length) {
-			Shop s = this.getShopByOpenID(openid);
-			if( s == null ||   s.isDeleteFlag()){
-				throw new HibernateException("cannot get shop's commodity since the shop is not exist.");
-			}	
-		List<Commodity> result =  new ArrayList<Commodity>();		
-		try{
-			Session session = HibernateUtil.instance().currentSession();	
+		Shop s = this.getShopByOpenID(openid);
+		if (s == null || s.isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot get shop's commodity since the shop is not exist.");
+		}
+		List<Commodity> result = new ArrayList<Commodity>();
+		try {
+			Session session = HibernateUtil.instance().currentSession();
 			String hql = "from Commodity c where c.shop=? and c.deleteFlag=false";
 			Query query = session.createQuery(hql);
 			query.setEntity(0, s);
 			query.setFirstResult(start);
 			query.setMaxResults(length);
 			List<Object> temp = query.list();
-			for(Object obj : temp){
-				result.add((Commodity)obj);
+			for (Object obj : temp) {
+				result.add((Commodity) obj);
 			}
 			log.debug("commodity size is " + result.size());
 			return result;
-		}catch(HibernateException e){
+		} catch (HibernateException e) {
 			log.error(e, "failed get commdities by shop openid.");
+			throw e;
+		}
+	}
+
+	@Override
+	public List<Sales> getSalesByShop(String openid, int start, int length)
+			throws HibernateException {
+		Shop s = this.getShopByOpenID(openid);
+		if (s == null || s.isDeleteFlag()) {
+			throw new HibernateException(
+					"cannot get shop's sales since the shop is not exist.");
+		}
+		List<Sales> result = new ArrayList<Sales>();
+		try {
+			Session session = HibernateUtil.instance().currentSession();
+			String hql = "from Sales s where s.shop=? and s.deleteFlag=false";
+			Query query = session.createQuery(hql);
+			query.setEntity(0, s);
+			query.setFirstResult(start);
+			query.setMaxResults(length);
+			List<Object> temp = query.list();
+			for (Object obj : temp) {
+				result.add((Sales) obj);
+			}
+			log.debug("sales size is " + result.size());
+			return result;
+		} catch (HibernateException e) {
+			log.error(e, "failed get sales by shop openid.");
 			throw e;
 		}
 	}

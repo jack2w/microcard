@@ -275,4 +275,11 @@ public class UserDAOImpl implements UserDAO{
 		return u;
 	}
 
+	@Override
+	public List<Record> getRecordsByUser(User u, Shop s, int start, int length)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
