@@ -51,14 +51,14 @@ public class UserDAOImplTest {
 
 	@Test
 	public void testSaveUser() {
-		User u2 = new User();
-		u2.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w5");
-		u2.setAddress("上海");
-		User u3 = new User();
-		u3.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w4");
-		User u4 = new User();
-		u4.setOpenId("o2gmduEx55FVt10DoRwMcHC7H5w3");
-		DAOFactory.createUserDAO().saveUser(u2,u3,u4);
+		try {
+			User u = WeixinClient.getUserInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
+			DAOFactory.createUserDAO().saveUser(u);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 	}
 
 	@Test

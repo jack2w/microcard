@@ -48,7 +48,6 @@ body {
 
 .sinput {
 	width: 50%;
-	height: 21px;
 	line-height: 21px;
 	padding: 4px 7px;
 	color: b3b3b3;
@@ -107,11 +106,16 @@ body {
 }
 
 .delbtn {
-	float: right;
-	margin-right: 3%;
+	width: 10%;
+	height: 30px;
+	margin-right: 2%;
+	padding: 0 12px;
 	border-radius: 2px;
-	padding: 5px;
-	margin-top: -3%;
+	border: 1px solid #99CC33;
+	background-color: #99CC33;
+	font-size: 1em;
+	color: #f3f7fc;
+	float:right
 
 }
 
@@ -179,6 +183,14 @@ body {
 </style>
 <script type="text/javascript">
 	$(function() {
+		
+		/** OpenId为空时提示错误  **/
+		if ($("#openid").val() == "") {
+			$.Zebra_Dialog('数据错误，缺少id！', {
+				'type' : 'error',
+				'title' : '错误'
+			});
+		} 
 
 		/** 点击商品修改商品信息 **/
 		$(".commodity").click(function() {
@@ -246,7 +258,7 @@ body {
 					    	   $.Zebra_Dialog(data.result ,
 				        				 {'type': 'information',
 				        			     'title': '成功'}); 
-					    	   del.parent(".commodity").remove();
+					    	   window.location.reload();
 					        } 
 					       
 					    });
@@ -310,7 +322,7 @@ body {
 	<div class="content">
 		<div class="search_form">
 			<form action="#" method="get">
-				<input type="text" name="s" class="sinput" placeholder="输入 回车搜索">
+				<input type="text" name="s" class="sinput" style="height: 30px" placeholder="输入 回车搜索">
 				<input type="submit" value="搜索" class="sbtn"> <img
 					src="../resources/images/addbtn.png" class="addbtn">
 			</form>
@@ -335,9 +347,9 @@ body {
 					<div class="dialog_content">
 						<ul style="list-style: none; display: inline;">
 							<li>商品名称:<input type="text" name="dialog_commodityName"
-								id="dialog_commodityName" style="width: 60%"></li>
+								id="dialog_commodityName" style="width: 60% ;height:30px"></li>
 							<li>商品价格:<input type="number" name="dialog_commodityPrice"
-								id="dialog_commodityPrice" style="width: 30%"></li>						
+								id="dialog_commodityPrice" style="width: 30% ;height:30px"></li>						
 						</ul>
 						<div style="width: 100%; text-align: center;">
 							<input class="dialog_cancle" type="button" value="取消"

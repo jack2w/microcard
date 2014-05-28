@@ -1,6 +1,7 @@
 package com.microcard.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +21,9 @@ import com.microcard.log.Logger;
  */
 public class CommodityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+    private static Logger log = Logger.getOperLogger();
+    private static final String errorMsg = "操作商品信息失败";
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -44,10 +47,15 @@ public class CommodityServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		
+		PrintWriter out = null;
+		
 		try {
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
+			
+			out = response.getWriter();	
+			
 			String name = request.getParameter("name");
 			String id = request.getParameter("id");
 			String price = request.getParameter("price");
@@ -56,11 +64,11 @@ public class CommodityServlet extends HttpServlet {
 			}
 			String openid = request.getParameter("openid");
 			String oper = request.getParameter("oper");
-			Logger.getOperLogger().info("name : " + name);
-			Logger.getOperLogger().info("id : " + id);
-			Logger.getOperLogger().info("price : " +price);
-			Logger.getOperLogger().info("openid: " + openid);
-			Logger.getOperLogger().info("oper: " + oper);
+			log.info("name : " + name);
+			log.info("id : " + id);
+			log.info("price : " +price);
+			log.info("openid: " + openid);
+			log.info("oper: " + oper);
 
 			if(oper == null || oper.equals("") || openid == null || openid.equals("")){
 				throw new Exception("oper or openid is null");
@@ -84,16 +92,11 @@ public class CommodityServlet extends HttpServlet {
 				DAOFactory.createShopDAO().addCommodity(s, obj);
 			}
 			HibernateUtil.instance().commitTransaction();
-			response.getWriter().write("{\"result\":\"" + "操作成功" + "\"}");
-		} catch (HibernateException e) {
-			HibernateUtil.instance().rollbackTransaction();
-			Logger.getOperLogger().warn("操作商品信息失败");
-			response.getWriter().write("操作商品信息失败--" + e.getMessage());
-			response.getWriter().write("操作商品信息失败");
+			out.write("{\"result\":\"" + "操作成功" + "\"}");
 		} catch (Exception ex) {
 			HibernateUtil.instance().rollbackTransaction();
-			Logger.getOperLogger().warn("操作商品信息失败");
-			response.getWriter().write("操作商品信息失败--" + ex.getMessage());
+			log.error(ex, errorMsg);
+			out.write(errorMsg + ex.getMessage());
 		} finally {
 			HibernateUtil.instance().closeSession();
 		}
