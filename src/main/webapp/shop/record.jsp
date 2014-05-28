@@ -1,8 +1,11 @@
+<%@page import="com.microcard.dao.hibernate.HibernateUtil"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ page isELIgnored="false"%>
-<%@page import="com.microcard.bean.User"%>
+<%@page import="com.microcard.bean.*"%>
 <%@page import="com.microcard.dao.DAOFactory"%>
+<%@page import="java.util.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +52,7 @@ body {
 }
 
 table tr td {
-	padding: 2% 0 2% 8%;
+	padding: 3% 0 3% 8%;
 }
 
 table tr td:FIRST-CHILD {
@@ -68,47 +71,127 @@ table tr td input {
 	color: white;
 }
 
-#tipImg{
+#tipImg {
 	width: 30px;
 	margin-left: 4%;
 }
 </style>
 <script type="text/javascript">
 	$(function() {
-		  $("#userId").blur(function () {
+		$("#userId").change(
+				function() {
+					$.ajax({
+						url : "../recordServlet",
+						type : "post",
+						dataType : "json",
+						data : {
+							userId : $('#userId').val(),
+							openId : $('#openId').val()
+						},
+						success : function(data) {
+							$("#userName").html(data.userName);
+							$("#tipImg").attr("src",
+									"../resources/images/right_alt.png");
+						},
+						error : function() {
+							$.Zebra_Dialog('该会员ID不存在，请重新输入！', {
+								'type' : 'error',
+								'title' : '错误'
+							});
+							$("#tipImg").attr("src",
+									"../resources/images/wrong_alt.png");
+						}
+					});
+					$("#userName").html("");
+					$("#recordPrice").val("");
+					$("#recordBonus").val("");
+					$("input:[type='radio']").each(function() {
+						if ($(this).attr("checked", true)) {
+							$(this).attr("checked", false);
+						}
+					});
+				});
 
-			$.ajax({
-				url : "../recordServlet",
-				type : "post",
-				dataType : "json",
-				data : {
-					userId : $('#userId').val()
-				},
-				success : function(data) {
-					$("#userName").html(data.userName);
-					$("#tipImg").attr("src", "../resources/images/right_alt.png");
-				},
-				error : function(userName) {
-					$.Zebra_Dialog('该会员ID不存在，请重新输入！', {
-						    'type':     'error',
-						    'title':    '错误'
+		$("input:[type='radio']")
+				.each(
+						function() {
+							$(this)
+									.click(
+											function() {
+												if ($("#recordPrice").val() == "") {
+													$
+															.Zebra_Dialog(
+																	'请先输入支付金额',
+																	{
+																		'type' : 'warning',
+																		'title' : '提示'
+																	});
+													$(this).attr("checked",
+															false);
+												} else {
+													var recordPrice = $(
+															"#recordPrice")
+															.val();
+													var salePrice = $(this)
+															.siblings(
+																	"#salePrice")
+															.html();
+													var saleBonus = $(this)
+															.siblings(
+																	"#saleBonus")
+															.html();
+													if (eval(recordPrice) < eval(salePrice)) {
+														$("#recordBonus").val(
+																"");
+														$("#recordBonus").attr(
+																"placeholder",
+																"暂无返利！");
+													} else {
+														var recordBonus = parseInt(eval(recordPrice)
+																/ eval(salePrice));
+														$("#recordBonus")
+																.val(
+																		eval(recordBonus)
+																				* eval(saleBonus));
+													}
+												}
+
+											});
+
 						});
-					$("#tipImg").attr("src", "../resources/images/wrong_alt.png");
-				}
-			});
 
-		});
 	});
 </script>
 </head>
 <body>
+	<%
+		try {
+			HibernateUtil.instance().beginTransaction();
+			String openId = request.getParameter("OPENID");
+			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
+			Set<Sales> sales = shop.getSales();
+			if (sales.isEmpty() || sales.size() == 0) {
+				String noSales = "Sorry！暂无促销活动。";
+				request.setAttribute("noSales", noSales);
+			} else {
+				request.setAttribute("sales", sales.iterator());
+			}
+			request.setAttribute("openId", openId);
+			HibernateUtil.instance().commitTransaction();
+		} catch (Exception e) {
+			HibernateUtil.instance().rollbackTransaction();
+		} finally {
+			HibernateUtil.instance().closeSession();
+		}
+	%>
 	<div class="header"></div>
 	<!-- this is content -->
 	<div class="content">
+		<input type="hidden" id="openId" value="${openId}">
 		<table class="record">
 			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>会员ID：</td>
-				<td><input type="number" id="userId"><img id="tipImg" ></td>
+				<td><input type="number" id="userId"><img id="tipImg"></td>
 			</tr>
 			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>会员姓名：</td>
@@ -116,35 +199,29 @@ table tr td input {
 			</tr>
 			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>支付金额：</td>
-				<td><input type="number" style="margin-top: 2%" value="400.00"></td>
+				<td><input type="number" id="recordPrice"
+					style="margin-top: 2%"></td>
 			</tr>
 			<tr>
-				<td>购买商品：</td>
-				<td><input type="checkbox">牙膏</td>
+				<td>促销活动：</td>
+				<td>${noSales}</td>
 			</tr>
-			<tr>
-				<td></td>
-				<td><input type="checkbox">牙刷</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="checkbox">洗发水</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="checkbox">沐浴露</td>
-			</tr>
-			<tr style="border-bottom: 1px solid #E1E1E1">
-				<td></td>
-				<td><input type="checkbox">毛巾</td>
-			</tr>
+			<c:forEach items="${sales}" var="sale">
+				<tr>
+					<td></td>
+					<td><input type="radio" name="group">买满<span
+						id="salePrice">${sale.price}</span>返现<span id="saleBonus">${sale.bonus}</span></td>
+				</tr>
+			</c:forEach>
 			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>返还金额：</td>
-				<td>¥200.00</td>
+				<td><input type="number" id="recordBonus"
+					style="margin-top: 2%"></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;"><input
-					class="okBtn" type="button" value="确认"></td>
+					class="okBtn" type="button" value="确认"
+					onclick="javascript:history.go(-1);"></td>
 			</tr>
 		</table>
 	</div>
