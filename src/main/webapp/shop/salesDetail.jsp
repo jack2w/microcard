@@ -2,11 +2,12 @@
 <%@page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page isELIgnored="false"%>
-<%@page import="com.microcard.bean.Sales"%>
+<%@page import="com.microcard.bean.*"%>
 <%@page import="com.microcard.dao.DAOFactory"%>
 <%@page import="java.util.*"%>
 <%@page import="com.microcard.dao.hibernate.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jstl/function"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +74,7 @@ body {
 	position: absolute;
 	width: 100%;
 	top: 8%;
-	border-bottom:1px solid #E1E1E1;
+	border-bottom: 1px solid #E1E1E1;
 }
 
 table tr td {
@@ -94,17 +95,40 @@ table tr td input {
 		try {
 			HibernateUtil.instance().beginTransaction();
 			String saleId = request.getParameter("saleId");
-			Sales sales = DAOFactory.createSalesDAO().getSalesByID(
-					Long.valueOf(saleId));
-			Set<Commodity> commodities = sales.getCommodities();
-			Iterator<Commodity> commodity = commodities.iterator();
-			if (commodities.isEmpty() || commodities.size() == 0) {
+			String shopId = request.getParameter("shopId");
+			Shop shop = DAOFactory.createShopDAO().getShopByID(
+					Long.valueOf(shopId));
+			// 商铺的商品
+			Set<Commodity> shopCommodities = shop.getCommodities();
+			// saleId不为空则为修改促销信息
+			if (saleId != null) {
+				Sales sales = DAOFactory.createSalesDAO().getSalesByID(
+						Long.valueOf(saleId));
+				// 促销的商品
+				Set<Commodity> salesCommodities = sales.getCommodities();
+				Iterator<Commodity> salesCommodity = salesCommodities
+						.iterator();
+				// 获取已选中的促销商品
+				Set<Commodity> checkedCommodities = new HashSet<Commodity>();
+				while (salesCommodity.hasNext()) {
+					Commodity checkedCommodity = salesCommodity.next();
+					if (shopCommodities.contains(checkedCommodity)) {
+						// 添加商品到被选择的促销商品中
+						checkedCommodities.add(checkedCommodity);
+					}
+				}
+				request.setAttribute("checkedCommodities",
+						checkedCommodities);
+				request.setAttribute("sales", sales);
+			}
+
+			if (shopCommodities.isEmpty() || shopCommodities.size() == 0) {
 				String noCommodities = "暂无促销 商品。";
 				request.setAttribute("noCommodities", noCommodities);
 			} else {
-				request.setAttribute("commodities", commodities.iterator());
+				request.setAttribute("shopCommodities",
+						shopCommodities.iterator());
 			}
-			request.setAttribute("sales", sales);
 			HibernateUtil.instance().commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.instance().rollbackTransaction();
@@ -119,7 +143,7 @@ table tr td input {
 				type="submit" class="comfirmbtn" value="确认">
 		</div>
 		<div class="content">
-			<table class="goods" border="0" cellspacing="0" cellpadding="0">
+			<table class="goods">
 				<tr style="border-bottom: 1px solid #E1E1E1">
 					<td>促销名称：</td>
 					<td><input type="text" name="salesName" id="salesName"
@@ -127,19 +151,32 @@ table tr td input {
 				</tr>
 
 				<tr style="border-bottom: 1px solid #E1E1E1">
-					<td colspan="2">买满<input type="number" name="salesPrice" id="salesPrice"
-						value="${sales.price}">返现<input type="number" name="salesBonus" id="salesBonus"
+					<td colspan="2">买满<input type="number" name="salesPrice"
+						id="salesPrice" value="${sales.price}">返现<input
+						type="number" name="salesBonus" id="salesBonus"
 						value="${sales.bonus}"></td>
 				</tr>
 				<tr style="border-bottom: 1px solid #E1E1E1">
 					<td>促销商品：</td>
 					<td>${noCommodities}</td>
 				</tr>
-				<c:forEach items="${commodities}" var="commodity">
-				<tr>
-					<td></td>
-					<td><input type="checkbox" name="group">${commodity.name}</td>
-				</tr>
+				<c:forEach items="${shopCommodities}" var="commodity">
+					<c:choose>
+						<c:when test="${fn:contains(checkedCommodities,commodity)}">
+							<tr>
+								<td></td>
+								<td><input type="checkbox" checked="checked" name="checkbox"
+									value="${commodity.id}">${commodity.name}</td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td></td>
+								<td><input type="checkbox" name="checkbox"
+									value="${commodity.id}">${commodity.name}</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 			</table>
 		</div>

@@ -1,6 +1,8 @@
 package com.microcard.servlet;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.HibernateException;
 
+import com.microcard.bean.Commodity;
 import com.microcard.bean.Sales;
 import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
@@ -50,17 +53,32 @@ public class SalesDetailServlet extends HttpServlet {
 		String salesName = request.getParameter("salesName");
 		String salesPrice = request.getParameter("salesPrice");
 		String salesBonus = request.getParameter("salesBonus");
+		// 获取被选中的商品Id
+		String[] commodityIds = request.getParameterValues("checkbox");
 		log.info("salesId : " + salesId);
 		log.info("salesName : " + salesName);
-		log.info("salesPrice : " +salesPrice);
+		log.info("salesPrice : " + salesPrice);
 		log.info("salesBonus: " + salesBonus);
+		log.info("commodityIds: " + commodityIds);
+		Set<Commodity> commodities = new HashSet<Commodity>();
 		try {
 			HibernateUtil.instance().beginTransaction();
+			// 根据商品Id获取商品对象存入商品集合中
+			if (commodityIds != null) {
+				for (String commodityId : commodityIds) {
+					Commodity commodity = DAOFactory.createCommodityDAO()
+							.getCommodityByID(Long.valueOf(commodityId));
+					commodities.add(commodity);
+
+				}
+			}
+
 			if (salesId == null || salesId.equals("")) {
 				Sales sales = new Sales();
 				sales.setName(salesName);
 				sales.setPrice(Double.valueOf(salesPrice));
 				sales.setBonus(Double.valueOf(salesBonus));
+				sales.setCommodities(commodities);
 				DAOFactory.createSalesDAO().saveSales(sales);
 			} else {
 				Sales sales = DAOFactory.createSalesDAO().getSalesByID(
@@ -68,6 +86,7 @@ public class SalesDetailServlet extends HttpServlet {
 				sales.setName(salesName);
 				sales.setPrice(Double.valueOf(salesPrice));
 				sales.setBonus(Double.valueOf(salesBonus));
+				sales.setCommodities(commodities);
 				DAOFactory.createSalesDAO().updateSales(sales);
 			}
 			HibernateUtil.instance().commitTransaction();
