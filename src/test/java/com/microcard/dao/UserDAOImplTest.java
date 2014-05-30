@@ -1,12 +1,16 @@
 package com.microcard.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.microcard.bean.Record;
 import com.microcard.bean.Shop;
 import com.microcard.bean.User;
 import com.microcard.client.WeixinClient;
@@ -54,6 +58,12 @@ public class UserDAOImplTest {
 		try {
 			User u = WeixinClient.getUserInfo("o2gmduEx55FVt10DoRwMcHC7H5w8");
 			DAOFactory.createUserDAO().saveUser(u);
+			for(int i = 0; i < 20; i++){
+				Shop s = new Shop();
+				s.setName("Nike");
+				s.setOpenId("abc" + i);
+				DAOFactory.createUserDAO().addShops(u, s);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,7 +78,16 @@ public class UserDAOImplTest {
 
 	@Test
 	public void testAddRecords() {
-		fail("Not yet implemented");
+		User u = DAOFactory.createUserDAO().getUserByID(2);
+		Shop s = DAOFactory.createShopDAO().getShopByID(11);
+		for(int i = 0; i < 20; i++){
+			Record r = new Record();
+			r.setPrice(1000);
+			r.setBonus(200);
+			r.setTime(new Timestamp(new Date().getTime() - i * 10000));
+			r.setShop(s);
+			DAOFactory.createUserDAO().addRecords(u, r);
+		}
 	}
 
 	@Test

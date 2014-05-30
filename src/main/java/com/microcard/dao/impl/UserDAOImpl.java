@@ -276,9 +276,20 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public List<Record> getRecordsByUser(User u, Shop s, int start, int length)
-			throws HibernateException {
-		// TODO Auto-generated method stub
+	public List<Record> getRecordsByUserShop(User user, Shop shop, int start,
+			int length) throws HibernateException {
+		try{
+			Session session = HibernateUtil.instance().currentSession();
+			String hql = "from Record r where r.user = ? and r.shop = ? and r.deleteFlag=false order by time desc";
+			Query query = session.createQuery(hql);
+			query.setParameter(0, user);
+			query.setParameter(1, shop);
+			query.setFirstResult(start);
+			query.setMaxResults(length);
+			return query.list();
+		} catch(HibernateException ex){
+			log.error(ex, "failed get records by shop and user.");
+		}
 		return null;
 	}
 

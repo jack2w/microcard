@@ -99,16 +99,16 @@ public interface UserDAO {
 	 */
 	List<Shop> getShopsByUser(User u, int start, int length)
 			throws HibernateException;
-	
+
 	/**
-	 * 根据用户和商铺获得所有购买记录
-	 * @param u
-	 * @param s
+	 * 获得用户在某商铺的所有消费记录，按时间顺序排列
+	 * @param user
+	 * @param shop
 	 * @param start
 	 * @param length
 	 * @return
 	 * @throws HibernateException
 	 */
-	List<Record> getRecordsByUser(User u, Shop s,  int start, int length) throws HibernateException;
+	List<Record> getRecordsByUserShop(User user, Shop shop, int start, int length) throws HibernateException;
 	
 }
