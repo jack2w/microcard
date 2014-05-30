@@ -169,12 +169,12 @@ table tr td input {
 			HibernateUtil.instance().beginTransaction();
 			String openId = request.getParameter("OPENID");
 			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
-			Set<Sales> sales = shop.getSales();
+			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop(openId, 0, -1);
 			if (sales.isEmpty() || sales.size() == 0) {
 				String noSales = "Sorry！暂无促销活动。";
 				request.setAttribute("noSales", noSales);
 			} else {
-				request.setAttribute("sales", sales.iterator());
+				request.setAttribute("sales", sales);
 			}
 			request.setAttribute("openId", openId);
 			HibernateUtil.instance().commitTransaction();
@@ -195,7 +195,7 @@ table tr td input {
 			</tr>
 			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>会员姓名：</td>
-				<td id="userName"></td>
+				<td id="userName" style="font-size: 1.2em"></td>
 			</tr>
 			<tr style="border-bottom: 1px solid #E1E1E1">
 				<td>支付金额：</td>
@@ -208,9 +208,10 @@ table tr td input {
 			</tr>
 			<c:forEach items="${sales}" var="sale">
 				<tr>
-					<td></td>
-					<td><input type="radio" name="group">买满<span
-						id="salePrice">${sale.price}</span>返现<span id="saleBonus">${sale.bonus}</span></td>
+					<td colspan="2" style="padding-left: 10%"><input type="radio"
+						name="group"><span style="color: red">【${sale.name}】</span>买满<span
+						id="salePrice" style="color: red">${sale.price}</span>返现<span
+						id="saleBonus" style="color: red">${sale.bonus}</span></td>
 				</tr>
 			</c:forEach>
 			<tr style="border-bottom: 1px solid #E1E1E1">
