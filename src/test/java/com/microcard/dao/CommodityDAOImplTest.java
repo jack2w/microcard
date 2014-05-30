@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.microcard.bean.Commodity;
+import com.microcard.bean.Sales;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
 
@@ -47,6 +48,14 @@ public class CommodityDAOImplTest {
 	public void testUpdateCommodity() {
 		fail("Not yet implemented");
 	}
+	
+	@Test
+	public void testGetSalesByCommodity() {
+		Commodity s =  DAOFactory.createCommodityDAO().getCommodityByID(2);
+		List<Sales> cs = DAOFactory.createCommodityDAO().getSalesByCommodity(s, 0, 10);
+		System.out.print(cs.size());
+
+	}
 
 	@Test
 	public void testSaveCommodity() {
@@ -54,6 +63,7 @@ public class CommodityDAOImplTest {
 //		c1.setName("手机");
 //		DAOFactory.createCommodityDAO().saveCommodity(new Commodity());
 	}
+	
 
 	@Test
 	public void testSaveOrUpdate() {

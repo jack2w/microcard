@@ -69,6 +69,16 @@ public interface SalesDAO {
     */
    public void deleteCommodity(Sales sales, Commodity... commodities) throws HibernateException;
    
+   /**
+    * 获取促销的商品信息
+    * @param sale
+    * @param start
+    * @param length
+    * @return
+    * @throws HibernateException
+    */
+   public List<Commodity> getCommodityBySales(Sales sale, int start, int length) throws HibernateException;
+   
 	/**
 	 * 该方法更新的仅是促销信息，涉及到集合的属性需要调用相关方法
 	 * @param sales

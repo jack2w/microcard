@@ -74,4 +74,14 @@ public interface CommodityDAO {
 	 * @throws HibernateException
 	 */
 	public void deleteSales(Commodity commodity, Sales... sales) throws HibernateException;
+	
+	/**
+	 * 获得商品的促销信息
+	 * @param commodity
+	 * @param start
+	 * @param length
+	 * @return
+	 * @throws HibernateException
+	 */
+	public List<Sales> getSalesByCommodity(Commodity commodity, int start, int length)throws HibernateException;
 }

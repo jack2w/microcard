@@ -110,6 +110,13 @@ public class SalesDAOImplTest {
 	public void testUpdateCommodity() {
 		fail("Not yet implemented");
 	}
+	
+	@Test
+	public void testGetCommodityBySales(){
+		Sales s =  DAOFactory.createSalesDAO().getSalesByID(1);
+		List<Commodity> cs = DAOFactory.createSalesDAO().getCommodityBySales(s, 0, 20);
+		System.out.print(cs.size());
+	}
 
 	@Test
 	public void testDeleteCommodity() {

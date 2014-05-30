@@ -1,9 +1,11 @@
 package com.microcard.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.microcard.bean.Commodity;
@@ -120,5 +122,30 @@ public class SalesDAOImpl implements SalesDAO{
 			throw e;
 		}
 		
+	}
+
+	@Override
+	public List<Commodity> getCommodityBySales(Sales sale, int start, int length)
+			throws HibernateException {
+		if(this.getSalesByID(sale.getId()).isDeleteFlag()){
+			throw new HibernateException("cannot get sales's commodity since the sale is deleted.");
+		}
+		List<Commodity> result =  new ArrayList<Commodity>();		
+		try{	
+			Session session = HibernateUtil.instance().currentSession();	
+			String hql = "from Commodity as c inner join c.sales as s where s=? and c.deleteFlag=false";
+			Query query = session.createQuery(hql).setParameter(0, sale);
+			query.setFirstResult(start);
+			query.setMaxResults(length);
+			List<Object> temp = query.list();
+			for(Object obj : temp){
+				result.add((Commodity)((Object[])obj)[0]);
+			}
+			return result;
+			
+		}catch(HibernateException e){
+			log.error(e, "failed get commodity from sales.");
+			throw e;
+		}
 	}
 }
