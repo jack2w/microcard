@@ -196,7 +196,7 @@ public class UserDAOImpl implements UserDAO{
 			}
 			for(Shop s : shops){
 				if(s.getUsers() == null){
-					return;
+					continue;
 				}
 				s.getUsers().remove(u);
 				session.saveOrUpdate(s);

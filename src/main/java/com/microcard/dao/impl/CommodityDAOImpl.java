@@ -3,10 +3,16 @@
  */
 package com.microcard.dao.impl;
 
+import java.util.HashSet;
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
 import com.microcard.bean.Commodity;
+import com.microcard.bean.Sales;
+import com.microcard.bean.Shop;
+import com.microcard.bean.User;
 import com.microcard.dao.CommodityDAO;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
@@ -102,6 +108,53 @@ public class CommodityDAOImpl implements CommodityDAO {
 				session.saveOrUpdate(commodity);
 		}catch(HibernateException e){
 			log.error(e, "failed save or update a commodity.");
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void addSales(Commodity commodity, Sales... sales)
+			throws HibernateException {
+		try{
+			Session session = HibernateUtil.instance().currentSession();
+			if(commodity.getSales() == null){
+				commodity.setSales(new HashSet<Sales>());
+			}
+			for(Sales s : sales){
+				if(s.getCommodities() == null){
+					s.setCommodities(new HashSet<Commodity>());
+				}
+				s.getCommodities().add(commodity);
+				session.saveOrUpdate(s);
+			}
+		}catch(HibernateException e){ 
+			log.error(e, "failed add sales on commodity.");
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void deleteSales(Commodity commodity, Sales... sales)
+			throws HibernateException {
+		if( this.getCommodityByID(commodity.getId()).isDeleteFlag()){
+			throw new HibernateException("cannot delete commodity's sales since the commodity is deleted.");
+		}			
+		try{
+			Session session = HibernateUtil.instance().currentSession();
+			if(sales == null){
+				sales = commodity.getSales().toArray(new Sales[commodity.getSales().size()]) ;
+			}
+			for(Sales s : sales){
+				if(s.getCommodities() == null){
+					continue;
+				}
+				s.getCommodities().remove(commodity);
+				session.saveOrUpdate(s);
+			}
+		}catch(HibernateException e){
+			log.error(e, "failed delete sales from commodity.");
 			throw e;
 		}
 		

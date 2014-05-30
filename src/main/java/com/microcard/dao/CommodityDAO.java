@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 
 import com.microcard.bean.Commodity;
+import com.microcard.bean.Sales;
 
 /**
  * @author jiyaguang
@@ -57,4 +58,20 @@ public interface CommodityDAO {
 	 * @throws HibernateException
 	 */
 	public void saveOrUpdate(Commodity commodity ) throws HibernateException;
+	
+	/**
+	 * 添加营销
+	 * @param commodity
+	 * @param sales
+	 * @throws HibernateException
+	 */
+	public void addSales(Commodity commodity, Sales... sales) throws HibernateException;
+	
+	/**
+	 * 删除营销
+	 * @param commodity
+	 * @param sales
+	 * @throws HibernateException
+	 */
+	public void deleteSales(Commodity commodity, Sales... sales) throws HibernateException;
 }

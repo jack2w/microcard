@@ -1,5 +1,6 @@
 package com.microcard.dao.impl;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -87,11 +88,13 @@ public class SalesDAOImpl implements SalesDAO{
 	@Override
 	public void addCommodity(Sales sales, Commodity... commodities)
 			throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
 		try{
+			Session session = HibernateUtil.instance().currentSession();
+			if(sales.getCommodities() == null){
+				sales.setCommodities(new HashSet<Commodity>());
+			}
 			for(Commodity c : commodities){
-				c.setSales(sales);
-				session.save(c);
+				sales.getCommodities().add(c);
 			}
 			this.saveOrUpdate(sales);
 		}catch(HibernateException e){
@@ -102,31 +105,15 @@ public class SalesDAOImpl implements SalesDAO{
 	}
 
 	@Override
-	public void updateCommodity(Sales sales, Commodity... commodities)
-			throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
-		try{
-			for(Commodity c : commodities){
-				c.setSales(sales);
-				session.update(c);
-			}
-		}catch(HibernateException e){
-			log.error(e, "failed update commodity to sale.");
-			throw e;
-		}
-		
-	}
-
-	@Override
 	public void deleteCommodity(Sales sales, Commodity... commodities)
-			throws HibernateException {
-		Session session = HibernateUtil.instance().currentSession();
+			throws HibernateException {	
 		try{
+			Session session = HibernateUtil.instance().currentSession();
 			if(commodities == null){
 				commodities = sales.getCommodities().toArray(new Commodity[sales.getCommodities().size()]) ;
 			}
 			for(Commodity c : commodities){
-				session.update(c);
+				sales.getCommodities().remove(c);
 			}
 		}catch(HibernateException e){
 			log.error(e, "failed delete commodity from sale.");

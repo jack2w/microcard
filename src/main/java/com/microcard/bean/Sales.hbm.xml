@@ -26,11 +26,10 @@
         <property name="deleteFlag" type= "java.lang.Boolean" >
             <column name="DELETEFLAG" default="false"/>
         </property>
-        <set name="commodities" table="COMMODITY" inverse="false" lazy="true" cascade="save-update">
-            <key>
-                <column name="SALES_ID" />
-            </key>
-            <one-to-many class="com.microcard.bean.Commodity" />
+        <set name="commodities" inverse="false" cascade="save-update" table="tbl_commodity_sales" lazy = "true">
+            <key column="SALES_ID"></key>
+            <many-to-many class="com.microcard.bean.Commodity"
+                column="COMMODITY_ID"></many-to-many>
         </set>
     </class>
 </hibernate-mapping>

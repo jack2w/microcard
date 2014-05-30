@@ -241,7 +241,7 @@ table tr td:LAST-CHILD {
 				<tr>
 					<td>&nbsp;联系方式:</td>
 					<td><span>${user.phone1}</span><input value="${user.phone1}"
-						style="display: none; height:30px" type="text" name="userphone1"
+						style="display: none; height:30px" type="tel" name="userphone1"
 						id="userphone1"></td>
 				</tr>
 				<tr>

@@ -301,7 +301,7 @@ public class ShopDAOImpl implements ShopDAO {
 		List<Commodity> result = new ArrayList<Commodity>();
 		try {
 			Session session = HibernateUtil.instance().currentSession();
-			String hql = "from Commodity c where c.shop=? and c.deleteFlag=false";
+			String hql = "from Commodity c where c.shop=? and c.deleteFlag=false order by id";
 			Query query = session.createQuery(hql);
 			query.setEntity(0, s);
 			query.setFirstResult(start);
@@ -329,7 +329,7 @@ public class ShopDAOImpl implements ShopDAO {
 		List<Sales> result = new ArrayList<Sales>();
 		try {
 			Session session = HibernateUtil.instance().currentSession();
-			String hql = "from Sales s where s.shop=? and s.deleteFlag=false";
+			String hql = "from Sales s where s.shop=? and s.deleteFlag=false order by id desc";
 			Query query = session.createQuery(hql);
 			query.setEntity(0, s);
 			query.setFirstResult(start);

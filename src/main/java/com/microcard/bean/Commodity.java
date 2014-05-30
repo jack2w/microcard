@@ -3,6 +3,8 @@
  */
 package com.microcard.bean;
 
+import java.util.Set;
+
 /**
  * 商品类，某个商铺具有哪些商品
  * @author jack
@@ -48,7 +50,7 @@ public class Commodity {
 	/**
 	 * 该商品的营销类型
 	 */
-	private Sales sales;
+	private Set<Sales> sales;
 	
 	/**
 	 * 是否删除
@@ -133,11 +135,11 @@ public class Commodity {
 		this.discount = discount;
 	}
 
-	public Sales getSales() {
+	public Set<Sales> getSales() {
 		return sales;
 	}
 
-	public void setSales(Sales sales) {
+	public void setSales(Set<Sales> sales) {
 		this.sales = sales;
 	}
 

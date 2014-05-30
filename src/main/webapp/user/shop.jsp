@@ -145,9 +145,7 @@ body {
 
 		} catch (Exception e) {
 			Logger.getOperLogger().error(e, "");
-		} finally {
-			HibernateUtil.instance().closeSession();
-		}
+		} 
 	%>
 	<!-- this is content -->
 	<div class="content">

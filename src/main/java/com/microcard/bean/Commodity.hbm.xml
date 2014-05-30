@@ -14,11 +14,6 @@
         <property name="name" type="java.lang.String" length = "10">
             <column name="NAME" />
         </property>
-    	<!-- <property column="memotwo" length="4000" name="memo"/> -->
-    	
-    	 <!-- <property name="memo" >
-            <column name = "MEMO2" length="256" not-null="true" unique="true"/>
-        </property> -->
          <property name="memo" type="java.lang.String">  
             <column name="MEMO" />  
         </property>
@@ -33,9 +28,11 @@
         </property>
         <property name="deleteFlag" type= "java.lang.Boolean" >
             <column name="DELETEFLAG" default="false"/>
-        </property>
-        <many-to-one name="sales" class="com.microcard.bean.Sales">
-            <column name="SALES_ID" />
-        </many-to-one>
+        </property>       
+        <set name="sales" inverse="true" cascade="save-update" table="tbl_commodity_sales" lazy = "true">
+            <key column="COMMODITY_ID"></key>
+            <many-to-many class="com.microcard.bean.Sales"
+                column="SALES_ID"></many-to-many>
+        </set>
     </class>
 </hibernate-mapping>

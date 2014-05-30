@@ -48,7 +48,7 @@ public class Sales {
 	private boolean deleteFlag;
 	
 	/**
-	 * 该营销参加的商品，具有1对多关系,需要延迟加载
+	 * 该营销参加的商品，具有多对多关系,需要延迟加载
 	 */
 	private Set<Commodity> commodities;
 

@@ -60,15 +60,7 @@ public interface SalesDAO {
 	 * @throws HibernateException
 	 */
    public void addCommodity(Sales sales, Commodity... commodities) throws HibernateException;
-   
-   /**
-    * 修改促销商品
-    * @param sales
-    * @param commodities
-    * @throws HibernateException
-    */
-   public void updateCommodity(Sales sales, Commodity... commodities) throws HibernateException;
-   
+      
    /**
     * 删除促销商品，如果commodities为null，删除所有该促销关联的商品
     * @param sales

@@ -7,6 +7,9 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	<listener>
+	<listener-class>com.microcard.servlet.RequestListener</listener-class>
+	</listener>
 	<servlet>
 		<servlet-name>ShopEntryServlet</servlet-name>
 		<display-name>ShopEntryServlet</display-name>
