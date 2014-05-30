@@ -99,7 +99,8 @@ table tr td input {
 			Shop shop = DAOFactory.createShopDAO().getShopByID(
 					Long.valueOf(shopId));
 			// 商铺的商品
-			Set<Commodity> shopCommodities = shop.getCommodities();
+			List<Commodity> shopCommodities = DAOFactory.createShopDAO()
+					.getCommodity(shop.getOpenId(), 0, -1);
 			// saleId不为空则为修改促销信息
 			if (saleId != null) {
 				Sales sales = DAOFactory.createSalesDAO().getSalesByID(
@@ -109,7 +110,7 @@ table tr td input {
 				Iterator<Commodity> salesCommodity = salesCommodities
 						.iterator();
 				// 获取已选中的促销商品
-				Set<Commodity> checkedCommodities = new HashSet<Commodity>();
+				List<Commodity> checkedCommodities = new ArrayList<Commodity>();
 				while (salesCommodity.hasNext()) {
 					Commodity checkedCommodity = salesCommodity.next();
 					if (shopCommodities.contains(checkedCommodity)) {
@@ -126,9 +127,9 @@ table tr td input {
 				String noCommodities = "暂无促销 商品。";
 				request.setAttribute("noCommodities", noCommodities);
 			} else {
-				request.setAttribute("shopCommodities",
-						shopCommodities.iterator());
+				request.setAttribute("shopCommodities", shopCommodities);
 			}
+			request.setAttribute("shopId", shopId);
 			HibernateUtil.instance().commitTransaction();
 		} catch (Exception e) {
 			HibernateUtil.instance().rollbackTransaction();
@@ -164,16 +165,15 @@ table tr td input {
 					<c:choose>
 						<c:when test="${fn:contains(checkedCommodities,commodity)}">
 							<tr>
-								<td></td>
-								<td><input type="checkbox" checked="checked" name="checkbox"
+								<td colspan="2" style="padding-left: 15%"><input
+									type="checkbox" checked="checked" name="checkbox"
 									value="${commodity.id}">${commodity.name}</td>
 							</tr>
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td></td>
-								<td><input type="checkbox" name="checkbox"
-									value="${commodity.id}">${commodity.name}</td>
+								<td colspan="2" style="padding-left: 15%"><input
+									type="checkbox" name="checkbox" value="${commodity.id}">${commodity.name}</td>
 							</tr>
 						</c:otherwise>
 					</c:choose>
@@ -181,6 +181,7 @@ table tr td input {
 			</table>
 		</div>
 		<input type="hidden" name="salesId" id="salesId" value="${sales.id}">
+		<input type="hidden" name="shopId" id="shopId" value="${shopId}">
 	</form>
 </body>
 </html>

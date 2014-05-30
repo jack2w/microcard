@@ -113,6 +113,7 @@ body {
 .delbtn {
 	width: 10%;
 	margin-right: 2%;
+	margin-top: -3%;
 	padding: 5px 12px;
 	border-radius: 2px;
 	border: 1px solid #99CC33;
@@ -121,6 +122,8 @@ body {
 	color: #f3f7fc;
 	float: right;
 	vertical-align: middle;
+	
+	
 }
 
 .click_more {
@@ -161,7 +164,6 @@ body {
 				event.stopPropagation();
 			}
 			var del = $(this);
-			alert(del.siblings("#saleId").val());
 			$.Zebra_Dialog('<strong>是否删除？', {
 				'type' : 'question',
 				'title' : '提示',
@@ -208,9 +210,9 @@ body {
 		try {
 			HibernateUtil.instance().beginTransaction();
 			String openId = request.getParameter("OPENID");
-			Shop shop = DAOFactory.createShopDAO().getShopByOpenID("001");
+			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
 			String shopId = String.valueOf(shop.getId());
-			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop("001", 0, -1);
+			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop(openId, 0, -1);
 			if (sales.isEmpty() || sales.size() == 0) {
 				String noSales = "Sorry！暂无促销活动。";
 				request.setAttribute("noSales", noSales);

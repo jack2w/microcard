@@ -13,6 +13,7 @@ import org.hibernate.HibernateException;
 
 import com.microcard.bean.Commodity;
 import com.microcard.bean.Sales;
+import com.microcard.bean.Shop;
 import com.microcard.dao.DAOFactory;
 import com.microcard.dao.hibernate.HibernateUtil;
 import com.microcard.log.Logger;
@@ -49,12 +50,14 @@ public class SalesDetailServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
+		String shopId = request.getParameter("shopId");
 		String salesId = request.getParameter("salesId");
 		String salesName = request.getParameter("salesName");
 		String salesPrice = request.getParameter("salesPrice");
 		String salesBonus = request.getParameter("salesBonus");
 		// 获取被选中的商品Id
 		String[] commodityIds = request.getParameterValues("checkbox");
+		log.info("shopId : " + shopId);
 		log.info("salesId : " + salesId);
 		log.info("salesName : " + salesName);
 		log.info("salesPrice : " + salesPrice);
@@ -72,9 +75,11 @@ public class SalesDetailServlet extends HttpServlet {
 
 				}
 			}
-
+			
+			Shop shop = DAOFactory.createShopDAO().getShopByID(Long.valueOf(shopId));
 			if (salesId == null || salesId.equals("")) {
 				Sales sales = new Sales();
+				sales.setShop(shop);
 				sales.setName(salesName);
 				sales.setPrice(Double.valueOf(salesPrice));
 				sales.setBonus(Double.valueOf(salesBonus));
@@ -90,7 +95,7 @@ public class SalesDetailServlet extends HttpServlet {
 				DAOFactory.createSalesDAO().updateSales(sales);
 			}
 			HibernateUtil.instance().commitTransaction();
-			response.sendRedirect("shop/sales.jsp");
+			response.sendRedirect("shop/sales.jsp?OPENID=" + shop.getOpenId());
 		} catch (HibernateException e) {
 			HibernateUtil.instance().rollbackTransaction();
 			Logger.getOperLogger().warn("操作促销信息失败");

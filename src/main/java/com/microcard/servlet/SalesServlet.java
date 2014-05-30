@@ -46,11 +46,13 @@ public class SalesServlet extends HttpServlet {
 		String saleId = request.getParameter("saleId");
 		Logger.getOperLogger().info("saleId : " + saleId);
 		try {
+			HibernateUtil.instance().beginTransaction();
 			// 获取Sales对象
 			Sales sales = DAOFactory.createSalesDAO().getSalesByID(Long.valueOf(saleId));
 			DAOFactory.createSalesDAO().deleteSales(sales);
 			HibernateUtil.instance().commitTransaction();
 			out.write("{\"result\":\"" + "操作成功" + "\"}");
+			Logger.getOperLogger().info("删除营销成功！");
 		} catch (HibernateException exception) {
 			HibernateUtil.instance().rollbackTransaction();
 			out.write("删除营销失败：" + exception.getMessage());
