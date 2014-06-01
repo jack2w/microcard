@@ -160,6 +160,47 @@ table tr td input {
 
 						});
 
+		$(".okBtn").click(
+				function() {
+					if ($("#userId").val() == "") {
+						$.Zebra_Dialog('会员ID不能为空', {
+							'type' : 'warning',
+							'title' : '提示'
+						});
+						$("#tipImg").attr("src",
+						"../resources/images/wrong_alt.png");
+					} else {
+						var saleId = $("input:[type='radio']:['checked']")
+								.siblings("#saleId").val();
+						$.ajax({
+							url : "../recordServlet",
+							type : "post",
+							dataType : "json",
+							data : {
+								userId : $('#userId').val(),
+								openId : $('#openId').val(),
+								recordPrice : $('#recordPrice').val(),
+								recordBonus : $('#recordBonus').val(),
+								saleId : saleId,
+								comfirm : "comfirm"
+							},
+							success : function(data) {
+								$.Zebra_Dialog('记入成功！', {
+									'type' : 'confirmation',
+									'title' : '提示'
+								});
+							},
+							error : function() {
+								$.Zebra_Dialog('记一笔失败，请重新输入！', {
+									'type' : 'error',
+									'title' : '错误'
+								});
+
+							}
+						});
+					}
+				});
+
 	});
 </script>
 </head>
@@ -169,7 +210,8 @@ table tr td input {
 			HibernateUtil.instance().beginTransaction();
 			String openId = request.getParameter("OPENID");
 			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(openId);
-			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop(openId, 0, -1);
+			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop(
+					openId, 0, -1);
 			if (sales.isEmpty() || sales.size() == 0) {
 				String noSales = "Sorry！暂无促销活动。";
 				request.setAttribute("noSales", noSales);
@@ -208,7 +250,8 @@ table tr td input {
 			</tr>
 			<c:forEach items="${sales}" var="sale">
 				<tr>
-					<td colspan="2" style="padding-left: 10%"><input type="radio"
+					<td colspan="2" style="padding-left: 10%"><input type="hidden"
+						id="saleId" value="${sale.id}"><input type="radio"
 						name="group"><span style="color: red">【${sale.name}】</span>买满<span
 						id="salePrice" style="color: red">${sale.price}</span>返现<span
 						id="saleBonus" style="color: red">${sale.bonus}</span></td>
@@ -221,8 +264,7 @@ table tr td input {
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;"><input
-					class="okBtn" type="button" value="确认"
-					onclick="javascript:history.go(-1);"></td>
+					class="okBtn" type="button" value="确认"></td>
 			</tr>
 		</table>
 	</div>
