@@ -78,7 +78,7 @@ public class UserDAOImplTest {
 
 	@Test
 	public void testAddRecords() {
-		User u = DAOFactory.createUserDAO().getUserByID(2);
+		User u = DAOFactory.createUserDAO().getUserByID(1);
 		Shop s = DAOFactory.createShopDAO().getShopByID(11);
 		for(int i = 0; i < 20; i++){
 			Record r = new Record();

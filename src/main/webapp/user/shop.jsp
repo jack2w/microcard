@@ -126,24 +126,29 @@ body {
 			String openId = request.getParameter("OPENID");
 			UserDAO userdao = DAOFactory.createUserDAO();
 			User user = userdao.getUserByOpenID(openId);
+			if(user == null){
+				Logger.getOperLogger().error("数据库中不存在该user[openid] = " + openId + "信息！");
+				return;
+			}
 			List<Shop> shoplist = new ArrayList<Shop>();
 			if (user != null) {
 				shoplist = userdao.getShopsByUser(user, 0, 50);
 			}
-			List<Record> records = new ArrayList<Record>();
+			Map<Long, Record> recordMap = new HashMap<Long,Record>();
 			for (int i = 0; i < shoplist.size(); i++) {
 				List<Record> rs = userdao.getRecordsByUserShop(user,
 						shoplist.get(i), 0, 1);
 				if (rs.size() == 1) {
 					Record r = rs.get(0);
-					records.add(r);
+					recordMap.put(shoplist.get(i).getId(), r);
 				}
 			}
 			request.setAttribute("shops", shoplist);
-			request.setAttribute("records", records);
+			request.setAttribute("recordmap", recordMap);
 			request.setAttribute("userid", user.getId());
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.getOperLogger().error(e, "");
 		} finally {
 			HibernateUtil.instance().closeSession();
@@ -151,7 +156,7 @@ body {
 	%>
 	<!-- this is content -->
 	<div class="content">
-		<input type="hidden" id="userId" value=${userid} />
+		<input type="hidden" id="userId" value="${userid}" />
 		<div class="search_form">
 			<form action="#" method="get">
 				<input type="text" name="s" class="sinput" placeholder="输入 回车搜索">
@@ -175,16 +180,16 @@ body {
 					 </h5>
 					<span id="goodsName">
 						<c:choose>
-							<c:when test="${records[status.index].bonus==null || records[status.index].bonus == 0}">
+							<c:when test="${recordmap[item.id].bonus==null || recordmap[item.id].bonus == 0}">
                             	&nbsp;
 							</c:when>
 							<c:otherwise>
-								&nbsp;返还${records[status.index].bonus}元
+								&nbsp;返还${recordmap[item.id].bonus}元
 							</c:otherwise>
 						</c:choose>
 					
 					</span> <span
-						id="buyTime">&nbsp;${records[status.index].time.toLocaleString()}</span>
+						id="buyTime">&nbsp;${recordmap[item.id].time.toLocaleString()}</span>
 				</div>
 			</c:forEach>
 		</div>

@@ -7,12 +7,12 @@
 
     <session-factory>
 
-        <!-- <property name="connection.datasource">java:comp/env/jdbc/microcard</property>  -->
-        
+        <property name="connection.datasource">java:comp/env/jdbc/microcard</property>
+        <!-- 
         <property name="connection.url">jdbc:mysql://localhost:3306/microcard?useUnicode=true&amp;characterEncoding=UTF-8</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
+        <property name="connection.password">root</property> -->
         
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>		
 		<property name="hibernate.current_session_context_class">thread</property>					
