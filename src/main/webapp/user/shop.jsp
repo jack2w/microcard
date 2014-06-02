@@ -126,24 +126,29 @@ body {
 			String openId = request.getParameter("OPENID");
 			UserDAO userdao = DAOFactory.createUserDAO();
 			User user = userdao.getUserByOpenID(openId);
+			if(user == null){
+				Logger.getOperLogger().error("数据库中不存在该user[openid] = " + openId + "信息！");
+				return;
+			}
 			List<Shop> shoplist = new ArrayList<Shop>();
 			if (user != null) {
 				shoplist = userdao.getShopsByUser(user, 0, 50);
 			}
-			List<Record> records = new ArrayList<Record>();
+			Map<Long, Record> recordMap = new HashMap<Long,Record>();
 			for (int i = 0; i < shoplist.size(); i++) {
 				List<Record> rs = userdao.getRecordsByUserShop(user,
 						shoplist.get(i), 0, 1);
 				if (rs.size() == 1) {
 					Record r = rs.get(0);
-					records.add(r);
+					recordMap.put(shoplist.get(i).getId(), r);
 				}
 			}
 			request.setAttribute("shops", shoplist);
-			request.setAttribute("records", records);
+			request.setAttribute("recordmap", recordMap);
 			request.setAttribute("userid", user.getId());
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.getOperLogger().error(e, "");
 		} 
 	%>
@@ -161,8 +166,8 @@ body {
 				<div class="shop">
 					<input type="hidden" value="${item.id}">
 					<h5 style="font-size: 1.2em" id="memberName">&nbsp;${item.name} </h5>
-					<span id="goodsName">&nbsp;${records[status.index].bonus}</span> <span
-						id="buyTime">&nbsp;${records[status.index].time}</span>
+					<span id="goodsName">&nbsp;${recordmap[item.id].bonus}</span> <span
+						id="buyTime">&nbsp;${recordmap[item.id].time}</span>
 				</div>
 			</c:forEach>
 		</div>
