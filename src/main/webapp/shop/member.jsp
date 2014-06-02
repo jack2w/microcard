@@ -47,7 +47,7 @@ body {
 }
 
 .sinput {
-	width: 50%;
+	width: 70%;
 	height: 21px;
 	line-height: 21px;
 	padding: 4px 7px;
@@ -55,7 +55,7 @@ body {
 	border: 1px solid #999;
 	border-radius: 2px;
 	background-color: #fbfbfb;
-	margin-left: 14%;
+	margin-left: 2%;
 }
 
 .sbtn {
@@ -72,7 +72,7 @@ body {
 }
 
 .memberList {
-	border-top: 1px solid #B5B5B5;
+	border-top: 1px solid #E1E1E1;
 	width: 100%;
 	float: left;
 }
@@ -80,7 +80,7 @@ body {
 .member {
 	width: 100%;
 	float: left;
-	border-bottom: 1px dashed #B5B5B5;
+	border-bottom: 1px solid #E1E1E1;
 	height: 60px;
 	background: WhiteSmoke;
 }
@@ -118,19 +118,16 @@ body {
 }
 </style>
 <script type="text/javascript">
-/* 	$(function() {
-		for (var i = 1; i <= 40; i++) {
-			$(".memberList")
-					.append(
-							"<div class='member'> "
-									+ "<img src='../resources/images/memberFace/" + i + ".jpg'>"
-									+ "<div class='memberAbout'>"
-									+ "<h5 style='font-size: 1.2em' id='memberName'>赵六</h5>"
-									+ "<div><span id='goodsName'>巴贝拉牛排</span>"
-									+ "<span id='buyTime'>2014-12-23 下午</span></div></div></div>")
-
-		}
-	}) */
+  $(function() {
+		$(function() {
+			$(".member").click(
+					function() {
+						var userId = $(this).find("input").val();
+						location.href = "../user/shopDetail.jsp?shopId=" + $("#shopId").val()
+								+ "&userId=" + userId;
+					});
+		});
+	});
 </script>
 </head>
 <body>
@@ -143,31 +140,41 @@ body {
 					class="sbtn">
 			</form>
 		</div>
-
+        
 		<div class="memberList">
 		<%
-		    String openId = request.getParameter("OPENID");
+		String openId = request.getParameter("OPENID");
+		Shop shop = null;
+		try{
 		    ShopDAO shopDao = DAOFactory.createShopDAO();
-		    Shop shop = shopDao.getShopByOpenID(openId);
+		    UserDAO userDao = DAOFactory.createUserDAO();
+		    shop = shopDao.getShopByOpenID(openId);
 		    List<User> list = new ArrayList<User>();
 		    if(shop != null)
 		      list = shopDao.getUsersByShop(shop, 0, -1);
 		    
 			for(User user : list) {
+				List<Record> rs = userDao.getRecordsByUserShop(user, shop, 0, 1);
+				Record record = rs.size() == 1 ? record = rs.get(0) : null;
 		%>
 				<div class="member">
 				<img src="<%=user.getHeadImgUrl()%>">
 				<div class="memberAbout">
+				     <input type="hidden" value="<%=user.getId()%>">
 					<h5 style="font-size: 1.2em" id="memberName">&nbsp;<%=user.getNickName()%></h5>
 					<div>
-						<span id="goodsName">&nbsp;<%=user.getCity()%></span> <span
-							id="buyTime"><%=user.getSubscribeTime().toLocaleString()%></span>
+						<span id="goodsName">&nbsp;<%=record== null ?"": "返还" + record.getBonus() + "元"%></span> <span
+							id="buyTime"><%=record==null?"":record.getTime().toLocaleString()%></span>
 					</div>
 				</div>
 			</div>	
 		<%
 			}
+		}finally {
+			HibernateUtil.instance().closeSession();
+		}
 		%>
+		<input type="hidden" id="shopId" name="shopId" value="<%=shop.getId()%>">
 	</div>
 </body>
 </html>

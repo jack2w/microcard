@@ -18,7 +18,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>购买记录</title>
+<title>消费记录</title>
 <script type="text/javascript" src="../resources/js/jquery.js" /></script>
 <link href="../resources/styles/bootstrap.min.css" rel="stylesheet" />
 <style type="text/css">
@@ -48,7 +48,7 @@ body {
 }
 
 .sinput {
-	width: 50%;
+	width: 60%;
 	height: 21px;
 	line-height: 21px;
 	padding: 4px 7px;
@@ -56,37 +56,38 @@ body {
 	border: 1px solid #999;
 	border-radius: 2px;
 	background-color: #fbfbfb;
-	margin-left: 14%;
+	margin-left: 2%;
+	float:left;
 }
 
 .returnbtn {
 	width: 10%;
 	height: 30px;
 	margin-left: 2%;
-	padding: 0 12px;
+	padding: 4px 7px;
 	border-radius: 2px;
 	border: 1px solid #99CC33;
 	background-color: #99CC33;
 	font-size: 1em;
 	color: #f3f7fc;
-	position: absolute;
+	float:left;
 }
 
 .sbtn {
 	width: 10%;
 	height: 30px;
 	margin-left: 2%;
-	padding: 0 12px;
+	padding: 4px 7px;
 	border-radius: 2px;
 	border: 1px solid #99CC33;
 	background-color: #99CC33;
 	font-size: 1em;
 	color: #f3f7fc;
-	position: absolute;
+	float:left;
 }
 
 .recordList {
-	border-top: 1px solid #B5B5B5;
+	border-top: 1px solid #E1E1E1;
 	width: 100%;
 	float: left;
 }
@@ -94,7 +95,7 @@ body {
 .record {
 	width: 100%;
 	float: left;
-	border-bottom: 1px dashed #B5B5B5;
+	border-bottom: 1px solid #E1E1E1;
 	height: 60px;
 	background: WhiteSmoke;
 }
@@ -157,14 +158,14 @@ body {
 				<div class="record">
 					<c:choose>
 						<c:when test="${item.bonusUsed}">
-						<h5 style="font-size: 1.2em; color:#c0c0c0" id="recordName">&nbsp;返还${item.bonus}</h5>
+						<h5 style="font-size: 1.2em; color:#E1E1E1" id="recordName">&nbsp;返还${item.bonus}元</h5>
 						</c:when>
 						<c:otherwise>
-						<h5 style="font-size: 1.2em; color:red" id="recordName">&nbsp;返还${item.bonus}</h5>
+						<h5 style="font-size: 1.2em; color:green" id="recordName">&nbsp;返还${item.bonus}元</h5>
 						</c:otherwise>
 					</c:choose>
-					<span id="goodsName">&nbsp;消费金额&nbsp;&nbsp;${item.price}</span> 
-					<span id="buyTime">&nbsp;&nbsp;${item.time}</span>			
+					<span id="goodsName">&nbsp;消费${item.price}元</span> 
+					<span id="buyTime">&nbsp;${item.time.toLocaleString()}</span>			
 				</div>
 			</c:forEach>
 		</div>

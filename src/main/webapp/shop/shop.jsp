@@ -2,6 +2,7 @@
 <%@ page isELIgnored="false"%>
 <%@page import="com.microcard.bean.Shop"%>
 <%@page import="com.microcard.dao.DAOFactory"%>
+<%@page import="com.microcard.dao.hibernate.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -191,9 +192,14 @@ table tr td:LAST-CHILD {
 <body>
 	<%
 		String opendId = request.getParameter("OPENID");
-		Shop shop = DAOFactory.createShopDAO().getShopByOpenID(opendId);
-		request.setAttribute("opendId", opendId);
-		request.setAttribute("shop", shop);
+		try{
+			Shop shop = DAOFactory.createShopDAO().getShopByOpenID(opendId);
+			request.setAttribute("opendId", opendId);
+			request.setAttribute("shop", shop);
+		} finally{
+			HibernateUtil.instance().closeSession();
+		}
+
 	%>
 	<!-- this is header -->
 	

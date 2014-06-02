@@ -19,7 +19,7 @@ import com.microcard.log.Logger;
 
 public class UserDAOImpl implements UserDAO{
 
-	private Logger log = Logger.getMsgLogger();
+	private Logger log = Logger.getOperLogger();
 	
 	@Override
 	public List<User> getUsers() throws HibernateException {
@@ -64,7 +64,7 @@ public class UserDAOImpl implements UserDAO{
 		User u = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-	       u = (User)session.load(User.class.getName(), id);
+	       u = (User)session.get(User.class.getName(), id);
 		} catch(HibernateException ex){
 			log.error(ex, "failed get user by id.");
 			throw ex;
@@ -267,7 +267,7 @@ public class UserDAOImpl implements UserDAO{
 		User u = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-	        u = (User)session.load(User.class.getName(), id);
+	        u = (User)session.get(User.class.getName(), id);
 		} catch(HibernateException ex){
 			log.error(ex, "failed get user by id.");
 			throw ex;

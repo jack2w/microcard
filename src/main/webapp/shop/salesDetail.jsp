@@ -124,7 +124,7 @@ table tr td input {
 			}
 
 			if (shopCommodities.isEmpty() || shopCommodities.size() == 0) {
-				String noCommodities = "暂无促销 商品。";
+				String noCommodities = "无促销商品。";
 				request.setAttribute("noCommodities", noCommodities);
 			} else {
 				request.setAttribute("shopCommodities", shopCommodities);
@@ -153,9 +153,9 @@ table tr td input {
 
 				<tr style="border-bottom: 1px solid #E1E1E1">
 					<td colspan="2">买满<input type="number" name="salesPrice"
-						id="salesPrice" value="${sales.price}">返现<input
+						id="salesPrice" value="${sales.price}">元，返现<input
 						type="number" name="salesBonus" id="salesBonus"
-						value="${sales.bonus}"></td>
+						value="${sales.bonus}">元</td>
 				</tr>
 				<tr style="border-bottom: 1px solid #E1E1E1">
 					<td>促销商品：</td>

@@ -6,6 +6,7 @@
 <%@page import="java.util.*"%>
 <%@page import="com.microcard.dao.hibernate.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport"
@@ -19,6 +20,7 @@
 <link href="../resources/styles/zebra_dialog.css" rel="stylesheet" />
 <script type="text/javascript" src="../resources/js/jquery.js" /></script>
 <script type="text/javascript" src="../resources/js/zebra_dialog.js" /></script>
+
 <style type="text/css">
 * {
 	margin: 0;
@@ -47,14 +49,15 @@ body {
 }
 
 .sinput {
-	width: 50%;
+	width: 60%;
+	height: 30px;
 	line-height: 21px;
 	padding: 4px 7px;
 	color: b3b3b3;
 	border: 1px solid #999;
 	border-radius: 2px;
 	background-color: #fbfbfb;
-	margin-left: 12%;
+	margin-left: 2%;
 }
 
 .sbtn {
@@ -87,7 +90,8 @@ body {
 .commodity {
 	width: 100%;
 	float: left;
-	border-bottom: 1px dashed #B5B5B5;
+	border-bottom: 1px solid #E1E1E1;
+	background: WhiteSmoke;
 }
 
 #commodityName {
@@ -101,21 +105,22 @@ body {
 	padding: 1% 0 1% 1%;
 	float: left;
 	font-size: 1.5em;
-	color: red;
-	text-shadow: -2px -2px 0 #E6E6FA;
+	color: green;
+	/*text-shadow: -2px -2px 0 #E6E6FA;*/
 }
 
 .delbtn {
 	width: 10%;
-	height: 30px;
 	margin-right: 2%;
-	padding: 0 12px;
+	margin-top: -3%;
+	padding: 5px 12px;
 	border-radius: 2px;
 	border: 1px solid #99CC33;
 	background-color: #99CC33;
 	font-size: 1em;
 	color: #f3f7fc;
-	float:right
+	float: right;
+	vertical-align: middle;
 
 }
 
@@ -322,7 +327,7 @@ body {
 	<div class="content">
 		<div class="search_form">
 			<form action="#" method="get">
-				<input type="text" name="s" class="sinput" style="height: 30px" placeholder="输入 回车搜索">
+			    <input type="text" name="s" class="sinput" placeholder="输入 回车搜索">
 				<input type="submit" value="搜索" class="sbtn"> <img
 					src="../resources/images/addbtn.png" class="addbtn">
 			</form>

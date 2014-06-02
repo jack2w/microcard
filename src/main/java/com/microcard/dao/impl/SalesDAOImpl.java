@@ -49,7 +49,7 @@ public class SalesDAOImpl implements SalesDAO{
 		Sales s = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-	        s = (Sales)session.load(Sales.class.getName(), id);
+	        s = (Sales)session.get(Sales.class.getName(), id);
 		} catch(HibernateException ex){
 			log.error(ex, "failed get sales by id.");
 			throw ex;

@@ -172,6 +172,11 @@ table tr td input {
 					} else {
 						var saleId = $("input:[type='radio']:['checked']")
 								.siblings("#saleId").val();
+						var infoDialog = new $.Zebra_Dialog('正在提交中，请稍等...', {
+							'type' : 'information',
+							'modal': 'true',
+							'title' : '提示'
+						});
 						$.ajax({
 							url : "../recordServlet",
 							type : "post",
@@ -185,17 +190,25 @@ table tr td input {
 								comfirm : "comfirm"
 							},
 							success : function(data) {
+								infoDialog.close();
 								$.Zebra_Dialog('记入成功！', {
 									'type' : 'confirmation',
-									'title' : '提示'
+									'title' : '提示',
+									'onClose': function() { 
+									       $("#userId").val("");
+									       $("#userName").html("");
+									       $("#tipImg").attr("src","../resources/images/blank.png");
+									       $("#recordPrice").val("");
+									       $("#recordBonus").val("");
+										}
 								});
 							},
-							error : function() {
-								$.Zebra_Dialog('记一笔失败，请重新输入！', {
+							error : function(xhr,status,error) {
+								infoDialog.close();
+								$.Zebra_Dialog(xhr.responseText, {
 									'type' : 'error',
 									'title' : '错误'
 								});
-
 							}
 						});
 					}
@@ -213,7 +226,7 @@ table tr td input {
 			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop(
 					openId, 0, -1);
 			if (sales.isEmpty() || sales.size() == 0) {
-				String noSales = "Sorry！暂无促销活动。";
+				String noSales = "无促销活动。";
 				request.setAttribute("noSales", noSales);
 			} else {
 				request.setAttribute("sales", sales);

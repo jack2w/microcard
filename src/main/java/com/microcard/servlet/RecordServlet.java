@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.HibernateException;
 
 import com.microcard.bean.Record;
+import com.microcard.bean.Sales;
 import com.microcard.bean.Shop;
 import com.microcard.bean.User;
 import com.microcard.dao.DAOFactory;
@@ -79,6 +80,8 @@ public class RecordServlet extends HttpServlet {
 				for (User user : users) {
 					if (String.valueOf(user.getId()).equals(userId)) {
 						userName = user.getName();
+						if(userName == null || userName.length() < 1)
+							userName = user.getNickName();
 						// 将数据拼接成JSON格式
 						out.print("{\"userName\":\"" + userName + "\"}");
 						isUser = true;
@@ -97,8 +100,24 @@ public class RecordServlet extends HttpServlet {
 				String time = df.format(new Date());
 				Timestamp ts = Timestamp.valueOf(time);
 				record.setShop(shop);
-				record.setUser(DAOFactory.createUserDAO().getUserByID(Long.valueOf(userId)));
-				record.setSales(DAOFactory.createSalesDAO().getSalesByID(Long.valueOf(saleId)));
+				if(userId != null){
+					User user = DAOFactory.createUserDAO().getUserByID(Long.valueOf(userId));
+					if(user == null) {
+						response.sendError(5001, "记一笔失败！" + "用户ID " + userId + " 不存在！");
+						return;
+					}
+					record.setUser(user);
+				}else {
+					response.sendError(5001, "记一笔失败！" + "没有输入用户ID " + userId + "！");
+					return;				
+				}
+				
+				
+				if(saleId != null) {
+					Sales sales = DAOFactory.createSalesDAO().getSalesByID(Long.valueOf(saleId));
+					if(sales != null)
+						record.setSales(sales);
+				}
 				record.setPrice(Double.valueOf(recordPrice));
 				record.setBonus(Double.valueOf(recordBonus));
 				record.setTime(ts);
@@ -110,10 +129,13 @@ public class RecordServlet extends HttpServlet {
 		} catch (HibernateException exception) {
 			HibernateUtil.instance().rollbackTransaction();
 			Logger.getOperLogger().warn("操作记一笔失败：" + exception.getMessage());
+			response.sendError(5001, "记一笔失败！" + exception.getMessage());
+			return;			
 		} catch (Exception exception) {
 			HibernateUtil.instance().rollbackTransaction();
 			Logger.getOperLogger().warn("操作记一笔失败：" + exception.getMessage());
-
+			response.sendError(5001, "记一笔失败！" + exception.getMessage());
+			return;			
 		} finally {
 			HibernateUtil.instance().closeSession();
 			out.flush();

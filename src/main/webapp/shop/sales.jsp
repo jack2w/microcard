@@ -49,7 +49,7 @@ body {
 }
 
 .sinput {
-	width: 50%;
+	width: 60%;
 	height: 21px;
 	line-height: 21px;
 	padding: 4px 7px;
@@ -57,7 +57,7 @@ body {
 	border: 1px solid #999;
 	border-radius: 2px;
 	background-color: #fbfbfb;
-	margin-left: 12%;
+	margin-left: 2%;
 }
 
 .sbtn {
@@ -90,16 +90,16 @@ body {
 .sales {
 	width: 100%;
 	float: left;
-	border-bottom: 1px dashed #B5B5B5;
+	border-bottom: 1px solid #E1E1E1;
 	background: WhiteSmoke;
 }
 
 #salesName {
 	padding-top: 1%;
 	font-size: 1.5em;
-	color: red;
+	color: #6E6E6E;
 	padding-left: 1%;
-	text-shadow: -2px -2px 0 #E6E6FA;
+	/*text-shadow: -2px -2px 0 #E6E6FA;*/
 }
 
 #salesType {
@@ -214,7 +214,7 @@ body {
 			String shopId = String.valueOf(shop.getId());
 			List<Sales> sales = DAOFactory.createShopDAO().getSalesByShop(openId, 0, -1);
 			if (sales.isEmpty() || sales.size() == 0) {
-				String noSales = "Sorry！暂无促销活动。";
+				String noSales = "无促销活动。";
 				request.setAttribute("noSales", noSales);
 			} else {
 				request.setAttribute("sales", sales);
@@ -239,12 +239,11 @@ body {
 		</div>
 		<input type="hidden" id="shopId" name="shopId" value="${shopId}">
 		<div class="salesList">
-			<span>${noSales}</span>
 			<c:forEach items="${sales}" var="sale">
 				<div class="sales">
 					<input type="hidden" id="saleId" value="${sale.id}">
 					<h5 id="salesName">${sale.name}</h5>
-					<span id="salesType">满￥${sale.price}返￥${sale.bonus}</span> <input
+					<span id="salesType">满￥${sale.price}元，返￥${sale.bonus}元</span> <input
 						type="button" value="删除" class="delbtn">
 				</div>
 			</c:forEach>

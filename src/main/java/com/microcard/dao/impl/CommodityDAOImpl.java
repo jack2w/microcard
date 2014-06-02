@@ -67,7 +67,7 @@ public class CommodityDAOImpl implements CommodityDAO {
 		Commodity s = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-	        s = (Commodity)session.load(Commodity.class.getName(), id);
+	        s = (Commodity)session.get(Commodity.class.getName(), id);
 		} catch(HibernateException ex){
 			log.error(ex, "failed get commodity by id.");
 			throw ex;

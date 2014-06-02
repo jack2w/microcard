@@ -45,7 +45,7 @@ public class RecordDAOImpl implements RecordDAO {
 		Record s = null;
 		try{
 			Session session = HibernateUtil.instance().currentSession();
-	        s = (Record)session.load(Record.class.getName(), id);
+	        s = (Record)session.get(Record.class.getName(), id);
 		} catch(HibernateException ex){
 			log.error(ex, "failed get record by id.");
 			throw ex;

@@ -73,7 +73,7 @@ public class ShopDAOImpl implements ShopDAO {
 		Shop s = null;
 		try {
 			Session session = HibernateUtil.instance().currentSession();
-			s = (Shop) session.load(Shop.class.getName(), id);
+			s = (Shop) session.get(Shop.class.getName(), id);
 		} catch (HibernateException ex) {
 			log.error(ex, "failed get shop by id.");
 			throw ex;

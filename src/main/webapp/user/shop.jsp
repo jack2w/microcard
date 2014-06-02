@@ -48,7 +48,7 @@ body {
 }
 
 .sinput {
-	width: 50%;
+	width: 70%;
 	height: 21px;
 	line-height: 21px;
 	padding: 4px 7px;
@@ -56,7 +56,7 @@ body {
 	border: 1px solid #999;
 	border-radius: 2px;
 	background-color: #fbfbfb;
-	margin-left: 14%;
+	margin-left: 2%;
 }
 
 .sbtn {
@@ -73,7 +73,7 @@ body {
 }
 
 .shopList {
-	border-top: 1px solid #B5B5B5;
+	border-top: 1px solid #E1E1E1;
 	width: 100%;
 	float: left;
 }
@@ -81,7 +81,7 @@ body {
 .shop {
 	width: 100%;
 	float: left;
-	border-bottom: 1px dashed #B5B5B5;
+	border-bottom: 1px solid #E1E1E1;
 	height: 60px;
 	background: WhiteSmoke;
 }
@@ -145,7 +145,9 @@ body {
 
 		} catch (Exception e) {
 			Logger.getOperLogger().error(e, "");
-		} 
+		} finally {
+			HibernateUtil.instance().closeSession();
+		}
 	%>
 	<!-- this is content -->
 	<div class="content">
@@ -160,9 +162,29 @@ body {
 			<c:forEach var="item" items="${shops}" varStatus="status">
 				<div class="shop">
 					<input type="hidden" value="${item.id}">
-					<h5 style="font-size: 1.2em" id="memberName">&nbsp;${item.name} </h5>
-					<span id="goodsName">&nbsp;${records[status.index].bonus}</span> <span
-						id="buyTime">&nbsp;${records[status.index].time}</span>
+					<h5 style="font-size: 1.2em" id="memberName">&nbsp;
+						<c:choose>
+							<c:when test="${item.name==null || item.name.length() < 1}">
+                            	<c:out value="${item.nickName}"/>
+							</c:when>
+							<c:otherwise>
+								<c:out value="${item.name}"/>
+							</c:otherwise>
+						</c:choose>
+					
+					 </h5>
+					<span id="goodsName">
+						<c:choose>
+							<c:when test="${records[status.index].bonus==null || records[status.index].bonus == 0}">
+                            	&nbsp;
+							</c:when>
+							<c:otherwise>
+								&nbsp;返还${records[status.index].bonus}元
+							</c:otherwise>
+						</c:choose>
+					
+					</span> <span
+						id="buyTime">&nbsp;${records[status.index].time.toLocaleString()}</span>
 				</div>
 			</c:forEach>
 		</div>
