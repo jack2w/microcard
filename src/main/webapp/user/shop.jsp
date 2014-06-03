@@ -82,17 +82,26 @@ body {
 	width: 100%;
 	float: left;
 	border-bottom: 1px solid #E1E1E1;
-	height: 60px;
 	background: WhiteSmoke;
+}
+
+#memberName {
+	padding-top: 1%;
+	font-size: 1.5em;
+	color: #6E6E6E;
+	/*text-shadow: -2px -2px 0 #E6E6FA;*/
 }
 
 #goodsName {
 	float: left;
 	width: 40%;
-	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	padding: 1% 0 1% 1%;
+	color: green;
+	font-family: "Microsoft YaHei", Helvetica, Arial, sans-serif;
+	font-size: 1.2em;
 }
 
 #buyTime {
@@ -167,7 +176,7 @@ body {
 			<c:forEach var="item" items="${shops}" varStatus="status">
 				<div class="shop">
 					<input type="hidden" value="${item.id}">
-					<h5 style="font-size: 1.2em" id="memberName">&nbsp;
+					<h5 id="memberName">&nbsp;
 						<c:choose>
 							<c:when test="${item.name==null || item.name.length() < 1}">
                             	<c:out value="${item.nickName}"/>
